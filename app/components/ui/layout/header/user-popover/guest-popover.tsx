@@ -30,7 +30,7 @@ export default function GuestMenu() {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="outline" className="relative">
+        <Button variant="outline" className="relative rounded-full p-3">
           <Icons.user className="h-full w-full" />
         </Button>
       </PopoverTrigger>
