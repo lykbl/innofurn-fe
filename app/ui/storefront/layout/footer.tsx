@@ -1,4 +1,4 @@
-import { Button } from '@/app/ui/common/button';
+import { Button } from '@/ui/common/button';
 import {
   FaCcAmex,
   FaCcMastercard,

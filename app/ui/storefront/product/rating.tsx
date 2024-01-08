@@ -1,4 +1,4 @@
-import Link from "@/app/ui/common/link";
+import Link from "@/ui/common/link";
 import { TiStarHalfOutline } from "react-icons/ti";
 import clsx from "clsx";
 

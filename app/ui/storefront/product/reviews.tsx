@@ -1,14 +1,14 @@
 'use client';
 
-import Input from "@/app/ui/common/input";
-import { Stars } from "@/app/ui/storefront/product/rating";
-import { calculatePercentage } from "@/app/lib/utils";
+import Input from "@/ui/common/input";
+import { Stars } from "@/ui/storefront/product/rating";
+import { calculatePercentage } from "@/lib/utils";
 import { motion, useInView } from 'framer-motion';
 import { useRef } from "react";
 import clsx from "clsx";
-import { Button, BUTTON_STYLES } from "@/app/ui/common/button";
+import { Button, BUTTON_STYLES } from "@/ui/common/button";
 import Image from "next/image";
-import Carousel from "@/app/ui/animated/carousel/carousel";
+import Carousel from "@/ui/animated/carousel/carousel";
 
 const reviewImages = Array(10).fill(null).map((_, index) => (
   <div

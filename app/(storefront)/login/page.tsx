@@ -1,44 +1,49 @@
-'use client';
+"use client"
 
-import { useEffect } from "react";
-import axios from "axios";
-import { redirect } from "next/navigation";
-
-function getCookie(cookieName: string) {
-  const cookies = document.cookie.split(';');
-
-  for (let i = 0; i < cookies.length; i++) {
-    const cookie = cookies[i].trim();
-
-    // Check if this cookie is the one we're looking for
-    if (cookie.startsWith(cookieName + '=')) {
-      // Extract and return the cookie value
-      return cookie.substring(cookieName.length + 1);
-    }
-  }
-
-  // If the cookie is not found, return null or an appropriate default value
-  return null;
+import { Separator } from "@/components/ui/common/separator";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/common/card";
+import { Checkbox } from "@/components/ui/common/checkbox";
+import { LoginForm, OAuthButtons } from "@/(storefront)/login/login-form";
+interface CheckboxWithTextProps {
+  id: string,
+  label: string,
+  description?: string,
 }
-
-export default function Page() {
-  useEffect(() => {
-    (async () => {
-      axios.defaults.withCredentials = true;
-      axios.defaults.withXSRFToken = true
-      const response = await axios.get('http://localhost/sanctum/csrf-cookie');
-      const loginResponse = await axios.post('http://localhost/login', {
-        'email': 'test04@gmail.com',
-        'password': '12345678!',
-      }, {
-        withCredentials: true,
-      } as any);
-
-      redirect('/checkout', 'push' as any);
-    })();
-  }, []);
+export function CheckboxWithText({ id, label, description }: CheckboxWithTextProps) {
   return (
-    <>
-    </>
-  );
+    <div className="items-top flex space-x-2">
+      <Checkbox id={id} />
+      <div className="grid gap-1.5 leading-none">
+        <label
+          htmlFor={id}
+          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        >
+          { label }
+        </label>
+        {
+          description && (
+            <p className="text-sm text-muted-foreground">
+              { description }
+            </p>
+          )
+        }
+      </div>
+    </div>
+  )
+}
+export default function Page() {
+  return (
+    <Card className='w-1/4'>
+      <CardHeader>
+        <CardTitle>Log in</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <LoginForm />
+      </CardContent>
+      <Separator />
+      <CardFooter className='py-2 px-8 justify-evenly'>
+        <OAuthButtons />
+      </CardFooter>
+    </Card>
+  )
 }

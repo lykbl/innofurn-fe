@@ -1,16 +1,16 @@
 'use client';
 
 import React, { useState } from "react";
-import Variants, { Variant } from "@/app/ui/storefront/product/variants";
+import Variants, { Variant } from "@/ui/storefront/product/variants";
 import Image from "next/image";
-import Accordion from "@/app/ui/animated/accordion";
-import Link from "@/app/ui/common/link";
-import { Button } from "@/app/ui/common/button";
+import Accordion from "@/ui/animated/accordion";
+import Link from "@/ui/common/link";
+import { Button } from "@/ui/common/button";
 import { FaPhoneAlt } from "react-icons/fa";
 import { IoChatboxEllipses } from "react-icons/io5";
-import Rating, { RATING_STYLES } from "@/app/ui/storefront/product/rating";
-import ExtraOffers from "@/app/ui/storefront/product/extra-offers";
-import CartControl from "@/app/ui/storefront/product/cart-control";
+import Rating, { RATING_STYLES } from "@/ui/storefront/product/rating";
+import ExtraOffers from "@/ui/storefront/product/extra-offers";
+import CartControl from "@/ui/storefront/product/cart-control";
 
 const images = [
   {

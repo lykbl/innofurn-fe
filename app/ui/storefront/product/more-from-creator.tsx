@@ -1,10 +1,10 @@
 'use client';
 
-import Link from "@/app/ui/common/link";
-import Carousel from "@/app/ui/animated/carousel/carousel";
-import Rating, { RATING_STYLES } from "@/app/ui/storefront/product/rating";
-import { Button, BUTTON_STYLES } from "@/app/ui/common/button";
-import { formatCurrency } from "@/app/lib/utils";
+import Link from "@/ui/common/link";
+import Carousel from "@/ui/animated/carousel/carousel";
+import Rating, { RATING_STYLES } from "@/ui/storefront/product/rating";
+import { Button, BUTTON_STYLES } from "@/ui/common/button";
+import { formatCurrency } from "@/lib/utils";
 import Image from "next/image";
 
 const carouselItems = Array(10).fill(null).map((el, index) => {

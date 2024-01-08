@@ -1,11 +1,11 @@
 'use client';
 
-import { Button } from '@/app/ui/common/button';
+import { Button } from '@/ui/common/button';
 import { useKey, useToggle } from 'react-use';
 import { BiMenu } from 'react-icons/bi';
 import { IoIosArrowForward } from 'react-icons/io';
 import clsx from 'clsx';
-import Accordion from '@/app/ui/animated/accordion';
+import Accordion from '@/ui/animated/accordion';
 import { AnimatePresence, motion } from 'framer-motion';
 
 const categories = [

@@ -1,5 +1,5 @@
 import { IoIosArrowForward } from "react-icons/io";
-import Link from "@/app/ui/common/link";
+import Link from "@/ui/common/link";
 
 const path = [
   {

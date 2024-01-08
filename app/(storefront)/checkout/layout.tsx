@@ -1,6 +1,6 @@
 'use client';
 
-import '@/app/styles/global.scss';
+import '@/styles/global.scss';
 import React from 'react';
 
 export default function CheckoutLayout({

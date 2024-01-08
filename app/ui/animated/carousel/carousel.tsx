@@ -5,9 +5,9 @@ import {
 } from "react";
 import { motion } from "framer-motion";
 import clsx from "clsx";
-import Items from "@/app/ui/animated/carousel/items";
-import Controls from "@/app/ui/animated/carousel/controls";
-import { debounce } from "@/app/lib/utils";
+import Items from "@/ui/animated/carousel/items";
+import Controls from "@/ui/animated/carousel/controls";
+import { debounce } from "@/lib/utils";
 
 const carouselVariants = {
   scrolled: (offset: number) => ({

@@ -3,8 +3,8 @@
 import { IoIosHeart, IoIosHome } from "react-icons/io";
 import { BiMinus, BiPlus, BiSearchAlt } from "react-icons/bi";
 import { useState } from "react";
-import { Button, BUTTON_STYLES } from "@/app/ui/common/button";
-import { formatCurrency } from "@/app/lib/utils";
+import { Button, BUTTON_STYLES } from "@/ui/common/button";
+import { formatCurrency } from "@/lib/utils";
 
 interface CartControlProps {
   price: number;
