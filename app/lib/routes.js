@@ -1,7 +1,7 @@
 const ROUTES = {
   'HOME': '/',
   'LOGIN': '/login',
-  'SIGN_UP': '/sign-up',
+  'SIGNUP': '/signup',
   'OAUTH_REDIRECT': '/oauth/redirect',
 };
 

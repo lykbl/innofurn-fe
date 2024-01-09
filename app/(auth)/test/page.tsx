@@ -1,0 +1,40 @@
+'use client';
+
+import { gql } from "@/gql";
+import { useQuery } from "@apollo/client";
+
+const REVIEWS_QUERY = gql(/* GraphQL */`
+  query UserReviews {
+      getUserReviews {
+          id
+          title
+          body
+      }
+  }
+`);
+
+export default function Page() {
+  const { loading: isLoading, data } = useQuery(REVIEWS_QUERY);
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (!data || !data.getUserReviews) {
+    return <p>No data!!</p>
+  }
+
+  return (
+    <>
+      Reviews:
+      <div className="flex flex-col">
+        {data.getUserReviews.map((review: any) =>
+          <div key={review.id}>
+            <h2>Title: {review.title}</h2>
+            <p>Body: {review.body}</p>
+          </div>
+        )}
+      </div>
+    </>
+  )
+}

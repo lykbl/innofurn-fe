@@ -72,5 +72,9 @@
   }
   body {
     @apply bg-background text-foreground;
+    height: inherit;
+  }
+  main {
+    height: inherit;
   }
 }
