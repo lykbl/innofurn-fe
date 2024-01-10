@@ -1,9 +1,9 @@
 'use client';
 
-import Link from "@/ui/common/link";
-import Carousel from "@/ui/animated/carousel/carousel";
-import Rating, { RATING_STYLES } from "@/ui/storefront/product/rating";
-import { Button, BUTTON_STYLES } from "@/ui/common/button";
+import Link from "@/components/ui/common/link";
+import Carousel from "@/components/ui/animated/carousel/carousel";
+import Rating, { RATING_STYLES } from "@/(storefront)/product/rating";
+import { Button, BUTTON_STYLES } from "@/components/ui/common/button";
 import { formatCurrency } from "@/lib/utils";
 import Image from "next/image";
 

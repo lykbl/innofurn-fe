@@ -1,5 +1,5 @@
-import { Button } from '@/ui/common/button';
-import CategoriesMenu from '@/ui/storefront/layout/categories-menu';
+import { Button } from '@/components/ui/common/button';
+import CategoriesMenu from '@/(storefront)/categories-menu';
 import {ReactNode} from "react";
 
 const promotions = [

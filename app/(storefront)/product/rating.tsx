@@ -1,4 +1,4 @@
-import Link from "@/ui/common/link";
+import Link from "@/components/ui/common/link";
 import { TiStarHalfOutline } from "react-icons/ti";
 import clsx from "clsx";
 
@@ -34,10 +34,10 @@ const Rating = ({ starSize = 24, className, style, reviewsCount, totalRating }: 
       </div>
       {
         style === RATING_STYLES.WITH_REVIEWS &&
-        <Link href='/reviews' className='hover:text-blue-600 hover:underline'>({reviewsCount} reviews)</Link>
+        <Link href='/app/(storefront)/product/reviews' className='hover:text-blue-600 hover:underline'>({reviewsCount} reviews)</Link>
       }
       {
-        style === RATING_STYLES.WITH_RATING && <Link href='/reviews'>({totalRating})</Link>
+        style === RATING_STYLES.WITH_RATING && <Link href='/app/(storefront)/product/reviews'>({totalRating})</Link>
       }
     </div>
   );

@@ -1,8 +1,8 @@
-import Breadcrumb from "@/ui/common/breadcrumb";
+import Breadcrumb from "@/components/ui/common/breadcrumb";
 import React from "react";
-import ProductDetails from "@/ui/storefront/product/product-details";
-import MoreFromCreator from "@/ui/storefront/product/more-from-creator";
-import Reviews from "@/ui/storefront/product/reviews";
+import ProductDetails from "@/(storefront)/product/product-details";
+import MoreFromCreator from "@/(storefront)/product/more-from-creator";
+import Reviews from "@/(storefront)/product/reviews";
 
 export default function Page() {
   return (

@@ -61,24 +61,24 @@ function GuestControls() {
   );
 }
 
-const CHECK_ME_QUERY = gql(/* GraphQL */`
-  query CheckMe {
-    checkMe {
-      id
-    }
-  }
-`);
+// const CHECK_ME_QUERY = gql(/* GraphQL */`
+//   query CheckMe {
+//     checkMe {
+//       id
+//     }
+//   }
+// `);
 
 function AuthControls() {
-  const { data, error, loading } = useQuery(CHECK_ME_QUERY);
+  // const { data, error, loading } = useQuery(CHECK_ME_QUERY);
 
-  if (error) {
-    return <UserControls />;
-  }
-
-  if (!error) {
-    return <GuestControls />;
-  }
+  // if (error) {
+  //   return <UserControls />;
+  // }
+  //
+  // if (!error) {
+  //   return <GuestControls />;
+  // }
 
   return (
     <>

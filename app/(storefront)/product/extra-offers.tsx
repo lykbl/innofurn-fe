@@ -1,4 +1,4 @@
-import Input from "@/ui/common/input";
+import { Input } from "@/components/ui/common/input";
 
 const offersData = [
   {

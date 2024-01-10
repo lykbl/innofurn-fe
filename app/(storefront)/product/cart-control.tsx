@@ -3,7 +3,7 @@
 import { IoIosHeart, IoIosHome } from "react-icons/io";
 import { BiMinus, BiPlus, BiSearchAlt } from "react-icons/bi";
 import { useState } from "react";
-import { Button, BUTTON_STYLES } from "@/ui/common/button";
+import { Button, BUTTON_STYLES } from "@/components/ui/common/button";
 import { formatCurrency } from "@/lib/utils";
 
 interface CartControlProps {

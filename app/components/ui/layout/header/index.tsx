@@ -1,13 +1,13 @@
-import { HeaderLogo } from '@/ui/logo';
-import { Button, BUTTON_STYLES } from '@/ui/common/button';
-import Link from "@/ui/common/link";
+import { HeaderLogo } from '@/components/logo';
+import { Button, BUTTON_STYLES } from '@/components/ui/common/button';
+import Link from "@/components/ui/common/link";
 import {
   BiSearchAlt,
   BiShoppingBag,
   BiUser,
 } from 'react-icons/bi';
 import { IoIosArrowDown } from 'react-icons/io';
-import BasicInput from '@/ui/common/input';
+import BasicInput from '@/components/ui/common/input';
 import BaseLink from "next/link";
 import ROUTES from "@/lib/routes";
 import AuthControls from "@/components/ui/layout/header/auth-controls";

@@ -25,3 +25,8 @@ export function getCookie(name: string) {
 
   return null;
 }
+
+//TODO add smarter typing
+export const createAction = (type: string, payload: any): Action => {
+  return { type, payload }
+};

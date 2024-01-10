@@ -1,27 +1,45 @@
 'use client';
 
-import { createContext, useState } from "react";
+import { createContext, ReactNode, useReducer } from "react";
+import { User } from "@/gql/graphql";
+import { createAction } from "@/lib/utils";
 
 type AuthContextType = {
-  id: number|null,
-  setUser: (userData: any) => void,
+  user: User | null,
+  setUser: (userData: User) => void,
 }
 
 const INITIAL_STATE: AuthContextType = {
-  id: null,
+  user: null,
   setUser: () => {},
 };
 
 export const AuthContext = createContext<AuthContextType>(INITIAL_STATE);
 
-const setUser = () => {};
+enum AuthActionTypes {
+  SET_USER = 'SET_USER',
+}
+const authReducer = (state: AuthContextType, action: Action) => {
+  switch (action.type) {
+    case 'SET_USER':
+      return {
+        ...state,
+        user: action.payload,
+      };
+    default:
+      throw new Error(`Unhandled action type: ${action.type}`);
+  }
+}
 
-const AuthContextProvider = ({ children }: {children: any}) => {
-  const [{ id }, dispatch] = useState(INITIAL_STATE);
+const AuthContextProvider = ({ children }: {children: ReactNode}) => {
+  const [{ user }, dispatch] = useReducer(authReducer, INITIAL_STATE);
+  const storeUser = (userData: User) => {
+    dispatch(createAction(AuthActionTypes.SET_USER, userData));
+  }
 
   const value = {
-    id,
-    setUser,
+    user,
+    setUser: storeUser,
   };
 
   return (

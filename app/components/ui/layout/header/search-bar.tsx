@@ -1,6 +1,6 @@
-import { Button, BUTTON_STYLES } from "@/ui/common/button";
+import { Button, BUTTON_STYLES } from "@/components/ui/common/button";
 import { IoIosArrowDown } from "react-icons/io";
-import BasicInput from "@/ui/common/input";
+import BasicInput from "@/components/ui/common/input";
 import { BiSearchAlt } from "react-icons/bi";
 
 function SearchBar() {

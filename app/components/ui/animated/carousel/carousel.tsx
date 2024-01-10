@@ -5,8 +5,8 @@ import {
 } from "react";
 import { motion } from "framer-motion";
 import clsx from "clsx";
-import Items from "@/ui/animated/carousel/items";
-import Controls from "@/ui/animated/carousel/controls";
+import Items from "@/components/ui/animated/carousel/items";
+import Controls from "@/components/ui/animated/carousel/controls";
 import { debounce } from "@/lib/utils";
 
 const carouselVariants = {
