@@ -1,13 +1,13 @@
 'use client';
+
 import BaseLink from "next/link";
 import ROUTES from "@/lib/routes";
 import { BiAlarm, BiShoppingBag, BiUser } from "react-icons/bi";
 import { gql } from "@/gql";
-import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
-import { useGraphQLClient } from "@/lib/graphql-client-provider";
 import { Button } from "@/components/ui/common/button";
+import { useQuery } from "@apollo/client";
 
-function UserControls () {
+function UserControls() {
   return (
     <>
       <Button>
@@ -70,24 +70,13 @@ const CHECK_ME_QUERY = gql(/* GraphQL */`
 `);
 
 function AuthControls() {
-  // const authContext = useContext(AuthContext);
-  const client = useGraphQLClient();
-  console.log('checkking auth');
-  const { isError, isSuccess } = useQuery({
-    queryKey: ['auth'],
-    queryFn: async () => client.request(CHECK_ME_QUERY),
-  });
-  // const result = useSuspenseQuery({
-  //   queryKey: ['auth'],
-  //   queryFn: async () => client.request(CHECK_ME_QUERY),
-  // });
-  // console.log(result)
+  const { data, error, loading } = useQuery(CHECK_ME_QUERY);
 
-  if (isError) {
+  if (error) {
     return <UserControls />;
   }
 
-  if (isSuccess) {
+  if (!error) {
     return <GuestControls />;
   }
 

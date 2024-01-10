@@ -9,15 +9,15 @@ import { Button } from "@/components/ui/common/button";
 import { useMutation } from "@apollo/client";
 import { gql } from "@/gql";
 import { useRouter } from "next/navigation";
+import { Icons } from "@/components/icons";
+import { useToast } from "@/components/ui/use-toast";
 
 const formSchema = z.object({
   email: z.string().email(),
-  password: z.string().min(8),
-  rememberMe: z.boolean().optional(),
 })
 const LOGIN_MUTATION = gql(/* GraphQL */`
-    mutation LoginTest ($email: String!, $password: String!) {
-        login(email: $email, password: $password) {
+    mutation LoginTest ($input: LoginInput!) {
+        login(input: $input) {
             id
         }
     }
@@ -28,25 +28,34 @@ export function LoginForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: '',
-      password: '',
     },
-    // mode: 'onChange',
+    mode: 'onSubmit',
   })
-  const [mutateAsync, { error, data }] = useMutation(LOGIN_MUTATION);
+  const [mutateAsync, { loading }] = useMutation(LOGIN_MUTATION);
   const router = useRouter();
+  const { toast } = useToast();
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const response = await mutateAsync({
       variables: {
-        email: values.email, password: values.password,
+        input: {
+          email: values.email,
+        }
       },
     });
 
-    router.push('/test');
-  }
-
-  const onError = (errors: any) => {
-    console.log(errors)
+    if (response.errors) {
+      toast({
+        duration: 5000,
+        type: 'foreground',
+        title: 'Error',
+        description: response.errors[0].message,
+        variant: 'destructive',
+      });
+    }
+    if (response.data) {
+      router.push('/');
+    }
   }
 
   return (
@@ -54,7 +63,7 @@ export function LoginForm() {
       {...form}
     >
       <form
-        onSubmit={form.handleSubmit(onSubmit, onError)}
+        onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-2"
       >
         <FormField
@@ -73,22 +82,12 @@ export function LoginForm() {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input
-                  type='password'
-                  placeholder="Password goes here..." {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
+        <Button type="submit" className="w-full" disabled={loading}>
+          {loading && (
+            <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
           )}
-        />
-        <Button type="submit" className="w-full">Login with Email</Button>
+          Login with Email
+        </Button>
       </form>
     </Form>
   )

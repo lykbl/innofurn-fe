@@ -8,14 +8,16 @@ import { Input } from "@/components/ui/common/input";
 import { Button } from "@/components/ui/common/button";
 import { gql } from "@/gql";
 import { useMutation } from "@apollo/client";
+import { Icons } from "@/components/icons";
+import { useToast } from "@/components/ui/use-toast";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   email: z.string().email(),
-  password: z.string().min(8),
 })
 
 const SIGNUP_MUTATION = gql(/* GraphQL */`
-    mutation SignUp ($input: SignUpInput!) {
+    mutation SignUp ($input: SignupInput!) {
         signUp (input: $input) {
             id
         }
@@ -27,25 +29,34 @@ export function SignupForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: '',
-      password: '',
     },
-    // mode: 'onChange',
+    mode: 'onSubmit',
   })
-  const [mutateAsync, { error, data }] = useMutation(SIGNUP_MUTATION);
+  const [mutateAsync, { loading }] = useMutation(SIGNUP_MUTATION);
+  const { toast } = useToast();
+  const router = useRouter();
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const response = await mutateAsync({
       variables: {
-        email: values.email,
-        password: values.password,
+        input: {
+          email: values.email,
+        }
       },
     });
 
-    console.log('signed up', response)
-  }
-
-  const onError = (errors: any) => {
-    console.log(errors)
+    if (response.errors) {
+      toast({
+        duration: 5000,
+        type: 'foreground',
+        title: 'Error',
+        description: response.errors[0].message,
+        variant: 'destructive',
+      });
+    }
+    if (response.data) {
+      router.push('/');
+    }
   }
 
   return (
@@ -53,7 +64,7 @@ export function SignupForm() {
       {...form}
     >
       <form
-        onSubmit={form.handleSubmit(onSubmit, onError)}
+        onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-2"
       >
         <FormField
@@ -72,23 +83,10 @@ export function SignupForm() {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input
-                  type='password'
-                  placeholder="Password goes here..."
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
         <Button type="submit" className="w-full">
+          {loading && (
+            <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+          )}
           Sign Up with Email
         </Button>
       </form>

@@ -9,9 +9,10 @@ import {
 } from "@apollo/experimental-nextjs-app-support/ssr";
 import React, { useEffect } from "react";
 import { getCookie } from "@/lib/utils";
+import { onError } from "@apollo/client/link/error";
 
 const errorHandler = (errors: any) => {
-  // console.log('Showing errors:' ,errors);
+  console.log('Showing errors:' ,errors);
 }
 
 const authMiddleware = new ApolloLink((operation, forward) => {
@@ -28,14 +29,13 @@ const authMiddleware = new ApolloLink((operation, forward) => {
 const httpLink = new HttpLink({
   uri: process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT,
   credentials: 'include',
-  // credentials: 'same-origin',
   preserveHeaderCase: true,
 });
 
 const masterLink = ApolloLink.from([
   typeof window === "undefined"
     ? ApolloLink.from([
-      // onError(errorHandler),
+      onError(errorHandler),
       new SSRMultipartLink({
         stripDefer: true,
       }),
@@ -51,18 +51,21 @@ function createClient() {
       authMiddleware,
       masterLink,
     ]),
+    defaultOptions: {
+      mutate: {
+        errorPolicy: 'all',
+      }
+    }
   });
 }
 
 export function ApolloWrapper({ children }: React.PropsWithChildren) {
   useEffect(() => {
     async function initCsrf() {
-      if (getCookie('XSRF-TOKEN') === null) {
-        await fetch('http://localhost/sanctum/csrf-cookie', {
-          'method': 'GET',
-          'credentials': 'include',
-        });
-      };
+      await fetch('http://localhost/sanctum/csrf-cookie', { // TODO keep old one?
+        'method': 'GET',
+        'credentials': 'include',
+      })
     }
 
     initCsrf();
