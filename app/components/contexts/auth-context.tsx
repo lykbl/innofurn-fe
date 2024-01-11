@@ -6,7 +6,7 @@ import { createAction } from "@/lib/utils";
 
 type AuthContextType = {
   user: User | null,
-  setUser: (userData: User) => void,
+  setUser: (userData: User|null) => void,
 }
 
 const INITIAL_STATE: AuthContextType = {

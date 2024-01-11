@@ -69,6 +69,10 @@
 @layer base {
   * {
     @apply border-border;
+    min-width: 0;
+  }
+  header {
+    width: inherit;
   }
   body {
     @apply bg-background text-foreground;
@@ -76,5 +80,6 @@
   }
   main {
     height: inherit;
+    width: inherit;
   }
 }
