@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { TooltipArrow } from "@radix-ui/react-tooltip";
+import { User } from "@/gql/graphql";
 
 const LOGOUT_MUTATION = gql(/* GraphQL */`
     mutation Logout {
@@ -49,11 +50,13 @@ function NotificationsControls() {
     </Button>
   );
 }
-function UserControls() {
-  const { user, setUser } = useContext(AuthContext);
-  const [logoutAsync] = useMutation(LOGOUT_MUTATION);
 
-  console.log('USER', user)
+interface IUserControlsProps {
+  user: User|null,
+  setUser: (user: User|null) => void,
+}
+function UserControls({ user, setUser }: IUserControlsProps) {
+  const [logoutAsync] = useMutation(LOGOUT_MUTATION);
 
   const handleLogout = async () => {
     await logoutAsync();
@@ -152,8 +155,6 @@ function AuthControls() {
   const { data, loading } = useQuery(CHECK_ME);
   const { user, setUser } = useContext(AuthContext);
 
-  console.log('auth controls', user)
-
   useEffect(() => {
     if (data?.checkMe) {
       setUser(data.checkMe);
@@ -168,7 +169,7 @@ function AuthControls() {
     <div className='flex gap-2 items-center'>
       <NotificationsControls />
       <CartControls />
-      {user ? <UserControls /> : <GuestControls />}
+      {user ? <UserControls setUser={setUser} user={user} /> : <GuestControls />}
     </div>
   );
 }

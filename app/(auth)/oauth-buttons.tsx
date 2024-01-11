@@ -32,8 +32,7 @@ export const OAuthButtons = () => {
             buttonVariants({ variant: "default", className: 'gap-2' })
           }
           key={i}
-          // href={`${ROUTES.OAUTH_REDIRECT}/${config.type}`}
-          href={`http://localhost${ROUTES.OAUTH_REDIRECT}/${config.type}`}
+          href={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${ROUTES.OAUTH_REDIRECT}/${config.type}`}
         >
           <span className='flex gap-2 w-1/5 items-center'>
             {config.icon}

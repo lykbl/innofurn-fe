@@ -11,6 +11,7 @@ import { useMutation } from "@apollo/client";
 import { Icons } from "@/components/icons";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
+import ROUTES from "@/lib/routes";
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -55,7 +56,7 @@ export function SignupForm() {
       });
     }
     if (response.data) {
-      router.push('/');
+      router.push(ROUTES.HOME);
     }
   }
 

@@ -11,6 +11,7 @@ import { gql } from "@/gql";
 import { useRouter } from "next/navigation";
 import { Icons } from "@/components/icons";
 import { useToast } from "@/components/ui/use-toast";
+import ROUTES from "@/lib/routes";
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -54,7 +55,7 @@ export function LoginForm() {
       });
     }
     if (response.data) {
-      router.push('/');
+      router.push(ROUTES.HOME);
     }
   }
 
