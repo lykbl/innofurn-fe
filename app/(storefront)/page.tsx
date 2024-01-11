@@ -1,35 +1,51 @@
 'use client';
 
-import Link from "@/app/ui/common/link";
-// import { useSuspenseQuery } from "@apollo/client"; //TODO REVERT?
-import { useSuspenseQuery } from "@apollo/experimental-nextjs-app-support/ssr";
-import { gql } from '@/app/gql/gql';
+import { gql } from "@/gql";
+import { useQuery } from "@apollo/client";
+import BaseLink from "next/link";
+import { useContext } from "react";
+import { AuthContext } from "@/components/contexts/auth-context";
 
-const GET_COLLECTIONS = gql(/* GraphQL */`
-    query GetRootCollections {
-        rootCollections {
+const REVIEWS_QUERY = gql(/* GraphQL */`
+    query UserReviews {
+        getUserReviews {
             id
-            name
+            title
+            body
         }
     }
 `);
 
 export default function Page() {
-  const { data } = useSuspenseQuery(
-    GET_COLLECTIONS,
-    {
-      variables: {},
-    }
-  );
+  const { user } = useContext(AuthContext);
+  const { loading: isLoading, data } = useQuery(REVIEWS_QUERY);
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (!data || !data.getUserReviews) {
+    return <p>No data!!</p>
+  }
 
   return (
     <>
       Main page
-      <Link href='/product/test'>Product page</Link>
+      {
+        user &&
+        <p>Hello there {user.name}!</p>
+      }
+      <BaseLink href='/product/test'>Product page</BaseLink>
       <div>
-        {data?.rootCollections?.map((collection) => (
-          <div key={collection.id}>{collection.name}</div>
-        ))}
+        Reviews:
+        <div className="flex flex-col">
+          {data.getUserReviews.map((review: any) =>
+            <div key={review.id}>
+              <h2>Title: {review.title}</h2>
+              <p>Body: {review.body}</p>
+            </div>
+          )}
+        </div>
       </div>
     </>
   );

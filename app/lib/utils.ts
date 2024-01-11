@@ -1,22 +1,32 @@
-export const formatCurrency = (amount: number) => {
-  //TODO fix this
-  return (amount).toLocaleString('en-US', {
-    style: 'currency',
-    currency: 'USD',
-  });
+import { type ClassValue, clsx } from "clsx"
+import { twMerge } from "tailwind-merge"
+
+export function formatCurrency(value: number) {
+  return value;
+}
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
+
+export function getCookie(name: string) {
+  if (!process.browser) {
+    return null;
+  }
+
+  const cookies = document.cookie.split(';');
+
+  for (let i = 0; i < cookies.length; i++) {
+    const cookie = cookies[i].trim();
+    if (cookie.startsWith(`${name}=`)) {
+      return cookie.substring(name.length + 1);
+    }
+  }
+
+  return null;
+}
+
+//TODO add smarter typing
+export const createAction = (type: string, payload: any): Action => {
+  return { type, payload }
 };
-
-export const calculatePercentage = (amount: number, total: number) => {
-  return Math.round((amount / total) * 100);
-}
-
-export function debounce<T extends (...args: any[]) => any>(callback: T, delay: number) {
-  let timeoutId: NodeJS.Timeout;
-
-  return function (this: ThisParameterType<T>, ...args: Parameters<T>) {
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => {
-      callback.apply(this, args);
-    }, delay);
-  };
-}
