@@ -16,9 +16,18 @@ const INITIAL_STATE: AuthContextType = {
 
 export const AuthContext = createContext<AuthContextType>(INITIAL_STATE);
 
-enum AuthActionTypes {
-  SET_USER = 'SET_USER',
-}
+// enum AuthActionTypes {
+//   SET_USER = 'SET_USER',
+// }
+
+const AUTH_ACTION_TYPES = {
+  SET_USER: 'SET_USER',
+} as const;
+
+type ObjectValues<T> = T[keyof T];
+
+type AuthActionTypes = ObjectValues<typeof AUTH_ACTION_TYPES>;
+
 const authReducer = (state: AuthContextType, action: Action) => {
   switch (action.type) {
     case 'SET_USER':
@@ -34,7 +43,7 @@ const authReducer = (state: AuthContextType, action: Action) => {
 const AuthContextProvider = ({ children }: {children: ReactNode}) => {
   const [{ user }, dispatch] = useReducer(authReducer, INITIAL_STATE);
   const storeUser = (userData: User) => {
-    dispatch(createAction(AuthActionTypes.SET_USER, userData));
+    dispatch(createAction(AUTH_ACTION_TYPES.SET_USER, userData));
   }
 
   const value = {

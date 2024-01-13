@@ -7,7 +7,16 @@ const config: CodegenConfig = {
   generates: {
     'app/gql/': {
       preset: 'client',
-      plugins: [],
+      plugins: [
+        // 'typescript',
+        // 'typescript-resolvers'
+      ],
+      // config: {
+      //   scalars: {
+      //     // DateTime: Date,
+      //     DateTime: 'scalars#DateTime',
+      //   }
+      // },
       presetConfig: {
         gqlTagName: 'gql',
       },

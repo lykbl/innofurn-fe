@@ -40,6 +40,7 @@
         "cmdk": "^0.2.0",
         "framer-motion": "^10.16.5",
         "graphql": "^16.8.1",
+        "graphql-ws": "^5.14.3",
         "lucide-react": "^0.306.0",
         "next": "^14.0.2",
         "postcss": "^8.4.32",
@@ -58,6 +59,7 @@
     "devDependencies": {
         "@graphql-codegen/cli": "^5.0.0",
         "@graphql-codegen/client-preset": "^4.1.0",
+        "@graphql-codegen/typescript-resolvers": "^4.0.1",
         "@graphql-typed-document-node/core": "^3.2.0",
         "@parcel/watcher": "^2.3.0",
         "@types/bcrypt": "^5.0.1",

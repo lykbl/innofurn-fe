@@ -14,11 +14,7 @@ const ScrollArea = React.forwardRef<
     className={cn("relative overflow-hidden", className)}
     {...props}
   >
-    <ScrollAreaPrimitive.Viewport
-      className="h-full w-full rounded-[inherit]"
-    >
-      {children}
-    </ScrollAreaPrimitive.Viewport>
+    {children}
     <ScrollBar />
     <ScrollAreaPrimitive.Corner />
   </ScrollAreaPrimitive.Root>
@@ -47,4 +43,21 @@ const ScrollBar = React.forwardRef<
 ))
 ScrollBar.displayName = ScrollAreaPrimitive.ScrollAreaScrollbar.displayName
 
-export { ScrollArea, ScrollBar }
+const ScrollAreaViewport = React.forwardRef<
+  React.ElementRef<typeof ScrollAreaPrimitive.Viewport>,
+  React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Viewport>
+>(({ className, children, ...props }, ref) => (
+  <ScrollAreaPrimitive.Viewport
+    ref={ref}
+    className={cn(
+      'h-full w-full rounded-[inherit]',
+      className
+    )}
+    {...props}
+  >
+    {children}
+  </ScrollAreaPrimitive.Viewport>
+))
+ScrollAreaViewport.displayName = ScrollAreaPrimitive.Viewport.displayName
+
+export { ScrollArea, ScrollBar, ScrollAreaViewport }
