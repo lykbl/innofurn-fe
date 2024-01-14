@@ -8,7 +8,7 @@ type ChatContextType = {
   messages: ChatMessage[],
   loadMessages: (messages: ChatMessage[]) => void,
   sendMessage: (message: ChatMessage) => void,
-  receiveMessage: (message: ChatMessage) => void,
+  receiveMessage: (oldMessages: ChatMessage[], message: ChatMessage) => void,
 }
 
 const INITIAL_STATE: ChatContextType = {
@@ -39,16 +39,20 @@ const chatReducer = (state: ChatContextType, action: Action) => {
 }
 
 const ChatContextProvider = ({ children }: { children: ReactNode }) => {
-  const [{ messages, receiveMessage, sendMessage }, dispatch] = useReducer(chatReducer, INITIAL_STATE);
+  const [{ messages, sendMessage }, dispatch] = useReducer(chatReducer, INITIAL_STATE);
 
   const initMessages = (messages: ChatMessage[]) => {
     dispatch(createAction(ChatActionTypes.LOAD_MESSAGES, messages));
   }
 
+  const receiveNewMessage = (oldMessages: ChatMessage[], message: ChatMessage) => {
+    dispatch(createAction(ChatActionTypes.LOAD_MESSAGES, [...oldMessages, message]));
+  };
+
   const value = {
     messages,
     sendMessage,
-    receiveMessage,
+    receiveMessage: receiveNewMessage,
     loadMessages: initMessages,
   };
 

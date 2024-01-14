@@ -3,7 +3,7 @@ import '@/styles/output.css';
 import React from 'react';
 // import { ReactQueryProvider } from "@/lib/query-provider"; //TODO remove this
 // import { GraphQLClientProvider } from "@/lib/graphql-client-provider";
-import { ApolloWrapper } from "@/lib/apollo-provider";
+import { ApolloWrapper } from "@/lib/apollo/apollo-provider";
 import AuthContextProvider from "@/components/contexts/auth-context";
 import { cn } from "@/lib/utils";
 import { inter } from "@/components/fonts";

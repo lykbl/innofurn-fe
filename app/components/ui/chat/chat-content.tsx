@@ -12,7 +12,7 @@ import * as React from "react";
 
 const INIT_MESSAGES = gql(/* GraphQL */ `
     query InitializeChat {
-        chatRoomMessages {
+        chatRoomMessages(first: 10) {
             data {
                 id
                 body
@@ -27,6 +27,12 @@ const INIT_MESSAGES = gql(/* GraphQL */ `
                         name
                     }
                 }
+            }
+            paginatorInfo {
+                perPage
+                currentPage
+                lastPage
+                total
             }
         }
     }
@@ -57,16 +63,30 @@ const ChatContent = forwardRef<
   React.ElementRef<typeof Card>,
   React.ComponentPropsWithoutRef<typeof Card>
 >(({className,...props }, forwardRef) => {
-  const { messages, loadMessages } = useContext(ChatContext);
+  const { messages, loadMessages, receiveMessage } = useContext(ChatContext);
   const { data: initialMessages, loading, error, } = useQuery(INIT_MESSAGES)
-  const { loading: updateLoading, data: newMessage, error: subError, variables: subVars } = useSubscription(SUBSCRIBE_TO_CHAT_ROOM);
-
-  console.log(updateLoading, newMessage, subError, subVars);
+  const {
+    loading: updateLoading
+    , data: newMessage,
+    error: subError,
+    variables: subVars
+  } = useSubscription(SUBSCRIBE_TO_CHAT_ROOM, {
+    onError: (err) => {
+      console.log('ONAERRO', err);
+    },
+    onData: (received) => {
+      console.log('ONDATA', received);
+      if (received.data.data?.updateChatRoom) {
+        receiveMessage(messages, received.data.data.updateChatRoom);
+      }
+    },
+    onComplete: () => {
+      console.log('subbed');
+    }
+  });
 
   useEffect(() => {
-  }, []);
-
-  useEffect(() => {
+    console.log(initialMessages?.chatRoomMessages);
     if (!loading && initialMessages?.chatRoomMessages?.data) {
       loadMessages(initialMessages.chatRoomMessages.data);
     }

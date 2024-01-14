@@ -1,6 +1,6 @@
 "use client";
 
-import { HttpLink, ApolloLink, from } from "@apollo/client";
+import { HttpLink, ApolloLink, from, split, concat } from "@apollo/client";
 import {
   NextSSRApolloClient,
   ApolloNextAppProvider,
@@ -10,7 +10,11 @@ import {
 import React, { useEffect } from "react";
 import { getCookie } from "@/lib/utils";
 import { onError } from "@apollo/client/link/error";
-
+import { createClient as createWsClient } from 'graphql-ws';
+import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
+import { getMainDefinition } from "@apollo/client/utilities";
+import PusherLink from "@/lib/apollo/pusher-link";
+import Pusher from "pusher-js";
 const errorHandler = (errors: any) => {
   console.log('Showing errors:' ,errors);
 }
@@ -32,6 +36,23 @@ const httpLink = new HttpLink({
   preserveHeaderCase: true,
 });
 
+const wsLink = new GraphQLWsLink(createWsClient({
+  url: 'ws://localhost/subscriptions',
+  connectionParams: {
+    'X-XSRF-TOKEN': decodeURIComponent(getCookie("XSRF-TOKEN") || ''),
+  },
+}));
+
+const pusherLink = new PusherLink({
+  pusher: new Pusher(process.env.NEXT_PUBLIC_VITE_PUSHER_APP_KEY ?? '', {
+    cluster: process.env.NEXT_PUBLIC_VITE_PUSHER_APP_CLUSTER ?? 'eu',
+    authEndpoint: process.env.NEXT_PUBLIC_SUBSCRIPTIONS_AUTH_ENDPOINT ?? 'http://localhost/graphql/subscriptions/auth',
+    auth: {
+      headers: {},
+    },
+  }),
+});
+
 const masterLink = ApolloLink.from([
   typeof window === "undefined"
     ? ApolloLink.from([
@@ -44,13 +65,29 @@ const masterLink = ApolloLink.from([
     : httpLink,
 ]);
 
+const splitLink = split(
+  ({ query }) => {
+    const definition = getMainDefinition(query);
+    return (
+      definition.kind === 'OperationDefinition' &&
+      definition.operation === 'subscription'
+    );
+  },
+  wsLink,
+  httpLink,
+)
+
 function createClient() {
   return new NextSSRApolloClient({
     cache: new NextSSRInMemoryCache(),
-    link: from([
+    link: concat(
       authMiddleware,
-      masterLink,
-    ]),
+      // splitLink,
+      from([
+        pusherLink,
+        httpLink,
+      ]),
+    ),
     defaultOptions: {
       mutate: {
         errorPolicy: 'all',
