@@ -6,7 +6,7 @@ import { createAction } from "@/lib/utils";
 
 type ChatContextType = {
   messages: ChatMessage[],
-  loadMessages: (messages: ChatMessage[]) => void,
+  messagesFetched: (messages: ChatMessage[]) => void,
   sendMessage: (message: ChatMessage) => void,
   receiveMessage: (oldMessages: ChatMessage[], message: ChatMessage) => void,
 }
@@ -15,7 +15,7 @@ const INITIAL_STATE: ChatContextType = {
   messages: [],
   sendMessage: () => {},
   receiveMessage: () => {},
-  loadMessages: () => {},
+  messagesFetched: () => {},
 };
 
 export const ChatContext = createContext<ChatContextType>(INITIAL_STATE);
@@ -31,7 +31,10 @@ const chatReducer = (state: ChatContextType, action: Action) => {
     case ChatActionTypes.LOAD_MESSAGES:
       return {
         ...state,
-        messages: action.payload,
+        messages: [
+          ...action.payload,
+          ...state.messages,
+        ],
       };
     default:
       throw new Error(`Unhandled action type: ${action.type}`);
@@ -41,7 +44,7 @@ const chatReducer = (state: ChatContextType, action: Action) => {
 const ChatContextProvider = ({ children }: { children: ReactNode }) => {
   const [{ messages, sendMessage }, dispatch] = useReducer(chatReducer, INITIAL_STATE);
 
-  const initMessages = (messages: ChatMessage[]) => {
+  const addMessagesPage = (messages: ChatMessage[]) => {
     dispatch(createAction(ChatActionTypes.LOAD_MESSAGES, messages));
   }
 
@@ -51,9 +54,9 @@ const ChatContextProvider = ({ children }: { children: ReactNode }) => {
 
   const value = {
     messages,
+    messagesFetched: addMessagesPage,
     sendMessage,
     receiveMessage: receiveNewMessage,
-    loadMessages: initMessages,
   };
 
   return (

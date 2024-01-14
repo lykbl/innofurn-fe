@@ -84,7 +84,7 @@ function createClient() {
       authMiddleware,
       // splitLink,
       from([
-        pusherLink,
+        // pusherLink,
         httpLink,
       ]),
     ),

@@ -3,6 +3,7 @@ import BaseLink from "next/link";
 import AuthControls from "@/components/ui/layout/header/auth-controls";
 import ROUTES from "@/lib/routes";
 import { Search } from "@/components/ui/common/search";
+import { buttonVariants } from "@/components/ui/common/button";
 
 export default async function Header() {
   return (
