@@ -3,10 +3,9 @@
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { BiChat } from "react-icons/bi";
 import { Button } from "@/components/ui/common/button";
-import ChatContextProvider from "@/components/ui/chat/chat-provider";
 import ChatContent from "@/components/ui/chat/chat-content";
 
-function ChatWrapper() {
+export default function Chat() {
   return (
       <Popover>
         <PopoverTrigger
@@ -29,13 +28,5 @@ function ChatWrapper() {
           <ChatContent />
         </PopoverContent>
       </Popover>
-  );
-}
-
-export default function Chat() {
-  return (
-    <ChatContextProvider>
-      <ChatWrapper />
-    </ChatContextProvider>
   );
 }

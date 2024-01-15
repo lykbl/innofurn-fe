@@ -36,12 +36,12 @@ const httpLink = new HttpLink({
   preserveHeaderCase: true,
 });
 
-const wsLink = new GraphQLWsLink(createWsClient({
-  url: 'ws://localhost/subscriptions',
-  connectionParams: {
-    'X-XSRF-TOKEN': decodeURIComponent(getCookie("XSRF-TOKEN") || ''),
-  },
-}));
+// const wsLink = new GraphQLWsLink(createWsClient({
+//   url: 'ws://localhost/subscriptions',
+//   connectionParams: {
+//     'X-XSRF-TOKEN': decodeURIComponent(getCookie("XSRF-TOKEN") || ''),
+//   },
+// }));
 
 const pusherLink = new PusherLink({
   pusher: new Pusher(process.env.NEXT_PUBLIC_VITE_PUSHER_APP_KEY ?? '', {
@@ -73,19 +73,46 @@ const splitLink = split(
       definition.operation === 'subscription'
     );
   },
-  wsLink,
+  // wsLink,
   httpLink,
 )
 
 function createClient() {
+  console.log('client created')
   return new NextSSRApolloClient({
-    cache: new NextSSRInMemoryCache(),
+    connectToDevTools: true,
+    cache: new NextSSRInMemoryCache({
+      typePolicies: {
+        Query: {
+          fields: {
+            chatRoomMessages: {
+              // Don't cache separate results based on
+              // any of this field's arguments.
+              keyArgs: false,
+              merge(existing = {}, incoming, extra) {
+                return {
+                  paginatorInfo: incoming.paginatorInfo,
+                  data: [...incoming.data, ...(existing.data || [])],
+                };
+              },
+            }
+          }
+        }
+      }
+    }),
     link: concat(
       authMiddleware,
       // splitLink,
       from([
         // pusherLink,
-        httpLink,
+        typeof window === "undefined"
+          ? ApolloLink.from([
+            new SSRMultipartLink({
+              stripDefer: true,
+            }),
+            httpLink,
+          ])
+          : httpLink,
       ]),
     ),
     defaultOptions: {

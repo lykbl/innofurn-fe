@@ -6,7 +6,6 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FetchResult, MutationFunctionOptions, MutationOptions, useMutation } from "@apollo/client";
 import { gql } from "@/gql";
-import { ChatContext } from "@/components/ui/chat/chat-provider";
 import { useContext } from "react";
 
 const FormSchema = z.object({
@@ -34,7 +33,6 @@ const SEND_MESSAGE = gql(/* GraphQL */ `
 `);
 
 const ChatMessageControls = () => {
-  const { messages, receiveMessage } = useContext(ChatContext);
   const [sendMessageAsync, { loading: isMessageSending, error: messageSendFailed }] = useMutation(SEND_MESSAGE);
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -56,7 +54,7 @@ const ChatMessageControls = () => {
       console.log(response.errors);
     }
     if (response.data?.sendMessageToChatRoom) {
-      receiveMessage(messages, response.data.sendMessageToChatRoom);
+      // receiveMessage(messages, response.data.sendMessageToChatRoom);
       form.reset();
     }
     //TODO use optimistic update
