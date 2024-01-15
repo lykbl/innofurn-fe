@@ -63,40 +63,22 @@ const ChatContent = forwardRef<
 >(
   ({className,...props }, forwardRef
 ) => {
+    //TODO add more agressive caching :???
     const messagesQuery = useQuery(FETCH_MESSAGES, {
       variables: {
         page: 1,
         first: 5
-      }
+      },
     });
     const {
       data: queryData,
       loading: loadingMessages,
       error: messagesError,
-      previousData: previousMessages,
-      fetchMore: fetchMoreMessages
+      fetchMore: fetchMoreMessages,
+      subscribeToMore: subscribeToMoreMessages,
     } = messagesQuery;
     const messages = queryData?.chatRoomMessages?.data || [];
     const { currentPage, hasMorePages } = queryData?.chatRoomMessages?.paginatorInfo || {};
-    // const {
-    //   loading: updateLoading,
-    //   data: newMessage,
-    //   error: subError,
-    //   variables: subVars
-    // } = useSubscription(SUBSCRIBE_TO_CHAT_ROOM, {
-    //   onError: (err) => {
-    //     console.log('ONAERRO', err);
-    //   },
-    //   onData: (received) => {
-    //     console.log('ONDATA', received);
-    //     if (received.data.data?.updateChatRoom) {
-    //       receiveMessage(messages, received.data.data.updateChatRoom);
-    //     }
-    //   },
-    //   onComplete: () => {
-    //     console.log('subbed');
-    //   }
-    // });
 
     const scrollRef = useRef<HTMLDivElement | null>(null);
     const [newPageOffset, setNewScrollOffset] = useState(0);
@@ -107,7 +89,7 @@ const ChatContent = forwardRef<
 
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight - newPageOffset;
       setNewScrollOffset(scrollRef.current.scrollHeight);
-    }, [messages]);
+    }, [loadingMessages]);
 
     const firstMessageRef = useRef<HTMLDivElement | null>(null);
     const intersectionObserverEntry = useIntersection(firstMessageRef, {
@@ -128,7 +110,31 @@ const ChatContent = forwardRef<
       }
     }, [intersectionObserverEntry?.isIntersecting]);
 
-    console.log(previousMessages)
+    useEffect(() => {
+      const terminateSubscription = subscribeToMoreMessages({
+        document: SUBSCRIBE_TO_CHAT_ROOM,
+        updateQuery: (messagesQuery, { subscriptionData, variables }) => {
+          const newMessage = subscriptionData.data.updateChatRoom;
+          if (!newMessage) {
+            return messagesQuery;
+          }
+
+          return {
+            chatRoomMessages: {
+              data: [newMessage],
+              paginatorInfo: messagesQuery.chatRoomMessages.paginatorInfo,
+              addOnTop: true
+            },
+          };
+        },
+        onError: (err) => {
+          console.log('ONAERRO', err);
+        },
+        variables: {},
+      });
+
+      return () => terminateSubscription();
+    }, [subscribeToMoreMessages]);
 
     return (
       <Card
@@ -151,11 +157,13 @@ const ChatContent = forwardRef<
           >
             <ScrollAreaViewport
               ref={scrollRef}
+              className={cn(messages.length === 0 && 'flex items-center')}
             >
               <div className="flex flex-col gap-2">
-                {/*//TODO add spinner here*/}
-                {/*Fix scroll bar?*/}
-                {loadingMessages && <Icons.spinner className="animate-spin" />}
+                {/*TODO fix scrollbar flicker*/}
+                {/*TODO ref the spinner ++ rotate it with scroll*/}
+                {loadingMessages && <Icons.spinner className="animate-spin m-auto" />}
+                {messagesError && <p className="text-red-500 text-xs mx-auto py-2">{'Uh-oh messages could not be loaded!'}</p>}
                 {messages.map((message, i) => (
                   <ChatMessage
                     key={i}

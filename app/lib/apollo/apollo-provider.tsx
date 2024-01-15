@@ -10,8 +10,6 @@ import {
 import React, { useEffect } from "react";
 import { getCookie } from "@/lib/utils";
 import { onError } from "@apollo/client/link/error";
-import { createClient as createWsClient } from 'graphql-ws';
-import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { getMainDefinition } from "@apollo/client/utilities";
 import PusherLink from "@/lib/apollo/pusher-link";
 import Pusher from "pusher-js";
@@ -43,29 +41,7 @@ const httpLink = new HttpLink({
 //   },
 // }));
 
-const pusherLink = new PusherLink({
-  pusher: new Pusher(process.env.NEXT_PUBLIC_VITE_PUSHER_APP_KEY ?? '', {
-    cluster: process.env.NEXT_PUBLIC_VITE_PUSHER_APP_CLUSTER ?? 'eu',
-    authEndpoint: process.env.NEXT_PUBLIC_SUBSCRIPTIONS_AUTH_ENDPOINT ?? 'http://localhost/graphql/subscriptions/auth',
-    auth: {
-      headers: {},
-    },
-  }),
-});
-
-const masterLink = ApolloLink.from([
-  typeof window === "undefined"
-    ? ApolloLink.from([
-      onError(errorHandler),
-      new SSRMultipartLink({
-        stripDefer: true,
-      }),
-      httpLink,
-    ])
-    : httpLink,
-]);
-
-const splitLink = split(
+const splitLink = () => split(
   ({ query }) => {
     const definition = getMainDefinition(query);
     return (
@@ -78,9 +54,35 @@ const splitLink = split(
 )
 
 function createClient() {
-  console.log('client created')
+  const links = [authMiddleware];
+  if (typeof window === 'undefined') {
+    links.push(new SSRMultipartLink({stripDefer: true}), httpLink);
+  } else {
+    const pusherLink = new PusherLink({
+      pusher: new Pusher(process.env.NEXT_PUBLIC_PUSHER_APP_KEY ?? '', {
+        cluster: process.env.NEXT_PUBLIC_PUSHER_APP_CLUSTER ?? 'eu',
+        authEndpoint: process.env.NEXT_PUBLIC_SUBSCRIPTIONS_AUTH_ENDPOINT ?? 'http://localhost/graphql/subscriptions/auth',
+        auth: {
+          headers: {},
+        },
+      }),
+    });
+    links.push(pusherLink, httpLink);
+  }
   return new NextSSRApolloClient({
-    connectToDevTools: true,
+    // connectToDevTools: true,
+    link: from(links),
+    defaultOptions: {
+      mutate: {
+        errorPolicy: 'all',
+      },
+      // query: {
+      //   notifyOnNetworkStatusChange: true,
+      // },
+      watchQuery: {
+        notifyOnNetworkStatusChange: true,
+      },
+    },
     cache: new NextSSRInMemoryCache({
       typePolicies: {
         Query: {
@@ -90,9 +92,15 @@ function createClient() {
               // any of this field's arguments.
               keyArgs: false,
               merge(existing = {}, incoming, extra) {
+                //TODO better way to detect new messages?
+                const isNewMessage = existing.paginatorInfo?.currentPage !== incoming.paginatorInfo?.currentPage;
+
                 return {
                   paginatorInfo: incoming.paginatorInfo,
-                  data: [...incoming.data, ...(existing.data || [])],
+                  data: isNewMessage
+                    ? [...incoming.data, ...(existing.data || [])]
+                    : [...(existing.data || []), ...incoming.data]
+                  ,
                 };
               },
             }
@@ -100,26 +108,6 @@ function createClient() {
         }
       }
     }),
-    link: concat(
-      authMiddleware,
-      // splitLink,
-      from([
-        // pusherLink,
-        typeof window === "undefined"
-          ? ApolloLink.from([
-            new SSRMultipartLink({
-              stripDefer: true,
-            }),
-            httpLink,
-          ])
-          : httpLink,
-      ]),
-    ),
-    defaultOptions: {
-      mutate: {
-        errorPolicy: 'all',
-      }
-    }
   });
 }
 
