@@ -1,6 +1,6 @@
 "use client";
 
-import { HttpLink, ApolloLink, from, split, concat } from "@apollo/client";
+import { HttpLink, ApolloLink, from } from "@apollo/client";
 import {
   NextSSRApolloClient,
   ApolloNextAppProvider,
@@ -9,13 +9,8 @@ import {
 } from "@apollo/experimental-nextjs-app-support/ssr";
 import React, { useEffect } from "react";
 import { getCookie } from "@/lib/utils";
-import { onError } from "@apollo/client/link/error";
-import { getMainDefinition } from "@apollo/client/utilities";
 import PusherLink from "@/lib/apollo/pusher-link";
 import Pusher from "pusher-js";
-const errorHandler = (errors: any) => {
-  console.log('Showing errors:' ,errors);
-}
 
 const authMiddleware = new ApolloLink((operation, forward) => {
   // add the authorization to the headers
@@ -33,25 +28,6 @@ const httpLink = new HttpLink({
   credentials: 'include',
   preserveHeaderCase: true,
 });
-
-// const wsLink = new GraphQLWsLink(createWsClient({
-//   url: 'ws://localhost/subscriptions',
-//   connectionParams: {
-//     'X-XSRF-TOKEN': decodeURIComponent(getCookie("XSRF-TOKEN") || ''),
-//   },
-// }));
-
-const splitLink = () => split(
-  ({ query }) => {
-    const definition = getMainDefinition(query);
-    return (
-      definition.kind === 'OperationDefinition' &&
-      definition.operation === 'subscription'
-    );
-  },
-  // wsLink,
-  httpLink,
-)
 
 function createClient() {
   const links = [authMiddleware];
@@ -91,21 +67,28 @@ function createClient() {
               // Don't cache separate results based on
               // any of this field's arguments.
               keyArgs: false,
-              merge(existing = {}, incoming, extra) {
+              merge(existing = {}, incoming, { toReference, isReference, readField, ...extra }) {
                 //TODO better way to detect new messages?
-                const isNewMessage = existing.paginatorInfo?.currentPage !== incoming.paginatorInfo?.currentPage;
+                let isNewMessage = false;
+                if (existing?.data && incoming?.data) {
+                  const latestExistingId = readField('id', existing.data.slice(-1)[0]);
+                  const newestIncomingId = readField('id', incoming.data[0]);
+                  if (latestExistingId && newestIncomingId) {
+                    isNewMessage = newestIncomingId > latestExistingId;
+                  }
+                }
 
                 return {
                   paginatorInfo: incoming.paginatorInfo,
-                  data: isNewMessage
-                    ? [...incoming.data, ...(existing.data || [])]
-                    : [...(existing.data || []), ...incoming.data]
+                  data: isNewMessage && existing.data
+                    ? [...existing.data, ...incoming.data]
+                    : [...incoming.data, ...(existing.data || [])]
                   ,
                 };
               },
             }
           }
-        }
+        },
       }
     }),
   });

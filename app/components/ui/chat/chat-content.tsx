@@ -113,7 +113,7 @@ const ChatContent = forwardRef<
     useEffect(() => {
       const terminateSubscription = subscribeToMoreMessages({
         document: SUBSCRIBE_TO_CHAT_ROOM,
-        updateQuery: (messagesQuery, { subscriptionData, variables }) => {
+        updateQuery: (messagesQuery, { subscriptionData }) => {
           const newMessage = subscriptionData.data.updateChatRoom;
           if (!newMessage) {
             return messagesQuery;
@@ -121,16 +121,14 @@ const ChatContent = forwardRef<
 
           return {
             chatRoomMessages: {
+              ...messagesQuery.chatRoomMessages,
               data: [newMessage],
-              paginatorInfo: messagesQuery.chatRoomMessages.paginatorInfo,
-              addOnTop: true
             },
           };
         },
         onError: (err) => {
           console.log('ONAERRO', err);
         },
-        variables: {},
       });
 
       return () => terminateSubscription();
