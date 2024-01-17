@@ -165,4 +165,59 @@ export const Icons = {
       <path d="M21 12a9 9 0 1 1-6.219-8.56" />
     </svg>
   ),
+  error: (props: IconProps) => (
+    <svg
+      className="with-icon_icon__MHUeb"
+      data-testid="geist-icon"
+      fill="none"
+      height="24"
+      shapeRendering="geometricPrecision"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="1.5"
+      viewBox="0 0 24 24"
+      width="24"
+      {...props}
+    >
+      <circle
+        cx="12"
+        cy="12"
+        r="10"
+        fill="var(--geist-fill)"
+      ></circle>
+      <path
+        d="M15 9L9 15"
+        stroke="var(--geist-stroke)"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      ></path>
+      <path
+        d="M9 9L15 15"
+        stroke="var(--geist-stroke)"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      ></path>
+    </svg>
+  ),
+  check: (props: IconProps) => (
+    <svg
+      className="with-icon_icon__MHUeb"
+      data-testid="geist-icon"
+      fill="none"
+      height="24"
+      shapeRendering="geometricPrecision"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="1.5"
+      viewBox="0 0 24 24"
+      width="24"
+      {...props}
+    >
+      <path d="M20 6L9 17l-5-5" />
+    </svg>
+  ),
 }

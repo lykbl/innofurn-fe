@@ -3,12 +3,13 @@ import { ScrollArea, ScrollAreaViewport } from "@/components/ui/scroll-area";
 import ChatMessage from "@/components/ui/chat/chat-message";
 import ChatMessageControls from "@/components/ui/chat/chat-message-controls";
 import { forwardRef, useEffect, useRef, useState } from "react";
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { gql } from "@/gql";
 import { cn } from "@/lib/utils";
 import * as React from "react";
 import { useIntersection } from "react-use";
 import { Icons } from "@/components/icons";
+import { makeVar } from '@apollo/client';
 
 const FETCH_MESSAGES = gql(/* GraphQL */ `
     query FetchMessages($first: Int! $page: Int!) {
@@ -17,6 +18,7 @@ const FETCH_MESSAGES = gql(/* GraphQL */ `
                 id
                 body
                 createdAt
+                status
                 author {
                     ... on Customer {
                         role
@@ -42,6 +44,7 @@ const SUBSCRIBE_TO_CHAT_ROOM = gql(/* GraphQL */ `
           id
           body
           createdAt
+          status
           author {
               ... on Customer {
                   role
@@ -56,6 +59,27 @@ const SUBSCRIBE_TO_CHAT_ROOM = gql(/* GraphQL */ `
   }
 `);
 
+const SEND_MESSAGE = gql(/* GraphQL */ `
+    mutation SendMessageToChatRoom($input: CreateChatMessageInput!) {
+        sendMessageToChatRoom(input: $input) {
+            id
+            body
+            status
+            author {
+                ... on Customer {
+                    name
+                    role
+                }
+                ... on Staff {
+                    name
+                    role
+                }
+            }
+            createdAt
+        }
+    }
+`);
+
 //TODO a way to return Card directly :??
 const ChatContent = forwardRef<
   React.ElementRef<typeof Card>,
@@ -67,7 +91,7 @@ const ChatContent = forwardRef<
     const messagesQuery = useQuery(FETCH_MESSAGES, {
       variables: {
         page: 1,
-        first: 5
+        first: 2
       },
     });
     const {
@@ -87,8 +111,8 @@ const ChatContent = forwardRef<
         return;
       }
 
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight - newPageOffset;
-      setNewScrollOffset(scrollRef.current.scrollHeight);
+      // scrollRef.current.scrollTop = scrollRef.current.scrollHeight - newPageOffset;
+      // setNewScrollOffset(scrollRef.current.scrollHeight);
     }, [loadingMessages]);
 
     const firstMessageRef = useRef<HTMLDivElement | null>(null);
@@ -133,6 +157,37 @@ const ChatContent = forwardRef<
 
       return () => terminateSubscription();
     }, [subscribeToMoreMessages]);
+    const optimisticMessageVar = makeVar(null);
+
+    const [sendMessage, { loading: isMessageSending, error: messageSendFailed }] = useMutation(SEND_MESSAGE, {
+      update(cache, { data: newMessage, errors }) {
+        cache.modify({
+          fields: {
+            chatRoomMessages: (existingMessages = {}) => {
+              let newMessageData = newMessage?.sendMessageToChatRoom ?? optimisticMessageVar();
+              if (!newMessageData) {
+                return existingMessages;
+              }
+
+              if (!errors) {
+                optimisticMessageVar(newMessageData);
+              } else {
+                newMessageData = {
+                  ...newMessageData,
+                  status: 'ERROR', //TODO improve
+                };
+              }
+
+              return {
+                data: [...existingMessages.data, newMessageData],
+                paginatorInfo: existingMessages.paginatorInfo,
+              };
+            }
+          }
+        })
+        // scrollRef?.current.scrollTo(0, scrollRef.current.scrollHeight);
+      },
+    });
 
     return (
       <Card
@@ -162,19 +217,22 @@ const ChatContent = forwardRef<
                 {/*TODO ref the spinner ++ rotate it with scroll*/}
                 {loadingMessages && <Icons.spinner className="animate-spin m-auto" />}
                 {messagesError && <p className="text-red-500 text-xs mx-auto py-2">{'Uh-oh messages could not be loaded!'}</p>}
-                {messages.map((message, i) => (
-                  <ChatMessage
+                {messages.map((message, i) => {
+                  return <ChatMessage
                     key={i}
                     ref={i === 0 ? firstMessageRef : null}
                     message={message}
                   />
-                ))}
+                })}
               </div>
             </ScrollAreaViewport>
           </ScrollArea>
         </CardContent>
         <CardFooter>
-          <ChatMessageControls />
+          <ChatMessageControls
+            scrollRef={scrollRef}
+            sendMessage={sendMessage}
+          />
         </CardFooter>
       </Card>
     );

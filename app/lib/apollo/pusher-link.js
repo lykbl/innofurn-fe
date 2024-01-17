@@ -1,6 +1,7 @@
 import { Observable, ApolloLink } from "@apollo/client";
 
 // Inspired by https://github.com/rmosolgo/graphql-ruby/blob/master/javascript_client/src/subscriptions/PusherLink.ts
+//TODO revise this
 class PusherLink extends ApolloLink {
   constructor(options) {
     super();

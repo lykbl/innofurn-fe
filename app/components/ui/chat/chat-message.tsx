@@ -6,6 +6,7 @@ import React, { forwardRef, memo } from "react";
 import { Separator } from "@/components/ui/common/separator";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { ChatMessage as ChatMessageType } from "@/gql/graphql";
+import { Icons } from "@/components/icons";
 
 interface IChatMessageProps {
   message: ChatMessageType,
@@ -18,16 +19,27 @@ const ChatMessage =
     React.ComponentPropsWithoutRef<typeof Card> & IChatMessageProps
   >((
   {
-    message: { author, body, createdAt },
+    message: { author, body, createdAt, status },
+    className,
   }, ref
 ) => {
   const date = new Date(createdAt);
+  let statusIndicator;
+
+  if (status.toLowerCase() === 'error') {
+    statusIndicator = <Icons.error className="w-[12px] h-[12px] text-destructive" />;
+  } else if (status.toLowerCase() === 'pending') {
+    statusIndicator = <Icons.spinner className="animate-spin w-[12px] h-[12px]" />;
+  } else {
+    statusIndicator = <Icons.check className="w-[12px] h-[12px] text-blue-500" />;
+  }
 
   return (
     <Card
       className={cn(
-        "w-[40%]",
-        author.role === "admin" ? "mr-auto" : "ml-auto"
+        "w-[40%] relative",
+        author.role === "admin" ? "mr-auto" : "ml-auto",
+        className
       )}
       ref={ref}
     >
@@ -43,7 +55,7 @@ const ChatMessage =
         {body}
       </CardContent>
       <Separator />
-      <CardFooter className="px-2 py-0 text-foreground bg-lol">
+      <CardFooter className="px-2 py-0 text-foreground flex justify-between">
         <TooltipProvider
           skipDelayDuration={1000}
         >
@@ -72,6 +84,7 @@ const ChatMessage =
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
+        {statusIndicator}
       </CardFooter>
     </Card>
   );

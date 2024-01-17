@@ -4,36 +4,12 @@ import { Button } from "@/components/ui/common/button";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FetchResult, MutationFunctionOptions, MutationOptions, useMutation } from "@apollo/client";
-import { gql } from "@/gql";
-import { useContext } from "react";
 
 const FormSchema = z.object({
   message: z.string().min(1, 'Message can not be empty.').max(300, 'Message can not be longer than 300 characters.'),
 })
 
-const SEND_MESSAGE = gql(/* GraphQL */ `
-    mutation SendMessageToChatRoom($input: CreateChatMessageInput!) {
-        sendMessageToChatRoom(input: $input) {
-            id
-            body
-            author {
-                ... on Customer {
-                    name
-                    role
-                }
-                ... on Staff {
-                    name
-                    role
-                }
-            }
-            createdAt
-        }
-    }
-`);
-
-const ChatMessageControls = () => {
-  const [sendMessageAsync, { loading: isMessageSending, error: messageSendFailed }] = useMutation(SEND_MESSAGE);
+const ChatMessageControls = ({ scrollRef, sendMessage }) => {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -42,22 +18,35 @@ const ChatMessageControls = () => {
   })
 
   async function onSubmit(formInput: z.infer<typeof FormSchema>) {
-    const response = await sendMessageAsync({
+    const response = await sendMessage({
       variables: {
         input: {
           body: formInput.message,
           chatRoomId: 2,
         }
-      }
-    });
+      },
+      optimisticResponse: {
+        sendMessageToChatRoom: {
+          id: 'tmp',
+          __typename: 'ChatMessage',
+          body: formInput.message,
+          createdAt: new Date().toISOString(),
+          status: 'PENDING',
+          author: {
+            __typename: 'Customer',
+            name: 'You',
+            role: 'CUSTOMER',
+          },
+        }
+      },
+    })
     if (response.errors) {
-      console.log(response.errors);
+      console.log('errored out', response.errors);
     }
     if (response.data?.sendMessageToChatRoom) {
       // receiveMessage(messages, response.data.sendMessageToChatRoom);
-      form.reset();
     }
-    //TODO use optimistic update
+    form.reset();
   }
 
   return (
