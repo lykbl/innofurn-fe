@@ -28,10 +28,10 @@ export default function RootLayout({
         inter.variable,
       )}>
         <ApolloWrapper>
-          <AuthContextProvider>
+          {/*<AuthContextProvider>*/}
             {children}
             <Toaster />
-          </AuthContextProvider>
+          {/*</AuthContextProvider>*/}
         </ApolloWrapper>
       </body>
     </html>
