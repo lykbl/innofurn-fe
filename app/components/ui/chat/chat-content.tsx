@@ -9,26 +9,12 @@ import { cn } from "@/lib/utils";
 import * as React from "react";
 import { useIntersection } from "react-use";
 import { Icons } from "@/components/icons";
-import { makeVar } from '@apollo/client';
 
 const FETCH_MESSAGES = gql(/* GraphQL */ `
     query FetchMessages($first: Int! $page: Int!) {
         chatRoomMessages(first: $first, page: $page) {
             data {
-                id
-                body
-                createdAt
-                status
-                author {
-                    ... on Customer {
-                        role
-                        name
-                    }
-                    ... on Staff {
-                        role
-                        name
-                    }
-                }
+                ...ChatMessageFragment
             }
             paginatorInfo {
                 hasMorePages
@@ -41,20 +27,7 @@ const FETCH_MESSAGES = gql(/* GraphQL */ `
 const SUBSCRIBE_TO_CHAT_ROOM = gql(/* GraphQL */ `
   subscription SubscribeToChatRoom {
       updateChatRoom {
-          id
-          body
-          createdAt
-          status
-          author {
-              ... on Customer {
-                  role
-                  name
-              }
-              ... on Staff {
-                  role
-                  name
-              }
-          }
+          ...ChatMessageFragment
       }
   }
 `);
@@ -62,23 +35,28 @@ const SUBSCRIBE_TO_CHAT_ROOM = gql(/* GraphQL */ `
 const SEND_MESSAGE = gql(/* GraphQL */ `
     mutation SendMessageToChatRoom($input: CreateChatMessageInput!) {
         sendMessageToChatRoom(input: $input) {
-            id
-            body
-            status
-            author {
-                ... on Customer {
-                    name
-                    role
-                }
-                ... on Staff {
-                    name
-                    role
-                }
-            }
-            createdAt
+            ...ChatMessageFragment
         }
     }
 `);
+
+export const CHAT_MESSAGE_FRAGMENT = gql(/* GraphQL */ `
+    fragment ChatMessageFragment on ChatMessage {
+        id
+        body
+        createdAt
+        status
+        author {
+            ... on Customer {
+                role
+                name
+            }
+            ... on Staff {
+                role
+                name
+            }
+        }
+    }`);
 
 //TODO a way to return Card directly :??
 const ChatContent = forwardRef<
@@ -157,43 +135,13 @@ const ChatContent = forwardRef<
 
       return () => terminateSubscription();
     }, [subscribeToMoreMessages]);
-    const optimisticMessageVar = makeVar(null);
 
-    const [sendMessage, { loading: isMessageSending, error: messageSendFailed }] = useMutation(SEND_MESSAGE, {
-      update(cache, { data: newMessage, errors }) {
-        cache.modify({
-          fields: {
-            chatRoomMessages: (existingMessages = {}) => {
-              let newMessageData = newMessage?.sendMessageToChatRoom ?? optimisticMessageVar();
-              if (!newMessageData) {
-                return existingMessages;
-              }
-
-              if (!errors) {
-                optimisticMessageVar(newMessageData);
-              } else {
-                newMessageData = {
-                  ...newMessageData,
-                  status: 'ERROR', //TODO improve
-                };
-              }
-
-              return {
-                data: [...existingMessages.data, newMessageData],
-                paginatorInfo: existingMessages.paginatorInfo,
-              };
-            }
-          }
-        })
-        // scrollRef?.current.scrollTo(0, scrollRef.current.scrollHeight);
-      },
-    });
+    const [tempMessageId, setTempMessageId] = useState(1);
+    const [sendMessage] = useMutation(SEND_MESSAGE);
 
     return (
       <Card
-        className={cn(
-          "p-2 *:px-1 *:py-1 w-[400px]"
-        )}
+        className='p-2 *:px-1 *:py-1 w-[400px]'
         ref={forwardRef}
         {...props}
       >
@@ -217,13 +165,13 @@ const ChatContent = forwardRef<
                 {/*TODO ref the spinner ++ rotate it with scroll*/}
                 {loadingMessages && <Icons.spinner className="animate-spin m-auto" />}
                 {messagesError && <p className="text-red-500 text-xs mx-auto py-2">{'Uh-oh messages could not be loaded!'}</p>}
-                {messages.map((message, i) => {
-                  return <ChatMessage
+                {messages.map((message, i) => <ChatMessage
                     key={i}
                     ref={i === 0 ? firstMessageRef : null}
                     message={message}
+                    resendMessage={sendMessage}
                   />
-                })}
+                )}
               </div>
             </ScrollAreaViewport>
           </ScrollArea>
@@ -232,6 +180,8 @@ const ChatContent = forwardRef<
           <ChatMessageControls
             scrollRef={scrollRef}
             sendMessage={sendMessage}
+            setTempMessageId={setTempMessageId}
+            tempMessageId={tempMessageId}
           />
         </CardFooter>
       </Card>

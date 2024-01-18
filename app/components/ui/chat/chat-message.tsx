@@ -5,13 +5,18 @@ import { cn } from "@/lib/utils";
 import React, { forwardRef, memo } from "react";
 import { Separator } from "@/components/ui/common/separator";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { ChatMessage as ChatMessageType } from "@/gql/graphql";
+import { Chat_Message_Statuses, ChatMessage as ChatMessageType } from "@/gql/graphql";
 import { Icons } from "@/components/icons";
+import { Button } from "@/components/ui/common/button";
+import { InMemoryCache, makeVar, MutationFunction } from "@apollo/client";
+import { CHAT_MESSAGE_FRAGMENT } from "@/components/ui/chat/chat-content";
 
 interface IChatMessageProps {
   message: ChatMessageType,
+  resendMessage: MutationFunction,
 }
 
+const optimisticMessageVar = makeVar<ChatMessageType | null>(null);
 const ChatMessage =
   // memo(
   forwardRef<
@@ -19,8 +24,9 @@ const ChatMessage =
     React.ComponentPropsWithoutRef<typeof Card> & IChatMessageProps
   >((
   {
-    message: { author, body, createdAt, status },
+    message: { id, author, body, createdAt, status },
     className,
+    resendMessage,
   }, ref
 ) => {
   const date = new Date(createdAt);
@@ -86,6 +92,71 @@ const ChatMessage =
         </TooltipProvider>
         {statusIndicator}
       </CardFooter>
+      {status.toLowerCase() === 'error' && (
+        <Button
+          onClick={async () => {
+            const response = await resendMessage({
+              variables: {
+                input: {
+                  body: body,
+                  chatRoomId: 2, //TODO fix htis
+                }
+              },
+              optimisticResponse: {
+                sendMessageToChatRoom: {
+                  id: id,
+                  __typename: 'ChatMessage',
+                  body: body,
+                  createdAt: new Date().toISOString(),
+                  status: 'PENDING',
+                  author: {
+                    __typename: 'Customer',
+                    name: 'You',
+                    role: 'CUSTOMER',
+                  },
+                }
+              },
+              update: (cache, { data: newMessage, errors }) => {
+                if (!newMessage) {
+                  return;
+                }
+
+                cache.modify({
+                  fields: {
+                    chatRoomMessages: (existingMessages = {}) => {
+                      const newStatus = errors ? Chat_Message_Statuses.Error : newMessage.sendMessageToChatRoom.status;
+                      const updatedFragment = cache.updateFragment({
+                        id: `ChatMessage:${id}`,
+                        fragment: CHAT_MESSAGE_FRAGMENT,
+                        broadcast: true,
+                      }, () => ({
+                        ...newMessage.sendMessageToChatRoom,
+                        status: newMessage.sendMessageToChatRoom.status,
+                      }))
+
+                      return {
+                        data: [
+                          ...existingMessages.data.map((message: ChatMessageType) => message.id === id
+                            ? updatedFragment
+                            : message)
+                        ],
+                        paginatorInfo: existingMessages.paginatorInfo,
+                      };
+                    }
+                  }
+                })
+              }
+            })
+          }}
+          variant="ghost"
+          className='absolute bottom-[5px] left-[-17px] p-0 hover:bg-none hover:text-blue-500 cursor-pointer'
+          asChild
+        >
+          <Icons.retry
+            className="w-[12px] h-[12px]"
+          />
+        </Button>
+      )}
     </Card>
   );
 });
