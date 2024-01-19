@@ -2,23 +2,29 @@
 
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/common/card";
 import { cn } from "@/lib/utils";
-import React, { forwardRef, memo } from "react";
+import React, { forwardRef } from "react";
 import { Separator } from "@/components/ui/common/separator";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Chat_Message_Statuses, ChatMessage as ChatMessageType } from "@/gql/graphql";
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/common/button";
-import { InMemoryCache, makeVar, MutationFunction } from "@apollo/client";
-import { CHAT_MESSAGE_FRAGMENT } from "@/components/ui/chat/chat-content";
+import { makeVar, MutationFunctionOptions } from "@apollo/client";
+import { ChatMessageFragment } from "@/components/ui/chat/chat-content";
+import {
+  ChatMessageFragmentFragment,
+  ChatMessageStatuses,
+  CreateChatMessageInput,
+  Exact,
+  SendMessageToChatRoomMutation
+} from "@/gql/graphql";
+import { makeFragmentData, useFragment } from "@/gql";
 
 interface IChatMessageProps {
-  message: ChatMessageType,
-  resendMessage: MutationFunction,
+  message: ChatMessageFragmentFragment,
+  resendMessage: (options?: MutationFunctionOptions<SendMessageToChatRoomMutation, Exact<{ input: CreateChatMessageInput }>> | undefined) => Promise<any>,
 }
 
-const optimisticMessageVar = makeVar<ChatMessageType | null>(null);
 const ChatMessage =
-  // memo(
+  // memo(//TODO revert memo
   forwardRef<
     React.ElementRef<typeof Card>,
     React.ComponentPropsWithoutRef<typeof Card> & IChatMessageProps
@@ -103,18 +109,18 @@ const ChatMessage =
                 }
               },
               optimisticResponse: {
-                sendMessageToChatRoom: {
+                sendMessageToChatRoom: makeFragmentData({
                   id: id,
                   __typename: 'ChatMessage',
                   body: body,
-                  createdAt: new Date().toISOString(),
-                  status: 'PENDING',
+                  createdAt: new Date(),
+                  status: ChatMessageStatuses.PENDING,
                   author: {
                     __typename: 'Customer',
-                    name: 'You',
+                    name: author.name || 'You',
                     role: 'CUSTOMER',
                   },
-                }
+                }, ChatMessageFragment),
               },
               update: (cache, { data: newMessage, errors }) => {
                 if (!newMessage) {
@@ -124,19 +130,19 @@ const ChatMessage =
                 cache.modify({
                   fields: {
                     chatRoomMessages: (existingMessages = {}) => {
-                      const newStatus = errors ? Chat_Message_Statuses.Error : newMessage.sendMessageToChatRoom.status;
+                      const fragmentData = useFragment(ChatMessageFragment, newMessage.sendMessageToChatRoom)
+                      const newStatus = errors ? ChatMessageStatuses.ERROR : fragmentData.status;
                       const updatedFragment = cache.updateFragment({
                         id: `ChatMessage:${id}`,
-                        fragment: CHAT_MESSAGE_FRAGMENT,
-                        broadcast: true,
+                        fragment: ChatMessageFragment,
                       }, () => ({
-                        ...newMessage.sendMessageToChatRoom,
-                        status: newMessage.sendMessageToChatRoom.status,
+                        ...fragmentData,
+                        status: newStatus,
                       }))
 
                       return {
                         data: [
-                          ...existingMessages.data.map((message: ChatMessageType) => message.id === id
+                          ...existingMessages.data.map((message: ChatMessageFragmentFragment) => message.id === id
                             ? updatedFragment
                             : message)
                         ],

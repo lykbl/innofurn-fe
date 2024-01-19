@@ -4,11 +4,16 @@ import ChatMessage from "@/components/ui/chat/chat-message";
 import ChatMessageControls from "@/components/ui/chat/chat-message-controls";
 import { forwardRef, useEffect, useRef, useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
-import { gql } from "@/gql";
+import { gql, useFragment } from "@/gql";
 import { cn } from "@/lib/utils";
 import * as React from "react";
 import { useIntersection } from "react-use";
 import { Icons } from "@/components/icons";
+import {
+  ChatMessageFragmentFragment,
+  SendMessageToChatRoomMutation,
+  SendMessageToChatRoomMutationVariables
+} from "@/gql/graphql";
 
 const FETCH_MESSAGES = gql(/* GraphQL */ `
     query FetchMessages($first: Int! $page: Int!) {
@@ -40,7 +45,10 @@ const SEND_MESSAGE = gql(/* GraphQL */ `
     }
 `);
 
-export const CHAT_MESSAGE_FRAGMENT = gql(/* GraphQL */ `
+const PAGE_SIZE = 10;
+
+const STARTING_PAGE = 1;
+export const ChatMessageFragment = gql(/* GraphQL */ `
     fragment ChatMessageFragment on ChatMessage {
         id
         body
@@ -66,19 +74,18 @@ const ChatContent = forwardRef<
   ({className,...props }, forwardRef
 ) => {
     //TODO add more agressive caching :???
-    const messagesQuery = useQuery(FETCH_MESSAGES, {
-      variables: {
-        page: 1,
-        first: 2
-      },
-    });
     const {
       data: queryData,
       loading: loadingMessages,
       error: messagesError,
       fetchMore: fetchMoreMessages,
       subscribeToMore: subscribeToMoreMessages,
-    } = messagesQuery;
+    } = useQuery(FETCH_MESSAGES, {
+      variables: {
+        page: STARTING_PAGE,
+        first: PAGE_SIZE
+      },
+    });
     const messages = queryData?.chatRoomMessages?.data || [];
     const { currentPage, hasMorePages } = queryData?.chatRoomMessages?.paginatorInfo || {};
 
@@ -128,9 +135,6 @@ const ChatContent = forwardRef<
             },
           };
         },
-        onError: (err) => {
-          console.log('ONAERRO', err);
-        },
       });
 
       return () => terminateSubscription();
@@ -146,10 +150,8 @@ const ChatContent = forwardRef<
         {...props}
       >
         <CardHeader className="py-2">
-          <CardTitle>
-            <p className="text-xl">
-              Customer Chat
-            </p>
+          <CardTitle className="text-xl">
+            Customer Chat
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -165,13 +167,18 @@ const ChatContent = forwardRef<
                 {/*TODO ref the spinner ++ rotate it with scroll*/}
                 {loadingMessages && <Icons.spinner className="animate-spin m-auto" />}
                 {messagesError && <p className="text-red-500 text-xs mx-auto py-2">{'Uh-oh messages could not be loaded!'}</p>}
-                {messages.map((message, i) => <ChatMessage
-                    key={i}
-                    ref={i === 0 ? firstMessageRef : null}
-                    message={message}
-                    resendMessage={sendMessage}
-                  />
-                )}
+                {messages.map((message, i) => {
+                 const messageData = useFragment(ChatMessageFragment, message);
+
+                 return (
+                   <ChatMessage
+                      key={messageData.id}
+                      ref={i === 0 ? firstMessageRef : null}
+                      message={messageData}
+                      resendMessage={sendMessage}
+                    />
+                 )
+                })}
               </div>
             </ScrollAreaViewport>
           </ScrollArea>

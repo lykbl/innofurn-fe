@@ -1,4 +1,5 @@
 import { CodegenConfig } from '@graphql-codegen/cli';
+import { addTypenameSelectionDocumentTransform } from '@graphql-codegen/client-preset'
 
 const config: CodegenConfig = {
   schema: 'http://localhost/graphql',//,process.env.GRAPHQL_ENDPOINT,
@@ -7,19 +8,30 @@ const config: CodegenConfig = {
   generates: {
     'app/gql/': {
       preset: 'client',
-      plugins: [
-        // 'typescript',
-        // 'typescript-resolvers'
-      ],
-      // config: {
-      //   scalars: {
-      //     // DateTime: Date,
-      //     DateTime: 'scalars#DateTime',
-      //   }
-      // },
+      config: {
+        strictScalars: true,
+        scalars: {
+          IntID: 'number',
+          DateTime: 'Date',
+          Dimension: '{format: string, value: number, unit: string}',
+          Email: 'string',
+          JSON: '{[key: string]: any}',
+          Phone: 'number | string',
+          Price: 'number',
+          Rating: '1 | 2 | 3 | 4 | 5',
+        },
+        enumsAsTypes: false,
+        constEnums: true,
+        namingConvention: {
+          typeNames: 'change-case-all#pascalCase',
+          enumValues: 'change-case-all#upperCase',
+        },
+      },
       presetConfig: {
         gqlTagName: 'gql',
+        // fragmentMasking: false
       },
+      // documentTransforms: [addTypenameSelectionDocumentTransform]
     },
   },
 };

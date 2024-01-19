@@ -4,27 +4,28 @@ import { Button } from "@/components/ui/common/button";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useState } from "react";
+import React from "react";
 import {
-  Chat_Message_Statuses,
-  CreateChatMessageInput, Exact,
-  MutationSendMessageToChatRoomArgs,
-  SendMessageToChatRoomMutation
+  makeVar, MutationFunctionOptions
+} from "@apollo/client";
+import {
+  ChatMessageStatuses, CreateChatMessageInput, Exact, SendMessageToChatRoomMutation
 } from "@/gql/graphql";
-import { BaseMutationOptions, makeVar, MutationFunction, MutationFunctionOptions } from "@apollo/client";
+import { FragmentType, makeFragmentData, useFragment } from "@/gql";
+import { ChatMessageFragment } from "@/components/ui/chat/chat-content";
 
 const FormSchema = z.object({
   message: z.string().min(1, 'Message can not be empty.').max(300, 'Message can not be longer than 300 characters.'),
 })
 
 interface IChatMessageControlsProps {
-  scrollRef: React.MutableRefObject<HTMLDivElement>,
-  sendMessage: MutationFunction,
+  scrollRef: React.RefObject<HTMLDivElement>,
+  sendMessage: (options?: MutationFunctionOptions<SendMessageToChatRoomMutation, Exact<{input: CreateChatMessageInput}>> | undefined) => Promise<any>,
   tempMessageId: number,
   setTempMessageId: React.Dispatch<React.SetStateAction<number>>,
 }
 
-const optimisticMessageVar = makeVar(null);
+const optimisticMessageVar = makeVar<FragmentType<typeof ChatMessageFragment> | null>(null);
 const ChatMessageControls = ({ scrollRef, sendMessage, tempMessageId, setTempMessageId }: IChatMessageControlsProps) => {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -33,7 +34,8 @@ const ChatMessageControls = ({ scrollRef, sendMessage, tempMessageId, setTempMes
     },
   })
   async function onSubmit(formInput: z.infer<typeof FormSchema>) {
-    sendMessage({
+    form.reset();
+    await sendMessage({
       variables: {
         input: {
           body: formInput.message,
@@ -41,32 +43,37 @@ const ChatMessageControls = ({ scrollRef, sendMessage, tempMessageId, setTempMes
         }
       },
       optimisticResponse: {
-        sendMessageToChatRoom: {
-          id: `tmp${tempMessageId}`,
+        sendMessageToChatRoom: makeFragmentData({
           __typename: 'ChatMessage',
+          id: `tmp${tempMessageId}`,
           body: formInput.message,
-          createdAt: new Date().toISOString(),
-          status: 'PENDING',
+          createdAt: new Date(),
+          status: ChatMessageStatuses.PENDING,
           author: {
             __typename: 'Customer',
-            name: 'You',
+            name: 'You', //TODO use actual name
             role: 'CUSTOMER',
           },
-        }
+        }, ChatMessageFragment),
       },
       update: (cache, { data: newMessage, errors }) => {
-        if (!newMessage?.sendMessageToChatRoom && !errors) {
-          return;
-        }
         cache.modify({
           fields: {
             chatRoomMessages: (existingMessages = {}) => {
-              let newMessageData = newMessage?.sendMessageToChatRoom ?? optimisticMessageVar();
-              if (!errors) {
-                optimisticMessageVar({
-                  ...newMessage.sendMessageToChatRoom,
-                  status: Chat_Message_Statuses.Error,
-                });
+              const newMessageFragment = newMessage?.sendMessageToChatRoom;
+              if (!newMessageFragment && !errors) {
+                return existingMessages;
+              }
+
+              const fragmentData = errors ? optimisticMessageVar() : newMessageFragment;
+              const newMessageData = useFragment(ChatMessageFragment, fragmentData);
+              if (!errors && newMessageData) {
+                optimisticMessageVar(
+                  makeFragmentData({
+                    ...newMessageData,
+                    status: ChatMessageStatuses.ERROR,
+                  }, ChatMessageFragment)
+                );
               }
 
               return {
@@ -76,10 +83,9 @@ const ChatMessageControls = ({ scrollRef, sendMessage, tempMessageId, setTempMes
             }
           }
         })
-        // scrollRef?.current.scrollTo(0, scrollRef.current.scrollHeight);
+        scrollRef.current?.scrollTo(0, scrollRef.current.scrollHeight);
       },
     })
-    form.reset();
   }
 
   return (
