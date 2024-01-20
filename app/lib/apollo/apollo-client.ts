@@ -31,7 +31,7 @@ export const { getClient } = registerApolloClient(() => {
       },
       mutate: {
         // errorPolicy: 'ignore',
-      }
-    }
+      },
+    },
   });
 });

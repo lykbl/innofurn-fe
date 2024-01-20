@@ -1,10 +1,5 @@
-'use client';
+"use client";
 
 export default function Page() {
-
-  return (
-    <>
-      u am test page
-    </>
-  );
+  return <>u am test page</>;
 }

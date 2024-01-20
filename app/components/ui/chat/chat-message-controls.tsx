@@ -1,37 +1,62 @@
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/common/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/common/form";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/common/button";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect, useRef } from "react";
+import { MutationFunctionOptions } from "@apollo/client";
 import {
-  MutationFunctionOptions
-} from "@apollo/client";
-import {
-  ChatMessageStatuses, CreateChatMessageInput, Exact, SendMessageToChatRoomMutation
+  ChatMessageStatuses,
+  CreateChatMessageInput,
+  Exact,
+  SendMessageToChatRoomMutation,
 } from "@/gql/graphql";
 import { FragmentType, makeFragmentData, useFragment } from "@/gql";
 import { ChatMessageFragment } from "@/components/ui/chat/chat-content";
 
 const FormSchema = z.object({
-  message: z.string().min(1, 'Message can not be empty.').max(300, 'Message can not be longer than 300 characters.'),
-})
+  message: z
+    .string()
+    .min(1, "Message can not be empty.")
+    .max(300, "Message can not be longer than 300 characters."),
+});
 interface IChatMessageControlsProps {
-  scrollRef: React.RefObject<HTMLDivElement>,
-  sendMessage: (options?: MutationFunctionOptions<SendMessageToChatRoomMutation, Exact<{input: CreateChatMessageInput}>> | undefined) => Promise<any>,
-  isMessageSending: boolean,
-  tempMessageId: number,
-  setTempMessageId: React.Dispatch<React.SetStateAction<number>>,
+  scrollRef: React.RefObject<HTMLDivElement>;
+  sendMessage: (
+    options?:
+      | MutationFunctionOptions<
+          SendMessageToChatRoomMutation,
+          Exact<{ input: CreateChatMessageInput }>
+        >
+      | undefined,
+  ) => Promise<any>;
+  isMessageSending: boolean;
+  tempMessageId: number;
+  setTempMessageId: React.Dispatch<React.SetStateAction<number>>;
 }
-const ChatMessageControls = ({ scrollRef, sendMessage, tempMessageId, setTempMessageId, isMessageSending }: IChatMessageControlsProps) => {
+const ChatMessageControls = ({
+  scrollRef,
+  sendMessage,
+  tempMessageId,
+  setTempMessageId,
+  isMessageSending,
+}: IChatMessageControlsProps) => {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      message: '',
+      message: "",
     },
-  })
-  const optimisticMessageRef = useRef<FragmentType<typeof ChatMessageFragment> | null>(null);
+  });
+  const optimisticMessageRef = useRef<FragmentType<
+    typeof ChatMessageFragment
+  > | null>(null);
   async function onSubmit(formInput: z.infer<typeof FormSchema>) {
     form.reset();
     await sendMessage({
@@ -39,21 +64,24 @@ const ChatMessageControls = ({ scrollRef, sendMessage, tempMessageId, setTempMes
         input: {
           body: formInput.message,
           chatRoomId: 2,
-        }
+        },
       },
       optimisticResponse: {
-        sendMessageToChatRoom: makeFragmentData({
-          __typename: 'ChatMessage',
-          id: `tmp${tempMessageId}`,
-          body: formInput.message,
-          createdAt: new Date(),
-          status: ChatMessageStatuses.PENDING,
-          author: {
-            __typename: 'Customer',
-            name: 'You', //TODO use actual name
-            role: 'CUSTOMER',
+        sendMessageToChatRoom: makeFragmentData(
+          {
+            __typename: "ChatMessage",
+            id: `tmp${tempMessageId}`,
+            body: formInput.message,
+            createdAt: new Date(),
+            status: ChatMessageStatuses.PENDING,
+            author: {
+              __typename: "Customer",
+              name: "You", //TODO use actual name
+              role: "CUSTOMER",
+            },
           },
-        }, ChatMessageFragment),
+          ChatMessageFragment,
+        ),
       },
       update: (cache, { data: newMessage, errors }) => {
         cache.modify({
@@ -64,24 +92,32 @@ const ChatMessageControls = ({ scrollRef, sendMessage, tempMessageId, setTempMes
                 return existingMessages;
               }
 
-              const fragmentData = errors ? optimisticMessageRef.current : newMessageFragment;
-              const newMessageData = useFragment(ChatMessageFragment, fragmentData);
+              const fragmentData = errors
+                ? optimisticMessageRef.current
+                : newMessageFragment;
+              const newMessageData = useFragment(
+                ChatMessageFragment,
+                fragmentData,
+              );
               if (!errors && newMessageData) {
-                optimisticMessageRef.current = makeFragmentData({
-                  ...newMessageData,
-                  status: ChatMessageStatuses.ERROR,
-                }, ChatMessageFragment); // TODO Add immer or smth?
+                optimisticMessageRef.current = makeFragmentData(
+                  {
+                    ...newMessageData,
+                    status: ChatMessageStatuses.ERROR,
+                  },
+                  ChatMessageFragment,
+                ); // TODO Add immer or smth?
               }
 
               return {
                 data: [...existingMessages.data, newMessageData],
                 paginatorInfo: existingMessages.paginatorInfo,
               };
-            }
-          }
-        })
+            },
+          },
+        });
       },
-    })
+    });
   }
 
   useEffect(() => {
@@ -99,7 +135,7 @@ const ChatMessageControls = ({ scrollRef, sendMessage, tempMessageId, setTempMes
           setTempMessageId((prev: number) => prev + 1);
         }}
         onKeyDown={(e) => {
-          if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+          if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
             form.handleSubmit(onSubmit)();
           }
         }}
@@ -122,16 +158,15 @@ const ChatMessageControls = ({ scrollRef, sendMessage, tempMessageId, setTempMes
             </FormItem>
           )}
         />
-        <Button
-          variant="outline"
-          type="submit"
-        >
+        <Button variant="outline" type="submit">
           Send Message
-          <span className="ml-auto text-xs tracking-widest opacity-60">⌘+↵</span>
+          <span className="ml-auto text-xs tracking-widest opacity-60">
+            ⌘+↵
+          </span>
         </Button>
       </form>
     </Form>
   );
-}
+};
 
 export default ChatMessageControls;

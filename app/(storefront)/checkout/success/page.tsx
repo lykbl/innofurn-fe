@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useEffect } from "react";
 import axios from "axios";
@@ -10,17 +10,13 @@ export default function Page() {
   useEffect(() => {
     (async () => {
       axios.defaults.withCredentials = true;
-      axios.defaults.withXSRFToken = true
-      axios.post('http://localhost/api/capture-payment-intent', {
+      axios.defaults.withXSRFToken = true;
+      axios.post("http://localhost/api/capture-payment-intent", {
         // paymentIntentId: searchParams.get('payment_intent_client_secret'),
-        paymentIntentId: searchParams.get('payment_intent'),
+        paymentIntentId: searchParams.get("payment_intent"),
       });
     })();
   }, []);
 
-  return (
-    <>
-      Payment success!!!
-    </>
-  );
+  return <>Payment success!!!</>;
 }

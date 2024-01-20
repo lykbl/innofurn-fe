@@ -16,39 +16,41 @@ import { RetryLink } from "@apollo/client/link/retry";
 import { setContext } from "@apollo/client/link/context";
 import { removeTypenameFromVariables } from "@apollo/client/link/remove-typename";
 
-const errorLink = onError(({ graphQLErrors, networkError, operation, forward }) => {
-  if (graphQLErrors) {
-    for (let err of graphQLErrors) {
-      switch (err.extensions.code) {
-        // Apollo Server sets code to UNAUTHENTICATED
-        // when an AuthenticationError is thrown in a resolver
-        case "UNAUTHENTICATED":
-          // Modify the operation context with a new token
-          // const oldHeaders = operation.getContext().headers;
-          // operation.setContext({
+const errorLink = onError(
+  ({ graphQLErrors, networkError, operation, forward }) => {
+    if (graphQLErrors) {
+      for (let err of graphQLErrors) {
+        switch (err.extensions.code) {
+          // Apollo Server sets code to UNAUTHENTICATED
+          // when an AuthenticationError is thrown in a resolver
+          case "UNAUTHENTICATED":
+            // Modify the operation context with a new token
+            // const oldHeaders = operation.getContext().headers;
+            // operation.setContext({
             // headers: {
             //   ...oldHeaders,
             //   authorization: getNewToken(),
             // },
-          // });
-          // Retry the request, returning the new observable
-          return forward(operation);
+            // });
+            // Retry the request, returning the new observable
+            return forward(operation);
+        }
       }
     }
-  }
 
-  // To retry on network errors, we recommend the RetryLink
-  // instead of the onError link. This just logs the error.
-  if (networkError) {
-    console.log(`[Network error]: ${networkError}`);
-  }
-});
+    // To retry on network errors, we recommend the RetryLink
+    // instead of the onError link. This just logs the error.
+    if (networkError) {
+      console.log(`[Network error]: ${networkError}`);
+    }
+  },
+);
 
-const removeTypeNamesLink =  removeTypenameFromVariables()
+const removeTypeNamesLink = removeTypenameFromVariables();
 
 const httpLink = new HttpLink({
   uri: process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT,
-  credentials: 'include',
+  credentials: "include",
   preserveHeaderCase: true,
 });
 
@@ -74,35 +76,38 @@ const httpLink = new HttpLink({
 
 let csrfRequesting = false;
 const asyncAuthLink = setContext(
-  () => new Promise(async (success, fail) => {
-    if (!cookieSet("XSRF-TOKEN") && !csrfRequesting) {
-      csrfRequesting = true;
-      await fetch('http://localhost/sanctum/csrf-cookie', {
-        'method': 'GET',
-        'credentials': 'include',
-      })
-    }
+  () =>
+    new Promise(async (success, fail) => {
+      if (!cookieSet("XSRF-TOKEN") && !csrfRequesting) {
+        csrfRequesting = true;
+        await fetch("http://localhost/sanctum/csrf-cookie", {
+          method: "GET",
+          credentials: "include",
+        });
+      }
 
-    const csrfCookie = getCookie("XSRF-TOKEN");
-    csrfCookie ?
-      success({
-        headers: {
-          'X-XSRF-TOKEN': decodeURIComponent(csrfCookie)
-        }
-      }) :
-      fail('No XSRF-TOKEN cookie');
-  }
-));
+      const csrfCookie = getCookie("XSRF-TOKEN");
+      csrfCookie
+        ? success({
+            headers: {
+              "X-XSRF-TOKEN": decodeURIComponent(csrfCookie),
+            },
+          })
+        : fail("No XSRF-TOKEN cookie");
+    }),
+);
 
 function createClient() {
   const links = [];
-  if (typeof window === 'undefined') {
-    links.push(new SSRMultipartLink({stripDefer: true}), httpLink);
+  if (typeof window === "undefined") {
+    links.push(new SSRMultipartLink({ stripDefer: true }), httpLink);
   } else {
     const pusherLink = new PusherLink({
-      pusher: new Pusher(process.env.NEXT_PUBLIC_PUSHER_APP_KEY ?? '', {
-        cluster: process.env.NEXT_PUBLIC_PUSHER_APP_CLUSTER ?? 'eu',
-        authEndpoint: process.env.NEXT_PUBLIC_SUBSCRIPTIONS_AUTH_ENDPOINT ?? 'http://localhost/graphql/subscriptions/auth',
+      pusher: new Pusher(process.env.NEXT_PUBLIC_PUSHER_APP_KEY ?? "", {
+        cluster: process.env.NEXT_PUBLIC_PUSHER_APP_CLUSTER ?? "eu",
+        authEndpoint:
+          process.env.NEXT_PUBLIC_SUBSCRIPTIONS_AUTH_ENDPOINT ??
+          "http://localhost/graphql/subscriptions/auth",
         // auth: {
         //   headers: {},
         // },
@@ -113,7 +118,7 @@ function createClient() {
       removeTypeNamesLink,
       errorLink,
       pusherLink,
-      httpLink
+      httpLink,
     );
   }
   return new NextSSRApolloClient({
@@ -121,7 +126,7 @@ function createClient() {
     link: from(links),
     defaultOptions: {
       mutate: {
-        errorPolicy: 'all',
+        errorPolicy: "all",
       },
       // query: {
       //   notifyOnNetworkStatusChange: true,
@@ -142,8 +147,8 @@ function createClient() {
               // },
               // merge(existing = {}, incoming, { readField}) {
               // },
-            }
-          }
+            },
+          },
         },
         // Mutation: {
         //   fields: {
@@ -151,13 +156,13 @@ function createClient() {
         //     }
         //   }
         // }
-      }
+      },
     }),
   });
 }
 
 export const ApolloWrapper = ({ children }: React.PropsWithChildren) => (
-  <ApolloNextAppProvider makeClient={ createClient }>
-    { children }
+  <ApolloNextAppProvider makeClient={createClient}>
+    {children}
   </ApolloNextAppProvider>
 );

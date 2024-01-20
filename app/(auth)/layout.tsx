@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import '@/styles/global.css';
+import "@/styles/global.css";
 import React, { useContext, useEffect } from "react";
 // import { ReactQueryProvider } from "@/lib/query-provider"; //TODO remove this
 // import { GraphQLClientProvider } from "@/lib/graphql-client-provider";
@@ -17,7 +17,7 @@ export default function RootLayout({
 }) {
   const { user } = useContext(AuthContext);
   if (user) {
-    redirect('/');
+    redirect("/");
   }
 
   return (
@@ -25,17 +25,14 @@ export default function RootLayout({
       <header className="flex fixed bg-transparent p-2 justify-between">
         <div>
           {/* TODO add logo */}
-          <Button variant="ghost">
-            Logo goes here...
-          </Button>
+          <Button variant="ghost">Logo goes here...</Button>
         </div>
         <div>
           <AuthControls />
         </div>
       </header>
       <main className="flex flex-col xl:flex-row">
-        <div className="w-full bg-primary xl:h-full h-1/2">
-        </div>
+        <div className="w-full bg-primary xl:h-full h-1/2"></div>
         <div className="w-full flex items-center justify-center bg-gray-100">
           {children}
         </div>

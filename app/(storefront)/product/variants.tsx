@@ -1,47 +1,60 @@
-'use client';
+"use client";
 
 import { ReactNode } from "react";
 import Image from "next/image";
 
 export type Variant = {
-  id: number,
-  href: string,
-  name: string,
-  price: number,
-}
+  id: number;
+  href: string;
+  name: string;
+  price: number;
+};
 
 interface VariantProp {
-  variant: Variant,
-  handleClick: Function,
+  variant: Variant;
+  handleClick: Function;
 }
 
-const Variant = ({variant: {id, href, name}, handleClick}: VariantProp) => {
+const Variant = ({ variant: { id, href, name }, handleClick }: VariantProp) => {
   return (
     <button
-      className='border-2 border-black hover:border-blue-600 rounded'
+      className="border-2 border-black hover:border-blue-600 rounded"
       onClick={() => handleClick(id)}
     >
       <Image src={href} alt={name} width={100} height={100} />
     </button>
   );
-}
+};
 
 interface VariantsProps {
-  type: string,
-  options: Variant[],
-  selectedOption: Variant,
-  handleSelect: Function,
+  type: string;
+  options: Variant[];
+  selectedOption: Variant;
+  handleSelect: Function;
 }
-const Variants = ({ type, options, selectedOption, handleSelect }: VariantsProps): ReactNode => {
+const Variants = ({
+  type,
+  options,
+  selectedOption,
+  handleSelect,
+}: VariantsProps): ReactNode => {
   return (
-    <div className='flex gap-2 flex-col'>
+    <div className="flex gap-2 flex-col">
       {/*TODO use label instead of id*/}
-      <p>Choose {type}: {selectedOption.name}</p>
-      <div className='flex gap-2'>
-        {options.map(variant => <Variant key={variant.id} variant={variant} handleClick={() => handleSelect(variant.id)} />)}
+      <p>
+        Choose {type}: {selectedOption.name}
+      </p>
+      <div className="flex gap-2">
+        {options.map((variant) => (
+          <Variant
+            key={variant.id}
+            variant={variant}
+            handleClick={() => handleSelect(variant.id)}
+          />
+        ))}
       </div>
     </div>
   );
-}
+};
 
 export default Variants;

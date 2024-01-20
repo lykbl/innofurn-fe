@@ -9,14 +9,18 @@ interface ControlButtonProps {
   className?: string;
 }
 
-const ControlButton = ({ children, handleClick, className }: ControlButtonProps) => (
+const ControlButton = ({
+  children,
+  handleClick,
+  className,
+}: ControlButtonProps) => (
   <motion.button
     className={clsx(
-      'absolute top-[50%] bg-blue-600 border-blue-600 hover:bg-blue-700 hover:border-blue-700 p-2 rounded text-white hover:drop-shadow-lg',
+      "absolute top-[50%] bg-blue-600 border-blue-600 hover:bg-blue-700 hover:border-blue-700 p-2 rounded text-white hover:drop-shadow-lg",
       className,
     )}
     whileTap={{ scale: 0.8 }}
-    initial={{ y: '-50%' }}
+    initial={{ y: "-50%" }}
     onClick={handleClick}
   >
     {children}
@@ -24,12 +28,12 @@ const ControlButton = ({ children, handleClick, className }: ControlButtonProps)
 );
 
 interface ControlsProps {
-  prev: MouseEventHandler<HTMLButtonElement>,
-  next: MouseEventHandler<HTMLButtonElement>,
-  currentIndex: number,
-  itemsPerPage: number,
-  itemsCount: number,
-  controlsSize: number,
+  prev: MouseEventHandler<HTMLButtonElement>;
+  next: MouseEventHandler<HTMLButtonElement>;
+  currentIndex: number;
+  itemsPerPage: number;
+  itemsCount: number;
+  controlsSize: number;
 }
 
 const Controls: FC<ControlsProps> = ({
@@ -42,24 +46,18 @@ const Controls: FC<ControlsProps> = ({
 }) => {
   return (
     <div>
-      {currentIndex > 0 &&
-        <ControlButton
-          handleClick={prev}
-          className='left-2'
-        >
+      {currentIndex > 0 && (
+        <ControlButton handleClick={prev} className="left-2">
           <IoIosArrowBack size={controlsSize} />
         </ControlButton>
-      }
-      {
-        (currentIndex + itemsPerPage < itemsCount - 1) && <ControlButton
-          handleClick={next}
-          className='right-2'
-        >
+      )}
+      {currentIndex + itemsPerPage < itemsCount - 1 && (
+        <ControlButton handleClick={next} className="right-2">
           <IoIosArrowForward size={controlsSize} />
         </ControlButton>
-      }
+      )}
     </div>
   );
-}
+};
 
 export default Controls;

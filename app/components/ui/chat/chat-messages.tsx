@@ -2,11 +2,14 @@ import { gql, useFragment } from "@/gql";
 import ChatMessage from "@/components/ui/chat/chat-message";
 import * as React from "react";
 import { ChatMessageFragment } from "@/components/ui/chat/chat-content";
+import { MutationFunctionOptions, useSuspenseQuery } from "@apollo/client";
 import {
-  MutationFunctionOptions,
-  useSuspenseQuery
-} from "@apollo/client";
-import { startTransition, useEffect, useRef, useState, useTransition } from "react";
+  startTransition,
+  useEffect,
+  useRef,
+  useState,
+  useTransition,
+} from "react";
 import { useIntersection } from "react-use";
 import {
   CreateChatMessageInput,
@@ -20,36 +23,40 @@ const PAGE_SIZE = 3;
 const STARTING_PAGE = 1;
 
 const FETCH_MESSAGES = gql(/* GraphQL */ `
-    query FetchMessagesInside($first: Int! $page: Int!) {
-        chatRoomMessages(first: $first, page: $page) {
-            data {
-                ...ChatMessageFragment
-            }
-            paginatorInfo {
-                hasMorePages
-                currentPage
-            }
-        }
+  query FetchMessagesInside($first: Int!, $page: Int!) {
+    chatRoomMessages(first: $first, page: $page) {
+      data {
+        ...ChatMessageFragment
+      }
+      paginatorInfo {
+        hasMorePages
+        currentPage
+      }
     }
-`)
+  }
+`);
 
 const SUBSCRIBE_TO_CHAT_ROOM = gql(/* GraphQL */ `
-    subscription SubscribeToChatRoom1 {
-        updateChatRoom {
-            ...ChatMessageFragment
-        }
+  subscription SubscribeToChatRoom1 {
+    updateChatRoom {
+      ...ChatMessageFragment
     }
+  }
 `);
 
 interface IChatMessagesProps {
-  sendMessage: (options?: MutationFunctionOptions<SendMessageToChatRoomMutation, Exact<{input: CreateChatMessageInput}>> | undefined) => Promise<any>,
-  scrollRef: React.RefObject<HTMLDivElement>,
+  sendMessage: (
+    options?:
+      | MutationFunctionOptions<
+          SendMessageToChatRoomMutation,
+          Exact<{ input: CreateChatMessageInput }>
+        >
+      | undefined,
+  ) => Promise<any>;
+  scrollRef: React.RefObject<HTMLDivElement>;
 }
 
-const ChatMessages = ({
-  sendMessage,
-  scrollRef,
-}: IChatMessagesProps) => {
+const ChatMessages = ({ sendMessage, scrollRef }: IChatMessagesProps) => {
   const {
     data: queryData,
     error: messagesError,
@@ -58,12 +65,13 @@ const ChatMessages = ({
   } = useSuspenseQuery(FETCH_MESSAGES, {
     variables: {
       page: STARTING_PAGE,
-      first: PAGE_SIZE
+      first: PAGE_SIZE,
     },
     returnPartialData: false,
   });
   const messages = queryData?.chatRoomMessages?.data || [];
-  const { hasMorePages, currentPage } = queryData?.chatRoomMessages?.paginatorInfo || {};
+  const { hasMorePages, currentPage } =
+    queryData?.chatRoomMessages?.paginatorInfo || {};
 
   useEffect(() => {
     const terminateSubscription = subscribeToMoreMessages({
@@ -97,7 +105,11 @@ const ChatMessages = ({
       return;
     }
 
-    if (intersectionObserverEntry?.isIntersecting && currentPage && !isFetchingMore) {
+    if (
+      intersectionObserverEntry?.isIntersecting &&
+      currentPage &&
+      !isFetchingMore
+    ) {
       startTransition(() => {
         fetchMoreMessages({
           variables: {
@@ -118,8 +130,8 @@ const ChatMessages = ({
               },
             };
           },
-        })
-      })
+        });
+      });
     }
   }, [intersectionObserverEntry?.isIntersecting]);
 
@@ -127,29 +139,39 @@ const ChatMessages = ({
   useEffect(() => {
     const moreItemsFetched = !isFetchingMore;
     if (scrollRef.current && moreItemsFetched) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight - newPageOffset;
+      scrollRef.current.scrollTop =
+        scrollRef.current.scrollHeight - newPageOffset;
       setNewScrollOffset(scrollRef.current.scrollHeight);
     }
-  }, [isFetchingMore])
+  }, [isFetchingMore]);
 
   return (
     <div className={cn(`flex flex-col gap-2`)}>
       {/*TODO fix scrollbar flicker fetchMore result is rendered??*/}
-      {hasMorePages && <Icons.spinner className="animate-spin mx-auto" ref={fetchMoreTriggerRef} />}
-      {messagesError && <p className="text-red-500 text-xs mx-auto py-2">Uh-oh messages could not be loaded!</p>}
+      {hasMorePages && (
+        <Icons.spinner
+          className="animate-spin mx-auto"
+          ref={fetchMoreTriggerRef}
+        />
+      )}
+      {messagesError && (
+        <p className="text-red-500 text-xs mx-auto py-2">
+          Uh-oh messages could not be loaded!
+        </p>
+      )}
       {messages.map((message, i) => {
         const messageData = useFragment(ChatMessageFragment, message);
 
         return (
-           <ChatMessage
-             key={messageData.id}
-             message={messageData}
-             resendMessage={sendMessage}
-           />
-        )
+          <ChatMessage
+            key={messageData.id}
+            message={messageData}
+            resendMessage={sendMessage}
+          />
+        );
       })}
     </div>
   );
-}
+};
 
 export default ChatMessages;

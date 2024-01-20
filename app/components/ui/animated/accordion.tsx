@@ -1,22 +1,24 @@
 import {
-  createContext, FC, MouseEventHandler,
+  createContext,
+  FC,
+  MouseEventHandler,
   ReactNode,
   useContext,
   useEffect,
   useRef,
-} from 'react';
-import { useToggle } from 'react-use';
-import { IoIosArrowDown } from 'react-icons/io';
-import { AnimatePresence, motion } from 'framer-motion';
-import clsx from 'clsx';
+} from "react";
+import { useToggle } from "react-use";
+import { IoIosArrowDown } from "react-icons/io";
+import { AnimatePresence, motion } from "framer-motion";
+import clsx from "clsx";
 
 enum VARIANT_NAMES {
-  OPEN = 'open',
-  CLOSED = 'closed',
+  OPEN = "open",
+  CLOSED = "closed",
 }
 interface ContextDefaults {
-  isOpen: boolean,
-  toggle: MouseEventHandler,
+  isOpen: boolean;
+  toggle: MouseEventHandler;
 }
 
 interface AccordionProps {
@@ -24,20 +26,20 @@ interface AccordionProps {
   className?: string;
 }
 
-interface ToggleProps  {
-  children: ReactNode,
-  className?: string,
-  openClassName?: string,
+interface ToggleProps {
+  children: ReactNode;
+  className?: string;
+  openClassName?: string;
 }
 
 interface ContentProps {
-  children: ReactNode | ReactNode[],
-  className?: string,
+  children: ReactNode | ReactNode[];
+  className?: string;
 }
 
 interface AccordionComponent extends FC<AccordionProps> {
-  Toggle: FC<ToggleProps>
-  Content: FC<ContentProps>
+  Toggle: FC<ToggleProps>;
+  Content: FC<ContentProps>;
 }
 
 const AccordionContext = createContext<ContextDefaults>({
@@ -45,7 +47,9 @@ const AccordionContext = createContext<ContextDefaults>({
   toggle: () => null,
 });
 
-const Accordion: AccordionComponent = ({ children }: AccordionProps): ReactNode => {
+const Accordion: AccordionComponent = ({
+  children,
+}: AccordionProps): ReactNode => {
   const [isOpen, toggle] = useToggle(false);
 
   return (
@@ -58,11 +62,15 @@ const Accordion: AccordionComponent = ({ children }: AccordionProps): ReactNode 
       </motion.div>
     </AccordionContext.Provider>
   );
-}
+};
 
-const Toggle: FC<ToggleProps> = ({ children, className, openClassName }: ToggleProps): ReactNode => {
+const Toggle: FC<ToggleProps> = ({
+  children,
+  className,
+  openClassName,
+}: ToggleProps): ReactNode => {
   const { isOpen, toggle } = useContext(AccordionContext);
-  const toggleRef = useRef<HTMLButtonElement|null>(null);
+  const toggleRef = useRef<HTMLButtonElement | null>(null);
 
   const a: number = 1;
   const b: number = 1;
@@ -76,7 +84,7 @@ const Toggle: FC<ToggleProps> = ({ children, className, openClassName }: ToggleP
     <motion.button
       onClick={toggle}
       className={clsx(
-        'flex w-full justify-between rounded border-transparent border hover:border-black',
+        "flex w-full justify-between rounded border-transparent border hover:border-black",
         className,
         isOpen && openClassName,
       )}
@@ -86,79 +94,79 @@ const Toggle: FC<ToggleProps> = ({ children, className, openClassName }: ToggleP
       <motion.div
         variants={{
           [VARIANT_NAMES.OPEN]: { rotate: 180 },
-          [VARIANT_NAMES.CLOSED]: { rotate: 0 }
+          [VARIANT_NAMES.CLOSED]: { rotate: 0 },
         }}
         transition={{ duration: 0.2 }}
         // style={{ originY: 0.55 }}
       >
-        <IoIosArrowDown
-          size={24}
-        />
+        <IoIosArrowDown size={24} />
       </motion.div>
     </motion.button>
   );
-}
+};
 
 function Content({ children, className }: ContentProps): ReactNode {
   const { isOpen } = useContext(AccordionContext);
   const manyChildren = children instanceof Array;
 
-  return <AnimatePresence>
-    {isOpen && (
-      <motion.section
-        className={className}
-        initial={VARIANT_NAMES.CLOSED}
-        exit={VARIANT_NAMES.CLOSED}
-        variants={{
-          [VARIANT_NAMES.OPEN]: {
-            height: 'auto',
-            opacity: 100,
-            transition: {
-              type: "spring",
-              staggerChildren: 0.015
-            }
-          },
-          [VARIANT_NAMES.CLOSED]: {
-            height: '0',
-            opacity: 0,
-          }
-        }}
-      >
-        {
-          manyChildren
-            ? children?.map((child: ReactNode, index: number) =>
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <motion.section
+          className={className}
+          initial={VARIANT_NAMES.CLOSED}
+          exit={VARIANT_NAMES.CLOSED}
+          variants={{
+            [VARIANT_NAMES.OPEN]: {
+              height: "auto",
+              opacity: 100,
+              transition: {
+                type: "spring",
+                staggerChildren: 0.015,
+              },
+            },
+            [VARIANT_NAMES.CLOSED]: {
+              height: "0",
+              opacity: 0,
+            },
+          }}
+        >
+          {manyChildren ? (
+            children?.map((child: ReactNode, index: number) => (
+              <motion.div
+                key={index}
+                variants={{
+                  [VARIANT_NAMES.OPEN]: {
+                    opacity: 1,
+                    transition: { type: "spring" },
+                  },
+                  [VARIANT_NAMES.CLOSED]: {
+                    opacity: 0,
+                    transition: { duration: 0.3 },
+                  },
+                }}
+              >
+                {child}
+              </motion.div>
+            ))
+          ) : (
             <motion.div
-              key={index}
               variants={{
                 [VARIANT_NAMES.OPEN]: {
-                  opacity: 1,
-                  transition: { type: "spring"},
+                  height: "100%",
                 },
                 [VARIANT_NAMES.CLOSED]: {
-                  opacity: 0,
-                  transition: { duration: 0.3 },
-                }
-              }}
-            >
-              {child}
-            </motion.div>
-           ) :
-            <motion.div
-              variants={{
-                [VARIANT_NAMES.OPEN]: {
-                  height: '100%',
+                  height: "0%",
                 },
-                [VARIANT_NAMES.CLOSED]: {
-                  height: '0%',
-                }
               }}
             >
               {children}
             </motion.div>
-        }
-      </motion.section>
-    )}
-  </AnimatePresence>;
+          )}
+        </motion.section>
+      )}
+    </AnimatePresence>
+  );
 }
 
 Accordion.Toggle = Toggle;

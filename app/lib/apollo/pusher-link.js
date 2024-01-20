@@ -15,7 +15,8 @@ class PusherLink extends ApolloLink {
     });
 
     // Capture the super method
-    const prevSubscribe = subscribeObservable.subscribe.bind(subscribeObservable);
+    const prevSubscribe =
+      subscribeObservable.subscribe.bind(subscribeObservable);
 
     // Override subscribe to return an `unsubscribe` object, see
     // https://github.com/apollographql/subscriptions-transport-ws/blob/master/src/client.ts#L182-L212
@@ -49,7 +50,7 @@ class PusherLink extends ApolloLink {
         closed: false,
         unsubscribe: () => {
           subscriptionChannel &&
-          this.unsubscribeFromChannel(subscriptionChannel);
+            this.unsubscribeFromChannel(subscriptionChannel);
         },
       };
     };

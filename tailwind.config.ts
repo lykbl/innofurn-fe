@@ -2,9 +2,7 @@ const { fontFamily } = require("tailwindcss/defaultTheme");
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    './app/**/*.{js,ts,jsx,tsx,mdx}',
-  ],
+  content: ["./app/**/*.{js,ts,jsx,tsx,mdx}"],
   corePlugins: {
     // Disable the base outline styles
   },
@@ -74,13 +72,13 @@ module.exports = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       fontSize: {
-        '2xs': ['0.7rem', '0.9rem'],
-        '3xs': '0.6rem',
+        "2xs": ["0.7rem", "0.9rem"],
+        "3xs": "0.6rem",
       },
       fontFamily: {
         inter: ["var(--font-inter)"],
       },
     },
   },
-  plugins: [require('@tailwindcss/forms'), require("tailwindcss-animate")],
+  plugins: [require("@tailwindcss/forms"), require("tailwindcss-animate")],
 };
