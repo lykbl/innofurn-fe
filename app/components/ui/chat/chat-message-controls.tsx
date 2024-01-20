@@ -63,7 +63,6 @@ const ChatMessageControls = ({
       variables: {
         input: {
           body: formInput.message,
-          chatRoomId: 2,
         },
       },
       optimisticResponse: {

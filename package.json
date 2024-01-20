@@ -12,7 +12,8 @@
     "watch:tailwind": "npx tailwindcss -i ./app/styles/global.css -o ./app/styles/output.css --watch",
     "watch:prettier": "onchange \"**/*\" -- prettier --write --ignore-unknown {{changed}}",
     "watch:all": "npm run watch:code-gen & npm run watch:tailwind & npm run watch:prettier",
-    "watch": "npm run watch:all"
+    "watch": "npm run watch:all",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@apollo/client": "^3.8.9",
@@ -75,6 +76,7 @@
     "eslint-config-next": "^14.0.0",
     "eslint-config-prettier": "9.0.0",
     "graphql-codegen-apollo-next-ssr": "^1.7.4",
+    "patch-package": "^8.0.0",
     "prettier": "3.1.1",
     "prettier-plugin-tailwindcss": "0.5.4",
     "sass": "^1.69.5",

@@ -147,7 +147,8 @@ const ChatMessages = ({ sendMessage, scrollRef }: IChatMessagesProps) => {
 
   return (
     <div className={cn(`flex flex-col gap-2`)}>
-      {/*TODO fix scrollbar flicker fetchMore result is rendered??*/}
+      {/* Apollo client bug https://github.com/apollographql/apollo-client/issues/11315*/}
+      {/*/!*TODO fix scrollbar flicker fetchMore result is rendered??*!/*/}
       {hasMorePages && (
         <div ref={fetchMoreTriggerRef}>
           <Icons.spinner className="animate-spin mx-auto"/>
