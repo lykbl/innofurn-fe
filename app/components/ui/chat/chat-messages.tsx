@@ -149,10 +149,9 @@ const ChatMessages = ({ sendMessage, scrollRef }: IChatMessagesProps) => {
     <div className={cn(`flex flex-col gap-2`)}>
       {/*TODO fix scrollbar flicker fetchMore result is rendered??*/}
       {hasMorePages && (
-        <Icons.spinner
-          className="animate-spin mx-auto"
-          ref={fetchMoreTriggerRef}
-        />
+        <div ref={fetchMoreTriggerRef}>
+          <Icons.spinner className="animate-spin mx-auto"/>
+        </div>
       )}
       {messagesError && (
         <p className="text-red-500 text-xs mx-auto py-2">

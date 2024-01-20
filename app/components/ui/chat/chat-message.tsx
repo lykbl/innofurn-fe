@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/tooltip";
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/common/button";
-import { makeVar, MutationFunctionOptions } from "@apollo/client";
+import { MutationFunctionOptions } from "@apollo/client";
 import { ChatMessageFragment } from "@/components/ui/chat/chat-content";
 import {
   ChatMessageFragmentFragment,
@@ -115,11 +115,10 @@ const ChatMessage =
           {status.toLowerCase() === "error" && (
             <Button
               onClick={async () => {
-                const response = await resendMessage({
+                await resendMessage({
                   variables: {
                     input: {
                       body: body,
-                      chatRoomId: 2, //TODO fix htis
                     },
                   },
                   optimisticResponse: {
@@ -132,7 +131,7 @@ const ChatMessage =
                         status: ChatMessageStatuses.PENDING,
                         author: {
                           __typename: "Customer",
-                          name: author.name || "You",
+                          name: "You",
                           role: "CUSTOMER",
                         },
                       },
