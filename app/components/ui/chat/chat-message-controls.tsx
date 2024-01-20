@@ -4,9 +4,9 @@ import { Button } from "@/components/ui/common/button";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import {
-  makeVar, MutationFunctionOptions
+  MutationFunctionOptions
 } from "@apollo/client";
 import {
   ChatMessageStatuses, CreateChatMessageInput, Exact, SendMessageToChatRoomMutation
@@ -17,22 +17,21 @@ import { ChatMessageFragment } from "@/components/ui/chat/chat-content";
 const FormSchema = z.object({
   message: z.string().min(1, 'Message can not be empty.').max(300, 'Message can not be longer than 300 characters.'),
 })
-
 interface IChatMessageControlsProps {
   scrollRef: React.RefObject<HTMLDivElement>,
   sendMessage: (options?: MutationFunctionOptions<SendMessageToChatRoomMutation, Exact<{input: CreateChatMessageInput}>> | undefined) => Promise<any>,
+  isMessageSending: boolean,
   tempMessageId: number,
   setTempMessageId: React.Dispatch<React.SetStateAction<number>>,
 }
-
-const optimisticMessageVar = makeVar<FragmentType<typeof ChatMessageFragment> | null>(null);
-const ChatMessageControls = ({ scrollRef, sendMessage, tempMessageId, setTempMessageId }: IChatMessageControlsProps) => {
+const ChatMessageControls = ({ scrollRef, sendMessage, tempMessageId, setTempMessageId, isMessageSending }: IChatMessageControlsProps) => {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       message: '',
     },
   })
+  const optimisticMessageRef = useRef<FragmentType<typeof ChatMessageFragment> | null>(null);
   async function onSubmit(formInput: z.infer<typeof FormSchema>) {
     form.reset();
     await sendMessage({
@@ -65,15 +64,13 @@ const ChatMessageControls = ({ scrollRef, sendMessage, tempMessageId, setTempMes
                 return existingMessages;
               }
 
-              const fragmentData = errors ? optimisticMessageVar() : newMessageFragment;
+              const fragmentData = errors ? optimisticMessageRef.current : newMessageFragment;
               const newMessageData = useFragment(ChatMessageFragment, fragmentData);
               if (!errors && newMessageData) {
-                optimisticMessageVar(
-                  makeFragmentData({
-                    ...newMessageData,
-                    status: ChatMessageStatuses.ERROR,
-                  }, ChatMessageFragment)
-                );
+                optimisticMessageRef.current = makeFragmentData({
+                  ...newMessageData,
+                  status: ChatMessageStatuses.ERROR,
+                }, ChatMessageFragment); // TODO Add immer or smth?
               }
 
               return {
@@ -83,10 +80,15 @@ const ChatMessageControls = ({ scrollRef, sendMessage, tempMessageId, setTempMes
             }
           }
         })
-        scrollRef.current?.scrollTo(0, scrollRef.current.scrollHeight);
       },
     })
   }
+
+  useEffect(() => {
+    if (isMessageSending && scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [isMessageSending]);
 
   return (
     <Form {...form}>

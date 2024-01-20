@@ -14,6 +14,7 @@ import Pusher from "pusher-js";
 import { onError } from "@apollo/client/link/error";
 import { RetryLink } from "@apollo/client/link/retry";
 import { setContext } from "@apollo/client/link/context";
+import { removeTypenameFromVariables } from "@apollo/client/link/remove-typename";
 
 const errorLink = onError(({ graphQLErrors, networkError, operation, forward }) => {
   if (graphQLErrors) {
@@ -43,6 +44,8 @@ const errorLink = onError(({ graphQLErrors, networkError, operation, forward }) 
   }
 });
 
+const removeTypeNamesLink =  removeTypenameFromVariables()
+
 const httpLink = new HttpLink({
   uri: process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT,
   credentials: 'include',
@@ -69,7 +72,7 @@ const httpLink = new HttpLink({
 //   }
 // });
 
-let csrfRequesting = false; // TODO am i a hacker?
+let csrfRequesting = false;
 const asyncAuthLink = setContext(
   () => new Promise(async (success, fail) => {
     if (!cookieSet("XSRF-TOKEN") && !csrfRequesting) {
@@ -105,7 +108,13 @@ function createClient() {
         // },
       }),
     });
-    links.push(asyncAuthLink, errorLink, pusherLink, httpLink);
+    links.push(
+      asyncAuthLink,
+      removeTypeNamesLink,
+      errorLink,
+      pusherLink,
+      httpLink
+    );
   }
   return new NextSSRApolloClient({
     // connectToDevTools: true,
@@ -129,39 +138,16 @@ function createClient() {
               // Don't cache separate results based on
               // any of this field's arguments.
               keyArgs: false,
-              merge(existing = {}, incoming, { readField}) {
-                //TODO better way to detect new messages?
-                let isNewMessage = false;
-                if (existing?.data && incoming?.data) {
-                  const latestExistingId = readField('id', existing.data.slice(-1)[0]);
-                  const newestIncomingId = readField('id', incoming.data[0]);
-                  if (latestExistingId && newestIncomingId) {
-                    isNewMessage = newestIncomingId > latestExistingId;
-                  }
-                }
-
-                //TODO isolate this logic
-                return {
-                  paginatorInfo: incoming.paginatorInfo,
-                  data: isNewMessage && existing.data
-                    ? [...existing.data, ...incoming.data]
-                    : [...incoming.data, ...(existing.data || [])]
-                  ,
-                };
-              },
+              // read(existing, { readField }) {
+              // },
+              // merge(existing = {}, incoming, { readField}) {
+              // },
             }
           }
         },
         // Mutation: {
         //   fields: {
-        //     //TODO separate logic?
         //     sendMessageToChatRoom: {
-        //       read(existing, { readField }) {
-        //         console.log('reding sending cache', existing)
-        //       },
-        //       merge(existing, incoming) {
-        //         console.log('merging sending cache', existing, incoming)
-        //       }
         //     }
         //   }
         // }
