@@ -37,7 +37,7 @@ const FETCH_MESSAGES = gql(/* GraphQL */ `
 `);
 
 const SUBSCRIBE_TO_CHAT_ROOM = gql(/* GraphQL */ `
-  subscription SubscribeToChatRoom1 {
+  subscription SubscribeToChatRoom {
     updateChatRoom {
       ...ChatMessageFragment
     }

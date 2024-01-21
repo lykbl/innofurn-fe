@@ -114,10 +114,10 @@ function createClient() {
       }),
     });
     links.push(
+      pusherLink,
       asyncAuthLink,
       removeTypeNamesLink,
       errorLink,
-      pusherLink,
       httpLink,
     );
   }
