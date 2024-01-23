@@ -59,14 +59,13 @@ function NotificationsControls() {
 
 interface IUserControlsProps {
   user: User | null;
-  setUser: (user: User | null) => void;
 }
-function UserControls({ user, setUser }: IUserControlsProps) {
-  const [logoutAsync] = useMutation(LOGOUT_MUTATION);
+function UserControls({ user }: IUserControlsProps) {
+  const [logoutAsync, { client }] = useMutation(LOGOUT_MUTATION);
 
   const handleLogout = async () => {
     await logoutAsync();
-    setUser(null);
+    client.resetStore();
   };
 
   return (
@@ -136,13 +135,7 @@ const CHECK_ME = gql(/* GraphQL */ `
 `);
 function AuthControls() {
   const { data, loading } = useQuery(CHECK_ME);
-  const { user, setUser } = useContext(AuthContext);
-
-  useEffect(() => {
-    if (data?.checkMe) {
-      setUser(data.checkMe);
-    }
-  }, [loading]);
+  const user = data?.checkMe ?? null;
 
   if (loading) {
     return <>Controls skeleton</>;
@@ -153,7 +146,7 @@ function AuthControls() {
       <NotificationsControls />
       <CartControls />
       {user ? (
-        <UserControls setUser={setUser} user={user} />
+        <UserControls user={user} />
       ) : (
         <GuestControls />
       )}

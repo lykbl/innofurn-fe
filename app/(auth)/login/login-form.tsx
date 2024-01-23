@@ -38,7 +38,7 @@ export function LoginForm() {
     },
     mode: "onSubmit",
   });
-  const [mutateAsync, { loading }] = useMutation(LOGIN_MUTATION);
+  const [mutateAsync, { loading, client }] = useMutation(LOGIN_MUTATION);
   const router = useRouter();
   const { toast } = useToast();
 
