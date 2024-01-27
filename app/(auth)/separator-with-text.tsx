@@ -7,9 +7,9 @@ export function SeparatorWithText({ children }: { children: React.ReactNode }) {
         <span className="w-full border-t" />
       </div>
       <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-background px-2 text-muted-foreground">
-            { children }
-          </span>
+        <span className="bg-background px-2 text-muted-foreground">
+          {children}
+        </span>
       </div>
     </div>
   );

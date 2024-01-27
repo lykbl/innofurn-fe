@@ -1,36 +1,43 @@
-'use client';
+"use client";
 
 import { Button } from "@/components/ui/common/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Check, ChevronsUpDown } from "lucide-react";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/command";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "@/components/ui/command";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 
 const DEPARTMENTS = [
   {
-    label: 'Outside',
-    value: 'outside',
+    label: "Outside",
+    value: "outside",
   },
   {
-    label: 'Kitchen',
-    value: 'kitchen',
+    label: "Kitchen",
+    value: "kitchen",
   },
   {
-    label: 'Bathroom',
-    value: 'bathroom',
-  }
+    label: "Bathroom",
+    value: "bathroom",
+  },
 ];
 
 export default function Departments() {
-  const [open, setOpen] = useState(false)
-  const [value, setValue] = useState("")
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState("");
 
   return (
-    <Popover
-      open={open}
-      onOpenChange={setOpen}
-    >
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
           variant="outline"
@@ -54,14 +61,14 @@ export default function Departments() {
                 key={framework.value}
                 value={framework.value}
                 onSelect={(currentValue) => {
-                  setValue(currentValue === value ? "" : currentValue)
-                  setOpen(false)
+                  setValue(currentValue === value ? "" : currentValue);
+                  setOpen(false);
                 }}
               >
                 <Check
                   className={cn(
                     "mr-2 h-4 w-4",
-                    value === framework.value ? "opacity-100" : "opacity-0"
+                    value === framework.value ? "opacity-100" : "opacity-0",
                   )}
                 />
                 {framework.label}

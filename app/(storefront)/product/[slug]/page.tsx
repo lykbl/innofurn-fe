@@ -6,8 +6,8 @@ import Reviews from "@/(storefront)/product/reviews";
 
 export default function Page() {
   return (
-    <div className='flex flex-col gap-2'>
-      <Breadcrumb/>
+    <div className="flex flex-col gap-2">
+      <Breadcrumb />
       <ProductDetails />
       <MoreFromCreator />
       <Reviews />

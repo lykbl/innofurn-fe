@@ -1,8 +1,4 @@
-import {
-  ReactNode,
-  useState,
-  useCallback, useEffect, useRef
-} from "react";
+import { ReactNode, useState, useCallback, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import clsx from "clsx";
 import Items from "@/components/ui/animated/carousel/items";
@@ -14,14 +10,17 @@ const carouselVariants = {
     x: `-${offset}px`,
   }),
 };
-const calculateMaxWidth = (el: HTMLDivElement) => parseFloat(window.getComputedStyle(el).width);
-const calculateGap = (
-  size: number,
-  maxWidth: number,
-  itemWidth: number
-) => (maxWidth - (size * itemWidth)) / (size - 1);
-const calculateScroll = (currentIndex: number, gap: number, itemWidth: number) => currentIndex * (itemWidth + gap);
-const calculateMaxItems = (maxWidth: number, itemWidth: number) => Math.floor(maxWidth / itemWidth);
+const calculateMaxWidth = (el: HTMLDivElement) =>
+  parseFloat(window.getComputedStyle(el).width);
+const calculateGap = (size: number, maxWidth: number, itemWidth: number) =>
+  (maxWidth - size * itemWidth) / (size - 1);
+const calculateScroll = (
+  currentIndex: number,
+  gap: number,
+  itemWidth: number,
+) => currentIndex * (itemWidth + gap);
+const calculateMaxItems = (maxWidth: number, itemWidth: number) =>
+  Math.floor(maxWidth / itemWidth);
 interface CarouselProps {
   className?: string;
   items: ReactNode[];
@@ -29,7 +28,12 @@ interface CarouselProps {
   controlsSize?: number;
 }
 
-const Carousel = ({ items, className, itemsPerPage = 0, controlsSize = 24 }: CarouselProps) => {
+const Carousel = ({
+  items,
+  className,
+  itemsPerPage = 0,
+  controlsSize = 24,
+}: CarouselProps) => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [itemWidth, setItemWidth] = useState<number>(0);
   const [maxWidth, setMaxWidth] = useState<number>(0);
@@ -42,29 +46,29 @@ const Carousel = ({ items, className, itemsPerPage = 0, controlsSize = 24 }: Car
 
   const maxItems = calculateMaxItems(maxWidth, itemWidth);
   if (!itemsPerPage || itemsPerPage > maxItems) {
-    itemsPerPage = maxItems
+    itemsPerPage = maxItems;
   }
   const gap = calculateGap(itemsPerPage, maxWidth, itemWidth);
   const scrollOffset = calculateScroll(currentIndex, gap, itemWidth);
 
   const next = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex + itemsPerPage < items.length ? prevIndex + 1 : prevIndex
+      prevIndex + itemsPerPage < items.length ? prevIndex + 1 : prevIndex,
     );
   };
   const prev = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex && prevIndex - 1
-    );
+    setCurrentIndex((prevIndex) => prevIndex && prevIndex - 1);
   };
 
   useEffect(() => {
     if (!parentRef.current) return;
 
-    const resizeObserver = new ResizeObserver(debounce((entries: ResizeObserverEntry[]) => {
-      const parentWrapper = entries[0].target as HTMLDivElement;
-      setMaxWidth(calculateMaxWidth(parentWrapper));
-    }, 500));
+    const resizeObserver = new ResizeObserver(
+      debounce((entries: ResizeObserverEntry[]) => {
+        const parentWrapper = entries[0].target as HTMLDivElement;
+        setMaxWidth(calculateMaxWidth(parentWrapper));
+      }, 500),
+    );
 
     resizeObserver.observe(parentRef.current);
 
@@ -72,16 +76,13 @@ const Carousel = ({ items, className, itemsPerPage = 0, controlsSize = 24 }: Car
   }, [parentRef]);
 
   return (
-    <div
-      className='overflow-x-hidden relative'
-      ref={parentRef}
-    >
+    <div className="overflow-x-hidden relative" ref={parentRef}>
       <motion.div
-        className={clsx('flex', className, {
-          'opacity-0': !maxWidth,
+        className={clsx("flex", className, {
+          "opacity-0": !maxWidth,
         })}
         custom={scrollOffset}
-        animate='scrolled'
+        animate="scrolled"
         variants={carouselVariants}
       >
         <Items
