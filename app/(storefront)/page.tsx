@@ -3,8 +3,6 @@
 import { gql } from "@/gql";
 import { useQuery } from "@apollo/client";
 import BaseLink from "next/link";
-import { useContext } from "react";
-import { AuthContext } from "@/components/contexts/auth-context";
 
 const REVIEWS_QUERY = gql(/* GraphQL */ `
   query UserReviews {
@@ -17,7 +15,6 @@ const REVIEWS_QUERY = gql(/* GraphQL */ `
 `);
 
 export default function Page() {
-  const { user } = useContext(AuthContext);
   const { loading: isLoading, data } = useQuery(REVIEWS_QUERY);
 
   if (isLoading) {
@@ -31,7 +28,7 @@ export default function Page() {
   return (
     <>
       Main page
-      {user && <p>Hello there {user.name}!</p>}
+      {/*{user && <p>Hello there {user.name}!</p>}*/}
       <BaseLink href="/product/test">Product page</BaseLink>
       <div>
         Reviews:

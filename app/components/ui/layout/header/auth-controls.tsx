@@ -2,18 +2,10 @@
 
 import BaseLink from "next/link";
 import ROUTES from "@/lib/routes";
-import {
-  BiBell,
-  BiHeart,
-  BiNotification,
-  BiShoppingBag,
-  BiUser,
-} from "react-icons/bi";
+import { BiBell, BiShoppingBag } from "react-icons/bi";
 import { FragmentType, gql, useFragment } from "@/gql";
 import { Button } from "@/components/ui/common/button";
 import { useMutation, useQuery } from "@apollo/client";
-import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "@/components/contexts/auth-context";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,

@@ -65,7 +65,7 @@ function CheckoutForm() {
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
-        return_url: "http://localhost:3000/checkout/success",
+        return_url: `${process.env.NEXT_PUBLIC_API_HOST}:3000/checkout/success`,
       },
     });
 
@@ -103,7 +103,7 @@ function CheckoutForm() {
 
 export default function Page() {
   const stripePromise = loadStripe(
-    "pk_test_51IqhrJJv2dzDDjOjDBuSb240GhU920A8zQhCXC6NHYexqcippO3F4gH2KDYznj8Pu4uDwBVFi16r8e31MVnTyhbj00ue2Xp0rI",
+    "pk_test_51IqhrJJv2dzDDjOjDBuSb240GhU920A8zQhCXC6NHYexqcippO3F4gH2KDYznj8Pu4uDwBVFi16r8e31MVnTyhbj00ue2Xp0rI", //TODO move to env
   );
   const [clientSecret, setClientSecret] = useState<string>("");
   const appearance = {
@@ -115,7 +115,7 @@ export default function Page() {
       axios.defaults.withCredentials = true;
       axios.defaults.withXSRFToken = true;
       const jsonResult = await axios.post(
-        "http://localhost/api/create-payment-intent",
+        `${process.env.NEXT_PUBLIC_API_HOST}/api/create-payment-intent`,
         {
           billingAddressId: 4,
           shippingAddressId: 4,

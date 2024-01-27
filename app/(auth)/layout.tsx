@@ -6,17 +6,21 @@ import React, { useContext, useEffect } from "react";
 // import { GraphQLClientProvider } from "@/lib/graphql-client-provider";
 import { AuthControls } from "@/(auth)/header";
 import { Button } from "@/components/ui/common/button";
-import { Toaster } from "@/components/ui/toaster";
-import { AuthContext } from "@/components/contexts/auth-context";
 import { redirect } from "next/navigation";
+import { useQuery } from "@apollo/client";
+import {
+  CHECK_ME,
+  CHECK_ME_FRAGMENT,
+} from "@/components/ui/layout/header/auth-controls";
+import { useFragment } from "@/gql";
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const { user } = useContext(AuthContext);
-  if (user) {
+  const { data: checkMeQuery } = useQuery(CHECK_ME);
+  if (checkMeQuery?.checkMe) {
     redirect("/");
   }
 

@@ -4,7 +4,6 @@ import React from "react";
 // import { ReactQueryProvider } from "@/lib/query-provider"; //TODO remove this
 // import { GraphQLClientProvider } from "@/lib/graphql-client-provider";
 import { ApolloWrapper } from "@/lib/apollo/apollo-provider";
-import AuthContextProvider from "@/components/contexts/auth-context";
 import { cn } from "@/lib/utils";
 import { inter } from "@/components/fonts";
 import { Toaster } from "@/components/ui/toaster";
@@ -27,10 +26,8 @@ export default function RootLayout({
         )}
       >
         <ApolloWrapper>
-          {/*<AuthContextProvider>*/}
           {children}
           <Toaster />
-          {/*</AuthContextProvider>*/}
         </ApolloWrapper>
       </body>
     </html>

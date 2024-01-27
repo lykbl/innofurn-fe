@@ -21,25 +21,12 @@ const errorLink = onError(
     if (graphQLErrors) {
       for (let err of graphQLErrors) {
         switch (err.extensions.code) {
-          // Apollo Server sets code to UNAUTHENTICATED
-          // when an AuthenticationError is thrown in a resolver
           case "UNAUTHENTICATED":
-            // Modify the operation context with a new token
-            // const oldHeaders = operation.getContext().headers;
-            // operation.setContext({
-            // headers: {
-            //   ...oldHeaders,
-            //   authorization: getNewToken(),
-            // },
-            // });
-            // Retry the request, returning the new observable
             return forward(operation);
         }
       }
     }
 
-    // To retry on network errors, we recommend the RetryLink
-    // instead of the onError link. This just logs the error.
     if (networkError) {
       console.log(`[Network error]: ${networkError}`);
     }
@@ -54,33 +41,13 @@ const httpLink = new HttpLink({
   preserveHeaderCase: true,
 });
 
-// const authMiddleware = new ApolloLink((operation, forward) => {
-//   // add the authorization to the headers
-//   operation.setContext(({ headers = {} }) => ({
-//     headers: {
-//       ...headers,
-//       'X-XSRF-TOKEN': decodeURIComponent(getCookie("XSRF-TOKEN") || ''),
-//     }
-//   }));
-//   return forward(operation);
-// });
-// const retryLink = new RetryLink({
-//   attempts: {
-//     retryIf: (error, _operation) => {
-//       console.log('retrying', error, _operation)
-//
-//       return !!error;
-//     }
-//   }
-// });
-
 let csrfRequesting = false;
 const asyncAuthLink = setContext(
   () =>
     new Promise(async (success, fail) => {
       if (!cookieSet("XSRF-TOKEN") && !csrfRequesting) {
         csrfRequesting = true;
-        await fetch("http://localhost/sanctum/csrf-cookie", {
+        await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/sanctum/csrf-cookie`, {
           method: "GET",
           credentials: "include",
         });
@@ -107,10 +74,7 @@ function createClient() {
         cluster: process.env.NEXT_PUBLIC_PUSHER_APP_CLUSTER ?? "eu",
         authEndpoint:
           process.env.NEXT_PUBLIC_SUBSCRIPTIONS_AUTH_ENDPOINT ??
-          "http://localhost/graphql/subscriptions/auth",
-        // auth: {
-        //   headers: {},
-        // },
+          `${process.env.NEXT_PUBLIC_API_HOST}/graphql/subscriptions/auth`,
       }),
     });
     links.push(
@@ -122,15 +86,11 @@ function createClient() {
     );
   }
   return new NextSSRApolloClient({
-    // connectToDevTools: true,
     link: from(links),
     defaultOptions: {
       mutate: {
         errorPolicy: "all",
       },
-      // query: {
-      //   notifyOnNetworkStatusChange: true,
-      // },
       watchQuery: {
         notifyOnNetworkStatusChange: true,
       },
@@ -143,19 +103,9 @@ function createClient() {
               // Don't cache separate results based on
               // any of this field's arguments.
               keyArgs: false,
-              // read(existing, { readField }) {
-              // },
-              // merge(existing = {}, incoming, { readField}) {
-              // },
             },
           },
         },
-        // Mutation: {
-        //   fields: {
-        //     sendMessageToChatRoom: {
-        //     }
-        //   }
-        // }
       },
     }),
   });

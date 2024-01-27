@@ -11,10 +11,13 @@ export default function Page() {
     (async () => {
       axios.defaults.withCredentials = true;
       axios.defaults.withXSRFToken = true;
-      axios.post("http://localhost/api/capture-payment-intent", {
-        // paymentIntentId: searchParams.get('payment_intent_client_secret'),
-        paymentIntentId: searchParams.get("payment_intent"),
-      });
+      axios.post(
+        `${process.env.NEXT_PUBLIC_API_HOST}/api/capture-payment-intent`,
+        {
+          // paymentIntentId: searchParams.get('payment_intent_client_secret'),
+          paymentIntentId: searchParams.get("payment_intent"),
+        },
+      );
     })();
   }, []);
 

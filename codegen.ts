@@ -2,7 +2,7 @@ import { CodegenConfig } from "@graphql-codegen/cli";
 import { addTypenameSelectionDocumentTransform } from "@graphql-codegen/client-preset";
 
 const config: CodegenConfig = {
-  schema: "http://localhost/graphql", //,process.env.GRAPHQL_ENDPOINT,
+  schema: process.env.GRAPHQL_ENDPOINT || "http://localhost/graphql",
   documents: ["app/**/*.{ts,tsx}"],
   ignoreNoDocuments: true, // for better experience with the watcher
   generates: {
