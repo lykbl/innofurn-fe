@@ -18,16 +18,20 @@ import {
 } from "@/components/ui/tooltip";
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/common/button";
-import { MutationFunctionOptions } from "@apollo/client";
+import { MutationFunctionOptions, useQuery } from "@apollo/client";
 import { ChatMessageFragment } from "@/components/ui/chat/chat-content";
 import {
   ChatMessageFragmentFragment,
-  ChatMessageStatuses,
+  ChatMessageStatus,
   CreateChatMessageInput,
   Exact,
   SendMessageToChatRoomMutation,
 } from "@/gql/graphql";
 import { makeFragmentData, useFragment } from "@/gql";
+import {
+  CHECK_ME,
+  CHECK_ME_FRAGMENT,
+} from "@/components/ui/layout/header/auth-controls";
 
 interface IChatMessageProps {
   message: ChatMessageFragmentFragment;
@@ -56,8 +60,13 @@ const ChatMessage =
       ref,
     ) => {
       const date = new Date(createdAt);
-      let statusIndicator;
+      const { data: checkMeQuery } = useQuery(CHECK_ME);
+      const userData = useFragment(CHECK_ME_FRAGMENT, checkMeQuery?.checkMe);
+      const customer = userData?.customer;
+      const role = customer?.role;
+      const chatRoomId = Number(customer?.activeChatRoom.id);
 
+      let statusIndicator;
       if (status.toLowerCase() === "error") {
         statusIndicator = (
           <Icons.error className="w-[12px] h-[12px] text-destructive" />
@@ -70,6 +79,11 @@ const ChatMessage =
         statusIndicator = (
           <Icons.check className="w-[12px] h-[12px] text-blue-500" />
         );
+      }
+
+      //TODO is this necessary?
+      if (userData) {
+        return;
       }
 
       return (
@@ -118,6 +132,7 @@ const ChatMessage =
                 await resendMessage({
                   variables: {
                     input: {
+                      chatRoomId,
                       body: body,
                     },
                   },
@@ -128,11 +143,11 @@ const ChatMessage =
                         __typename: "ChatMessage",
                         body: body,
                         createdAt: new Date(),
-                        status: ChatMessageStatuses.PENDING,
+                        status: ChatMessageStatus.PENDING,
                         author: {
                           __typename: "Customer",
-                          name: "You",
-                          role: "CUSTOMER",
+                          name: `${customer?.firstName} ${customer?.lastName}`,
+                          role: customer?.role || "",
                         },
                       },
                       ChatMessageFragment,
@@ -151,7 +166,7 @@ const ChatMessage =
                             newMessage.sendMessageToChatRoom,
                           );
                           const newStatus = errors
-                            ? ChatMessageStatuses.ERROR
+                            ? ChatMessageStatus.ERROR
                             : fragmentData.status;
                           const updatedFragment = cache.updateFragment(
                             {

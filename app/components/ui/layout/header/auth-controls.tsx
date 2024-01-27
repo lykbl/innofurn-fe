@@ -9,7 +9,7 @@ import {
   BiShoppingBag,
   BiUser,
 } from "react-icons/bi";
-import { gql } from "@/gql";
+import { FragmentType, gql, useFragment } from "@/gql";
 import { Button } from "@/components/ui/common/button";
 import { useMutation, useQuery } from "@apollo/client";
 import { useContext, useEffect, useState } from "react";
@@ -24,14 +24,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { TooltipArrow } from "@radix-ui/react-tooltip";
-import { User } from "@/gql/graphql";
 
 const LOGOUT_MUTATION = gql(/* GraphQL */ `
   mutation Logout {
@@ -58,10 +50,11 @@ function NotificationsControls() {
 }
 
 interface IUserControlsProps {
-  user: User | null;
+  user: FragmentType<typeof CHECK_ME_FRAGMENT> | null;
 }
 function UserControls({ user }: IUserControlsProps) {
   const [logoutAsync, { client }] = useMutation(LOGOUT_MUTATION);
+  const userData = useFragment(CHECK_ME_FRAGMENT, user);
 
   const handleLogout = async () => {
     await logoutAsync();
@@ -82,9 +75,11 @@ function UserControls({ user }: IUserControlsProps) {
         <DropdownMenuContent className="w-56" align="end" forceMount>
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
-              <p className="text-sm font-medium leading-none">{user?.name}</p>
+              <p className="text-sm font-medium leading-none">
+                {userData?.name}
+              </p>
               <p className="text-xs leading-none text-muted-foreground">
-                {user?.email}
+                {userData?.email}
               </p>
             </div>
           </DropdownMenuLabel>
@@ -124,12 +119,51 @@ function GuestControls() {
   );
 }
 
-const CHECK_ME = gql(/* GraphQL */ `
+export const ACTIVE_CART_FRAGMENT = gql(/* GraphQL */ `
+  fragment ActiveCartFragment on Cart {
+    id
+    lines {
+      id
+      quantity
+      purchasable {
+        id
+        name
+      }
+    }
+  }
+`);
+export const ACTIVE_CHAT_ROOM_FRAGMENT = gql(/* GraphQL */ `
+  fragment ActiveChatRoomFragment on ChatRoom {
+    id
+    messages {
+      ...ChatMessageFragment
+    }
+  }
+`);
+export const CHECK_ME_FRAGMENT = gql(/* GraphQL */ `
+  fragment CheckMeFragment on User {
+    id
+    email
+    name
+    customer {
+      id
+      fullName
+      firstName
+      lastName
+      role
+      activeCart {
+        ...ActiveCartFragment
+      }
+      activeChatRoom {
+        id
+      }
+    }
+  }
+`);
+export const CHECK_ME = gql(/* GraphQL */ `
   query CheckMe {
     checkMe {
-      id
-      email
-      name
+      ...CheckMeFragment
     }
   }
 `);
@@ -145,11 +179,7 @@ function AuthControls() {
     <div className="flex gap-2 items-center">
       <NotificationsControls />
       <CartControls />
-      {user ? (
-        <UserControls user={user} />
-      ) : (
-        <GuestControls />
-      )}
+      {user ? <UserControls user={user} /> : <GuestControls />}
     </div>
   );
 }

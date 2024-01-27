@@ -13,7 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect, useRef } from "react";
 import { MutationFunctionOptions } from "@apollo/client";
 import {
-  ChatMessageStatuses,
+  ChatMessageStatus,
   CreateChatMessageInput,
   Exact,
   SendMessageToChatRoomMutation,
@@ -62,6 +62,7 @@ const ChatMessageControls = ({
     await sendMessage({
       variables: {
         input: {
+          chatRoomId: 1,
           body: formInput.message,
         },
       },
@@ -72,7 +73,7 @@ const ChatMessageControls = ({
             id: `tmp${tempMessageId}`,
             body: formInput.message,
             createdAt: new Date(),
-            status: ChatMessageStatuses.PENDING,
+            status: ChatMessageStatus.PENDING,
             author: {
               __typename: "Customer",
               name: "You", //TODO use actual name
@@ -102,7 +103,7 @@ const ChatMessageControls = ({
                 optimisticMessageRef.current = makeFragmentData(
                   {
                     ...newMessageData,
-                    status: ChatMessageStatuses.ERROR,
+                    status: ChatMessageStatus.ERROR,
                   },
                   ChatMessageFragment,
                 ); // TODO Add immer or smth?
@@ -119,11 +120,11 @@ const ChatMessageControls = ({
     });
   }
 
-  useEffect(() => {
-    if (isMessageSending && scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-    }
-  }, [isMessageSending]);
+  // useEffect(() => {
+  //   if (isMessageSending && scrollRef.current) {
+  //     scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+  //   }
+  // }, [isMessageSending]);
 
   return (
     <Form {...form}>

@@ -2,14 +2,12 @@ import { gql, useFragment } from "@/gql";
 import ChatMessage from "@/components/ui/chat/chat-message";
 import * as React from "react";
 import { ChatMessageFragment } from "@/components/ui/chat/chat-content";
-import { MutationFunctionOptions, useSuspenseQuery } from "@apollo/client";
 import {
-  startTransition,
-  useEffect,
-  useRef,
-  useState,
-  useTransition,
-} from "react";
+  MutationFunctionOptions,
+  useQuery,
+  useSuspenseQuery,
+} from "@apollo/client";
+import { useEffect, useRef, useState, useTransition } from "react";
 import { useIntersection } from "react-use";
 import {
   CreateChatMessageInput,
@@ -18,13 +16,17 @@ import {
 } from "@/gql/graphql";
 import { Icons } from "@/components/icons";
 import { cn } from "@/lib/utils";
+import {
+  CHECK_ME,
+  CHECK_ME_FRAGMENT,
+} from "@/components/ui/layout/header/auth-controls";
 
 const PAGE_SIZE = 3;
 const STARTING_PAGE = 1;
 
 const FETCH_MESSAGES = gql(/* GraphQL */ `
-  query FetchMessagesInside($first: Int!, $page: Int!) {
-    chatRoomMessages(first: $first, page: $page) {
+  query FetchMessagesInside($chatRoomId: IntID!, $page: Int!, $first: Int!) {
+    chatRoomMessages(chatRoomId: $chatRoomId, page: $page, first: $first) {
       data {
         ...ChatMessageFragment
       }
@@ -37,8 +39,8 @@ const FETCH_MESSAGES = gql(/* GraphQL */ `
 `);
 
 const SUBSCRIBE_TO_CHAT_ROOM = gql(/* GraphQL */ `
-  subscription SubscribeToChatRoom {
-    updateChatRoom {
+  subscription SubscribeToChatRoom($chatRoomId: IntID!) {
+    updateChatRoom(chatRoomId: $chatRoomId) {
       ...ChatMessageFragment
     }
   }
@@ -57,6 +59,9 @@ interface IChatMessagesProps {
 }
 
 const ChatMessages = ({ sendMessage, scrollRef }: IChatMessagesProps) => {
+  const { data: checkMeQuery } = useQuery(CHECK_ME);
+  const userData = useFragment(CHECK_ME_FRAGMENT, checkMeQuery?.checkMe);
+  const chatRoomId = Number(userData?.customer.activeChatRoom.id);
   const {
     data: queryData,
     error: messagesError,
@@ -64,6 +69,7 @@ const ChatMessages = ({ sendMessage, scrollRef }: IChatMessagesProps) => {
     subscribeToMore: subscribeToMoreMessages,
   } = useSuspenseQuery(FETCH_MESSAGES, {
     variables: {
+      chatRoomId,
       page: STARTING_PAGE,
       first: PAGE_SIZE,
     },
@@ -76,6 +82,9 @@ const ChatMessages = ({ sendMessage, scrollRef }: IChatMessagesProps) => {
   useEffect(() => {
     const terminateSubscription = subscribeToMoreMessages({
       document: SUBSCRIBE_TO_CHAT_ROOM,
+      variables: {
+        chatRoomId,
+      },
       updateQuery: (messagesQuery, { subscriptionData }) => {
         const newMessage = subscriptionData.data.updateChatRoom;
         if (!newMessage) {
@@ -84,8 +93,8 @@ const ChatMessages = ({ sendMessage, scrollRef }: IChatMessagesProps) => {
 
         return {
           chatRoomMessages: {
-            ...messagesQuery.chatRoomMessages,
-            data: [newMessage],
+            data: [...messagesQuery.chatRoomMessages.data, newMessage],
+            paginatorInfo: messagesQuery.chatRoomMessages.paginatorInfo,
           },
         };
       },
@@ -113,7 +122,9 @@ const ChatMessages = ({ sendMessage, scrollRef }: IChatMessagesProps) => {
       startTransition(() => {
         fetchMoreMessages({
           variables: {
+            chatRoomId: chatRoomId,
             page: currentPage + 1,
+            first: PAGE_SIZE,
           },
           updateQuery: (prev, { fetchMoreResult }) => {
             if (!fetchMoreResult) {
@@ -151,13 +162,13 @@ const ChatMessages = ({ sendMessage, scrollRef }: IChatMessagesProps) => {
       {/*/!*TODO fix scrollbar flicker fetchMore result is rendered??*!/*/}
       {hasMorePages && (
         <div ref={fetchMoreTriggerRef}>
-          <Icons.spinner className="animate-spin mx-auto"/>
+          <Icons.spinner className="animate-spin mx-auto" />
         </div>
       )}
       {messagesError && (
-        <p className="text-red-500 text-xs mx-auto py-2">
+        <span className="text-red-500 text-xs mx-auto py-2">
           Uh-oh messages could not be loaded!
-        </p>
+        </span>
       )}
       {messages.map((message, i) => {
         const messageData = useFragment(ChatMessageFragment, message);
