@@ -3,7 +3,6 @@ import BaseLink from "next/link";
 import AuthControls from "@/components/ui/layout/header/auth-controls";
 import ROUTES from "@/lib/routes";
 import { Search } from "@/components/ui/common/search";
-import { buttonVariants } from "@/components/ui/common/button";
 
 export default async function Header() {
   return (
@@ -19,6 +18,7 @@ export default async function Header() {
         </div>
         <div className="flex items-center justify-between rounded w-3/5 h-min">
           <Search />
+          <BaseLink href="/search">Search</BaseLink>
         </div>
         <div className="flex items-center w-1/5 justify-end">
           <AuthControls />

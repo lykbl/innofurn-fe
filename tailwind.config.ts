@@ -73,7 +73,8 @@ module.exports = {
       },
       fontSize: {
         "2xs": ["0.7rem", "0.9rem"],
-        "3xs": "0.6rem",
+        "3xs": ["0.6rem", "0.75rem"],
+        "4xs": ["0.5rem", "0.6rem"],
       },
       fontFamily: {
         inter: ["var(--font-inter)"],
