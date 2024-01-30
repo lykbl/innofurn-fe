@@ -1,7 +1,7 @@
 import { gql, useFragment } from "@/gql";
-import ChatMessage from "@/components/ui/chat/chat-message";
+import ChatMessage from "@/components/chat/chat-message";
 import * as React from "react";
-import { ChatMessageFragment } from "@/components/ui/chat/chat-content";
+import { ChatMessageFragment } from "@/components/chat/chat-content";
 import {
   MutationFunctionOptions,
   useQuery,

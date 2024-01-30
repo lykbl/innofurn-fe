@@ -19,7 +19,7 @@ import {
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/common/button";
 import { MutationFunctionOptions, useQuery } from "@apollo/client";
-import { ChatMessageFragment } from "@/components/ui/chat/chat-content";
+import { ChatMessageFragment } from "@/components/chat/chat-content";
 import {
   ChatMessageFragmentFragment,
   ChatMessageStatus,
@@ -82,7 +82,7 @@ const ChatMessage =
       }
 
       //TODO is this necessary?
-      if (userData) {
+      if (!userData) {
         return;
       }
 
@@ -106,7 +106,7 @@ const ChatMessage =
           <CardFooter className="px-2 py-0 text-foreground flex justify-between">
             <TooltipProvider skipDelayDuration={1000}>
               <Tooltip delayDuration={300}>
-                <TooltipTrigger className="text-3xs">
+                <TooltipTrigger className="text-3xs py-1">
                   {new Intl.DateTimeFormat("en-US", {
                     hour: "numeric",
                     minute: "numeric",
