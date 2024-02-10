@@ -18,7 +18,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="h-screen">
+    <html lang="en">
       <body
         className={cn(
           "antialiased text-base flex items-center flex-col",
