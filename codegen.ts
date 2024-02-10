@@ -19,6 +19,9 @@ const config: CodegenConfig = {
           Phone: "number | string",
           Price: "number",
           Rating: "1 | 2 | 3 | 4 | 5",
+          PriceData: "{amount: number, currency: string}",
+          AttributeData: "Record<string, {type: string, value: string|null}>", //TODO add enum key types
+          Map: 'Map',
         },
         enumsAsTypes: false,
         constEnums: true,

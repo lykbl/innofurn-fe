@@ -32,13 +32,26 @@ const RadioGroupItem = React.forwardRef<
         className,
       )}
       {...props}
-    >
-      <RadioGroupPrimitive.Indicator className="flex items-center justify-center">
-        <Circle className="h-2.5 w-2.5 fill-current text-current" />
-      </RadioGroupPrimitive.Indicator>
-    </RadioGroupPrimitive.Item>
+    />
   );
 });
 RadioGroupItem.displayName = RadioGroupPrimitive.Item.displayName;
 
-export { RadioGroup, RadioGroupItem };
+const RadioGroupItemIndicator = React.forwardRef<
+  React.ElementRef<typeof RadioGroupPrimitive.Indicator>,
+  React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Indicator>
+>(({ className, ...props }, ref) => {
+  return (
+    <RadioGroupPrimitive.Indicator
+      ref={ref}
+      className={cn(
+        "flex items-center justify-center",
+        className,
+      )}
+      {...props}
+    />
+  );
+});
+RadioGroupItemIndicator.displayName = RadioGroupPrimitive.Indicator.displayName;
+
+export { RadioGroup, RadioGroupItem, RadioGroupItemIndicator };
