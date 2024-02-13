@@ -22,6 +22,8 @@ const config: CodegenConfig = {
           PriceData: "{amount: number, currency: string}",
           AttributeData: "Record<string, {type: string, value: string|null}>", //TODO add enum key types
           Map: 'Map',
+          DiscountData: "{min_prices: {eur: number|null, usd: number|null}, percentage: string, fixed_value: boolean, fixed_values: {eur: number|null, usd: number|null}}",
+          AggregatedValues: "Array",
         },
         enumsAsTypes: false,
         constEnums: true,
