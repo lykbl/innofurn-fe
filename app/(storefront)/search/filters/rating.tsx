@@ -2,6 +2,7 @@ import { useSearchFilterQuery } from "@/(storefront)/search/filters";
 import { AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { FiveStars } from "@/components/rating/rating-breakdown";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
 const DEFAULT_FILTER = 3;
 
@@ -24,19 +25,34 @@ export const RatingFilter = () => {
     setPreviewRating(index + 1);
   }
 
+  const deleteReviewFilter = () => {
+    urlSearchParams.delete('rating');
+    updateSearchFilter(urlSearchParams);
+    setPreviewRating(DEFAULT_FILTER);
+  }
+
   return (
     <AccordionItem value="rating">
       <AccordionTrigger>Rating</AccordionTrigger>
       <AccordionContent
-        className="flex gap-2 text-xs"
+        className="flex flex-col gap-2"
       >
-        <FiveStars
-          filledStars={previewRating}
-          onMouseOver={handleStarHover}
-          onMouseLeave={resetFilter}
-          onClick={handleStarClick}
-        />
-        {previewRating === 5 ? '' : <span>& Up</span>}
+        <div className="flex gap-2 text-xs">
+          <FiveStars
+            filledStars={previewRating}
+            onMouseOver={handleStarHover}
+            onMouseLeave={resetFilter}
+            onClick={handleStarClick}
+          />
+          {previewRating === 5 ? '' : <span>& Up</span>}
+        </div>
+        <Button
+          className="text-xs"
+          variant="ghost"
+          onClick={deleteReviewFilter}
+        >
+          Any rating
+        </Button>
       </AccordionContent>
     </AccordionItem>
   );

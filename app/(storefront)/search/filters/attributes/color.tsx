@@ -26,7 +26,7 @@ export const ColorFilter = ({ handle, label, values }: { handle: string, label: 
                 {label}
               </TooltipContent>
               <TooltipTrigger
-                onClick={handleColorClick.bind(null, value)}
+                onClick={handleColorClick.bind(null, label)}
               >
                     <span
                       style={{ backgroundColor: value }}

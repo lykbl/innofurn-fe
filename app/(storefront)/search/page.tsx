@@ -1,19 +1,9 @@
 "use client";
 
 import React, { Suspense } from "react";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious
-} from "@/components/ui/pagination";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useSuspenseQuery } from "@apollo/client";
 import { gql } from "@/gql";
-import { ProductOrderBy } from "@/gql/graphql";
+import { ProductFilterInput, ProductOrderBy } from "@/gql/graphql";
 import { Filters, useSearchFilterQuery } from "@/(storefront)/search/filters";
 import { Item } from "@/(storefront)/search/item-card";
 import { OrderBySelect } from "@/(storefront)/search/order-by";
@@ -79,11 +69,19 @@ const FILTERS_QUERY = gql(/* GraphQL */`
 
 const PAGE_SIZE = 20;
 
+//TODO improve
+const SUPPORTED_ATTRIBUTE_FILTERS = [
+  'color',
+  'material',
+];
+
 export default function Page() {
   const { urlSearchParams } = useSearchFilterQuery();
+  const filterInput = buildFilterInput(urlSearchParams);
+
   const { data, fetchMore, error } = useSuspenseQuery(SEARCH_PRODUCTS_QUERY, {
     variables: {
-      filters: {},
+      filters: filterInput,
       page: urlSearchParams.get('page') ? Number(urlSearchParams.get('page')) : 1,
       first: PAGE_SIZE,
       orderBy: ProductOrderBy.PRICE_DESC,
@@ -119,4 +117,29 @@ export default function Page() {
       </div>
     </div>
   );
+}
+
+const buildFilterInput = (urlSearchParams: URLSearchParams): ProductFilterInput => {
+  return {
+    name: urlSearchParams.get('name') || null,
+    attributes: SUPPORTED_ATTRIBUTE_FILTERS.map((handle) => {
+      const values = urlSearchParams.getAll(handle);
+      if (values.length === 0) {
+        return null;
+      }
+
+      return {
+        handle,
+        values,
+      };
+    }).filter(Boolean),
+    price: {
+      min: urlSearchParams.has('minPrice') ? Number(urlSearchParams.get('minPrice')) * 100 : null,
+      max: urlSearchParams.has('maxPrice') ? Number(urlSearchParams.get('maxPrice')) * 100 : null,
+    },
+    rating: {
+      avg: urlSearchParams.has('rating') ? Number(urlSearchParams.get('rating')) : null,
+    },
+    onSale: urlSearchParams.has('onSale'),
+  };
 }
