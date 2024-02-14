@@ -8,7 +8,7 @@ interface IRatingBreakdownProps {
   totalReviews: number;
 }
 
-export const Star = ({ isFilled, withGradient, onMouseOver }) => {
+export const Star = ({ isFilled, withGradient, onMouseOver, onClick }) => {
   return (
     <Icons.star
       className={cn(
@@ -17,11 +17,12 @@ export const Star = ({ isFilled, withGradient, onMouseOver }) => {
       )}
       withGradient={withGradient}
       onMouseOver={onMouseOver}
+      onClick={onClick}
     />
   );
 };
 
-export const FiveStars = ({ filledStars, onMouseOver, onMouseLeave }: { filledStars: number, onMouseOver, onMouseLeave }) => {
+export const FiveStars = ({ filledStars, onMouseOver, onMouseLeave, onClick }: { filledStars: number, onMouseOver, onMouseLeave, onClick }) => {
   return (
     <div className="flex items-center gap-1" onMouseLeave={onMouseLeave}>
       {Array.from({ length: 5 })
@@ -32,6 +33,7 @@ export const FiveStars = ({ filledStars, onMouseOver, onMouseLeave }: { filledSt
             isFilled={index < filledStars}
             withGradient={false}
             onMouseOver={() => onMouseOver(index)}
+            onClick={() => onClick(index)}
           />
         ))}
     </div>

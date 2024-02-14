@@ -13,9 +13,11 @@ import {
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useSuspenseQuery } from "@apollo/client";
 import { gql } from "@/gql";
-import { ProductFilterInput, ProductOrderBy } from "@/gql/graphql";
-import { Filters } from "@/(storefront)/search/filters";
+import { ProductOrderBy } from "@/gql/graphql";
+import { Filters, useSearchFilterQuery } from "@/(storefront)/search/filters";
 import { Item } from "@/(storefront)/search/item-card";
+import { OrderBySelect } from "@/(storefront)/search/order-by";
+import { Paginator } from "@/(storefront)/search/paginator";
 
 const DISCOUNT_FRAGMENT = gql(/* GraphQL */ `
     fragment DiscountFragment on Discount {
@@ -75,12 +77,15 @@ const FILTERS_QUERY = gql(/* GraphQL */`
     }
 `);
 
+const PAGE_SIZE = 20;
+
 export default function Page() {
+  const { urlSearchParams } = useSearchFilterQuery();
   const { data, fetchMore, error } = useSuspenseQuery(SEARCH_PRODUCTS_QUERY, {
     variables: {
       filters: {},
-      page: 1,
-      first: 5,
+      page: urlSearchParams.get('page') ? Number(urlSearchParams.get('page')) : 1,
+      first: PAGE_SIZE,
       orderBy: ProductOrderBy.PRICE_DESC,
     },
   });
@@ -95,23 +100,10 @@ export default function Page() {
       <Filters
         dynamicAttributes={availableFiltersQuery?.filterableAttributesForCollection}
       />
-      {/*<Separator orientation="vertical" />*/}
       <div className="flex flex-col gap-8 w-4/5 pl-4 border-l">
         <div className="flex justify-between items-end">
           <h1 className="text-3xl">Results for: {"Search query"}</h1>
-          <Select>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Sort By" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="featured">Featured</SelectItem>
-              <SelectItem value="avg_review">
-                Average customer review
-              </SelectItem>
-              <SelectItem value="price_desc">Price: High to Low</SelectItem>
-              <SelectItem value="price_asc">Price: Low to High</SelectItem>
-            </SelectContent>
-          </Select>
+          <OrderBySelect />
         </div>
         <div className="grid gap-4 lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-2">
           <Suspense fallback={<div>Loading...</div>}>
@@ -123,30 +115,7 @@ export default function Page() {
             ))}
           </Suspense>
         </div>
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious href="#" />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#" isActive>
-                1
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">2</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">3</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationNext href="#" />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
+        <Paginator />
       </div>
     </div>
   );
