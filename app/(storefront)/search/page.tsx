@@ -16,7 +16,6 @@ import { gql } from "@/gql";
 import { ProductFilterInput, ProductOrderBy } from "@/gql/graphql";
 import { Filters } from "@/(storefront)/search/filters";
 import { Item } from "@/(storefront)/search/item-card";
-import { Separator } from "@/components/ui/common/separator";
 
 const DISCOUNT_FRAGMENT = gql(/* GraphQL */ `
     fragment DiscountFragment on Discount {
@@ -90,12 +89,6 @@ export default function Page() {
       productTypeId: 6,
     }
   });
-
-  const [nameFilter, setNameFilter] = React.useState(null);
-  const [priceFilter, setPriceFilter] = React.useState(null);
-  const [ratingFilter, setRatingFilter] = React.useState(null);
-  const [attributesFilter, setAttributesFilter] = React.useState(null);
-  const [onSaleFilter, setOnSaleFilter] = React.useState(null);
 
   return (
     <div className="flex gap-2 w-full pb-10">
