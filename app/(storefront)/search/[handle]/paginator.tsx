@@ -6,7 +6,7 @@ import {
   PaginationPrevious
 } from "@/components/ui/pagination";
 import React from "react";
-import { useSearchFilterQuery } from "@/(storefront)/search/filters";
+import { useSearchFilterQuery } from "@/(storefront)/search/[handle]/filters";
 
 export const Paginator = () => {
   const { urlSearchParams, updateSearchFilter } = useSearchFilterQuery();

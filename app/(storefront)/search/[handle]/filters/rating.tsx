@@ -1,4 +1,4 @@
-import { useSearchFilterQuery } from "@/(storefront)/search/filters";
+import { useSearchFilterQuery } from "@/(storefront)/search/[handle]/filters";
 import { AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { FiveStars } from "@/components/rating/rating-breakdown";
 import { useState } from "react";
@@ -32,8 +32,14 @@ export const RatingFilter = () => {
   }
 
   return (
-    <AccordionItem value="rating">
-      <AccordionTrigger>Rating</AccordionTrigger>
+    <AccordionItem
+      value="rating"
+    >
+      <AccordionTrigger
+        className="px-1"
+      >
+        Rating
+      </AccordionTrigger>
       <AccordionContent
         className="flex flex-col gap-2"
       >

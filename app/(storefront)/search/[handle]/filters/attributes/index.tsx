@@ -1,7 +1,7 @@
 import { AggregatedIndexedAttributeValue } from "@/gql/graphql";
 import React from "react";
-import { ColorFilter } from "@/(storefront)/search/filters/attributes/color";
-import { MultiSelectFilter } from "@/(storefront)/search/filters/attributes/multi-select";
+import { ColorFilter } from "@/(storefront)/search/[handle]/filters/attributes/color";
+import { MultiSelectFilter } from "@/(storefront)/search/[handle]/filters/attributes/multi-select";
 
 export const AttributeFilters = ({ dynamicAttributes }: { dynamicAttributes: Array<AggregatedIndexedAttributeValue> }) => {
   return (

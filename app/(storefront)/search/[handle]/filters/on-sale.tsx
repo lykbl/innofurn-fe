@@ -1,6 +1,6 @@
 import { Checkbox } from "@/components/ui/common/checkbox";
 import React from "react";
-import { useSearchFilterQuery } from "@/(storefront)/search/filters";
+import { useSearchFilterQuery } from "@/(storefront)/search/[handle]/filters";
 
 export const OnSaleFilter = () => {
   const { urlSearchParams, updateSearchFilter } = useSearchFilterQuery();
@@ -11,10 +11,10 @@ export const OnSaleFilter = () => {
   }
 
   return (
-    <div className="flex items-center space-x-2">
+    <div className="flex items-center space-x-2 px-1">
       <Checkbox
         id="onSale"
-        checked={urlSearchParams.get('onSale') === 'true'}
+        defaultChecked={urlSearchParams.get('onSale') === 'true'}
         onCheckedChange={handleCheckedChange}
       />
       <label

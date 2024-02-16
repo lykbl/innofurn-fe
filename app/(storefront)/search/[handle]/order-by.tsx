@@ -1,4 +1,4 @@
-import { useSearchFilterQuery } from "@/(storefront)/search/filters";
+import { useSearchFilterQuery } from "@/(storefront)/search/[handle]/filters";
 import { ProductOrderBy } from "@/gql/graphql";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import React from "react";

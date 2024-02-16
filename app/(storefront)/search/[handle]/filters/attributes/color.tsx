@@ -1,6 +1,7 @@
 import { AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { useSearchFilterQuery } from "@/(storefront)/search/filters";
+import { useSearchFilterQuery } from "@/(storefront)/search/[handle]/filters";
+import { cn } from "@/lib/utils";
 
 export const ColorFilter = ({ handle, label, values }: { handle: string, label: string, values: Array<{label: string, value: string}> }) => {
   const { urlSearchParams, updateSearchFilter } = useSearchFilterQuery();
@@ -17,8 +18,11 @@ export const ColorFilter = ({ handle, label, values }: { handle: string, label: 
     <AccordionItem
       value={handle}
     >
-      <AccordionTrigger>{label}</AccordionTrigger>
-      <AccordionContent className="flex gap-2">
+      <AccordionTrigger
+        className="px-1"
+      >{label}
+      </AccordionTrigger>
+      <AccordionContent className="flex gap-2 pt-2 px-1">
         {values.map(({ label, value }, index) => (
           <TooltipProvider key={index}>
             <Tooltip>
@@ -28,10 +32,13 @@ export const ColorFilter = ({ handle, label, values }: { handle: string, label: 
               <TooltipTrigger
                 onClick={handleColorClick.bind(null, label)}
               >
-                    <span
-                      style={{ backgroundColor: value }}
-                      className="block rounded-full border border-solid border-black w-6 h-6"
-                    />
+                <span
+                  style={{ backgroundColor: value }}
+                  className={cn(
+                    "block rounded-full border border-solid border-black w-6 h-6",
+                    urlSearchParams.has('color', label) && "outline-1 outline outline-offset-2 outline-black"
+                  )}
+                />
               </TooltipTrigger>
             </Tooltip>
           </TooltipProvider>
