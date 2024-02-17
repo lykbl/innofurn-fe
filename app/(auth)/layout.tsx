@@ -1,18 +1,16 @@
-"use client";
+'use client';
 
-import "@/styles/global.css";
-import React, { useContext, useEffect } from "react";
+import '@/styles/global.css';
+import React from 'react';
 // import { ReactQueryProvider } from "@/lib/query-provider"; //TODO remove this
 // import { GraphQLClientProvider } from "@/lib/graphql-client-provider";
-import { AuthControls } from "@/(auth)/header";
-import { Button } from "@/components/ui/common/button";
-import { redirect } from "next/navigation";
-import { useQuery } from "@apollo/client";
+import { AuthControls } from '@/(auth)/header';
+import { Button } from '@/components/ui/common/button';
+import { redirect } from 'next/navigation';
+import { useQuery } from '@apollo/client';
 import {
   CHECK_ME,
-  CHECK_ME_FRAGMENT,
-} from "@/components/ui/layout/header/auth-controls";
-import { useFragment } from "@/gql";
+} from '@/components/ui/layout/header/auth-controls';
 
 export default function RootLayout({
   children,
@@ -21,7 +19,7 @@ export default function RootLayout({
 }) {
   const { data: checkMeQuery } = useQuery(CHECK_ME);
   if (checkMeQuery?.checkMe) {
-    redirect("/");
+    redirect('/');
   }
 
   return (

@@ -1,26 +1,26 @@
-import { FaGithub, FaGoogle, FaLinkedin } from "react-icons/fa";
-import { ReactElement } from "react";
-import BaseLink from "next/link";
-import ROUTES from "@/lib/routes";
-import { buttonVariants } from "@/components/ui/common/button";
+import { FaGithub, FaGoogle, FaLinkedin } from 'react-icons/fa';
+import { ReactElement } from 'react';
+import BaseLink from 'next/link';
+import ROUTES from '@/lib/routes';
+import { buttonVariants } from '@/components/ui/common/button';
 
 export const OAuthButtons = () => {
   const size = 16;
   const types = [
     {
       icon: <FaGithub size={size} />,
-      label: "GitHub",
-      type: "github",
+      label: 'GitHub',
+      type: 'github',
     },
     {
       icon: <FaGoogle size={size} />,
-      label: "Google",
-      type: "google",
+      label: 'Google',
+      type: 'google',
     },
     {
       icon: <FaLinkedin size={size} />,
-      label: "LinkedIn",
-      type: "linkedin",
+      label: 'LinkedIn',
+      type: 'linkedin',
     },
   ];
 
@@ -33,8 +33,8 @@ export const OAuthButtons = () => {
         ) => (
           <BaseLink
             className={buttonVariants({
-              variant: "default",
-              className: "gap-2",
+              variant: 'default',
+              className: 'gap-2',
             })}
             key={i}
             href={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${ROUTES.OAUTH_REDIRECT}/${config.type}`}

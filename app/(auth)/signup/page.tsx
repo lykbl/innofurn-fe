@@ -5,11 +5,11 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/common/card";
-import { SignupForm } from "@/(auth)/signup/signup-form";
-import { OAuthButtons } from "@/(auth)/oauth-buttons";
-import { TermsAndConditions } from "@/(auth)/terms-and-conditions";
-import { SeparatorWithText } from "@/(auth)/separator-with-text";
+} from '@/components/ui/common/card';
+import { SignupForm } from '@/(auth)/signup/signup-form';
+import { OAuthButtons } from '@/(auth)/oauth-buttons';
+import { TermsAndConditions } from '@/(auth)/terms-and-conditions';
+import { SeparatorWithText } from '@/(auth)/separator-with-text';
 
 export default function Page() {
   return (

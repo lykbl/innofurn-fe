@@ -1,10 +1,10 @@
-"use server";
-"use strict";
+'use server';
+'use strict';
 var __makeTemplateObject =
   (this && this.__makeTemplateObject) ||
   function (cooked, raw) {
     if (Object.defineProperty) {
-      Object.defineProperty(cooked, "raw", { value: raw });
+      Object.defineProperty(cooked, 'raw', { value: raw });
     } else {
       cooked.raw = raw;
     }
@@ -30,7 +30,7 @@ var __awaiter =
       }
       function rejected(value) {
         try {
-          step(generator["throw"](value));
+          step(generator['throw'](value));
         } catch (e) {
           reject(e);
         }
@@ -61,7 +61,7 @@ var __generator =
       g;
     return (
       (g = { next: verb(0), throw: verb(1), return: verb(2) }),
-      typeof Symbol === "function" &&
+      typeof Symbol === 'function' &&
         (g[Symbol.iterator] = function () {
           return this;
         }),
@@ -73,7 +73,7 @@ var __generator =
       };
     }
     function step(op) {
-      if (f) throw new TypeError("Generator is already executing.");
+      if (f) throw new TypeError('Generator is already executing.');
       while ((g && ((g = 0), op[0] && (_ = 0)), _))
         try {
           if (
@@ -81,9 +81,9 @@ var __generator =
             y &&
               (t =
                 op[0] & 2
-                  ? y["return"]
+                  ? y['return']
                   : op[0]
-                    ? y["throw"] || ((t = y["return"]) && t.call(y), 0)
+                    ? y['throw'] || ((t = y['return']) && t.call(y), 0)
                     : y.next) &&
               !(t = t.call(y, op[1])).done)
           )
@@ -143,17 +143,17 @@ var __generator =
       return { value: op[0] ? op[1] : void 0, done: true };
     }
   };
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, '__esModule', { value: true });
 exports.deleteInvoice = exports.updateInvoice = exports.createInvoice = void 0;
-var zod_1 = require("zod");
-var cache_1 = require("next/cache");
-var navigation_1 = require("next/navigation");
-var postgres_1 = require("@vercel/postgres");
+var zod_1 = require('zod');
+var cache_1 = require('next/cache');
+var navigation_1 = require('next/navigation');
+var postgres_1 = require('@vercel/postgres');
 var FormSchema = zod_1.z.object({
   id: zod_1.z.string(),
   customerId: zod_1.z.string(),
   amount: zod_1.z.coerce.number(),
-  status: zod_1.z.enum(["pending", "paid"]),
+  status: zod_1.z.enum(['pending', 'paid']),
   date: zod_1.z.string(),
 });
 var CreateInvoiceValidator = FormSchema.omit({ id: true, date: true });
@@ -164,15 +164,15 @@ function createInvoice(formData) {
       switch (_b.label) {
         case 0:
           (_a = CreateInvoice.parse({
-            customerId: formData.get("customerId"),
-            amount: formData.get("amount"),
-            status: formData.get("status"),
+            customerId: formData.get('customerId'),
+            amount: formData.get('amount'),
+            status: formData.get('status'),
           })),
             (customerId = _a.customerId),
             (amount = _a.amount),
             (status = _a.status);
           amountInCents = amount * 100;
-          date = new Date().toISOString().split("T")[0];
+          date = new Date().toISOString().split('T')[0];
           _b.label = 1;
         case 1:
           _b.trys.push([1, 3, , 4]);
@@ -182,18 +182,18 @@ function createInvoice(formData) {
               templateObject_1 ||
                 (templateObject_1 = __makeTemplateObject(
                   [
-                    "\n      INSERT INTO invoices (customer_id, amount, status, date)\n      VALUES (",
-                    ", ",
-                    ", ",
-                    ", ",
-                    ")\n    ",
+                    '\n      INSERT INTO invoices (customer_id, amount, status, date)\n      VALUES (',
+                    ', ',
+                    ', ',
+                    ', ',
+                    ')\n    ',
                   ],
                   [
-                    "\n      INSERT INTO invoices (customer_id, amount, status, date)\n      VALUES (",
-                    ", ",
-                    ", ",
-                    ", ",
-                    ")\n    ",
+                    '\n      INSERT INTO invoices (customer_id, amount, status, date)\n      VALUES (',
+                    ', ',
+                    ', ',
+                    ', ',
+                    ')\n    ',
                   ],
                 )),
               customerId,
@@ -210,12 +210,12 @@ function createInvoice(formData) {
           return [
             2 /*return*/,
             {
-              message: "Database Error: Failed to Create Invoice.",
+              message: 'Database Error: Failed to Create Invoice.',
             },
           ];
         case 4:
-          (0, cache_1.revalidatePath)("/dashboard/invoices");
-          (0, navigation_1.redirect)("/dashboard/invoices");
+          (0, cache_1.revalidatePath)('/dashboard/invoices');
+          (0, navigation_1.redirect)('/dashboard/invoices');
           return [2 /*return*/];
       }
     });
@@ -230,9 +230,9 @@ function updateInvoice(id, formData) {
       switch (_b.label) {
         case 0:
           (_a = UpdateInvoice.parse({
-            customerId: formData.get("customerId"),
-            amount: formData.get("amount"),
-            status: formData.get("status"),
+            customerId: formData.get('customerId'),
+            amount: formData.get('amount'),
+            status: formData.get('status'),
           })),
             (customerId = _a.customerId),
             (amount = _a.amount),
@@ -247,18 +247,18 @@ function updateInvoice(id, formData) {
               templateObject_2 ||
                 (templateObject_2 = __makeTemplateObject(
                   [
-                    "\n        UPDATE invoices\n        SET customer_id = ",
-                    ", amount = ",
-                    ", status = ",
-                    "\n        WHERE id = ",
-                    "\n      ",
+                    '\n        UPDATE invoices\n        SET customer_id = ',
+                    ', amount = ',
+                    ', status = ',
+                    '\n        WHERE id = ',
+                    '\n      ',
                   ],
                   [
-                    "\n        UPDATE invoices\n        SET customer_id = ",
-                    ", amount = ",
-                    ", status = ",
-                    "\n        WHERE id = ",
-                    "\n      ",
+                    '\n        UPDATE invoices\n        SET customer_id = ',
+                    ', amount = ',
+                    ', status = ',
+                    '\n        WHERE id = ',
+                    '\n      ',
                   ],
                 )),
               customerId,
@@ -274,11 +274,11 @@ function updateInvoice(id, formData) {
           error_2 = _b.sent();
           return [
             2 /*return*/,
-            { message: "Database Error: Failed to Update Invoice." },
+            { message: 'Database Error: Failed to Update Invoice.' },
           ];
         case 4:
-          (0, cache_1.revalidatePath)("/dashboard/invoices");
-          (0, navigation_1.redirect)("/dashboard/invoices");
+          (0, cache_1.revalidatePath)('/dashboard/invoices');
+          (0, navigation_1.redirect)('/dashboard/invoices');
           return [2 /*return*/];
       }
     });
@@ -291,7 +291,7 @@ function deleteInvoice(id) {
     return __generator(this, function (_a) {
       switch (_a.label) {
         case 0:
-          throw new Error("Failed to Delete Invoice");
+          throw new Error('Failed to Delete Invoice');
         case 1:
           _a.trys.push([1, 3, , 4]);
           return [
@@ -299,21 +299,21 @@ function deleteInvoice(id) {
             (0, postgres_1.sql)(
               templateObject_3 ||
                 (templateObject_3 = __makeTemplateObject(
-                  ["DELETE FROM invoices WHERE id = ", ""],
-                  ["DELETE FROM invoices WHERE id = ", ""],
+                  ['DELETE FROM invoices WHERE id = ', ''],
+                  ['DELETE FROM invoices WHERE id = ', ''],
                 )),
               id,
             ),
           ];
         case 2:
           _a.sent();
-          (0, cache_1.revalidatePath)("/dashboard/invoices");
-          return [2 /*return*/, { message: "Deleted Invoice." }];
+          (0, cache_1.revalidatePath)('/dashboard/invoices');
+          return [2 /*return*/, { message: 'Deleted Invoice.' }];
         case 3:
           error_3 = _a.sent();
           return [
             2 /*return*/,
-            { message: "Database Error: Failed to Delete Invoice." },
+            { message: 'Database Error: Failed to Delete Invoice.' },
           ];
         case 4:
           return [2 /*return*/];

@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/common/button";
+import { Button } from '@/components/ui/common/button';
 import {
   FaCcAmex,
   FaCcMastercard,
@@ -7,8 +7,8 @@ import {
   FaInstagram,
   FaTiktok,
   FaYoutube,
-} from "react-icons/fa";
-import { IoIosArrowDown } from "react-icons/io";
+} from 'react-icons/fa';
+import { IoIosArrowDown } from 'react-icons/io';
 
 const MediaIcons = [
   <FaFacebook size={20} />,

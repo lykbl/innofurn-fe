@@ -1,9 +1,8 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
-import ROUTES from "@/lib/routes";
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
-  if (false && ["/login", "/signup"].includes(request.nextUrl.pathname)) {
+  if (false && ['/login', '/signup'].includes(request.nextUrl.pathname)) {
   } else {
     const response = NextResponse.next();
 
@@ -12,5 +11,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: "/login",
+  matcher: '/login',
 };

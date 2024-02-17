@@ -4,28 +4,28 @@ import {
   FormField,
   FormItem,
   FormMessage,
-} from "@/components/ui/common/form";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/common/button";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect, useRef } from "react";
-import { MutationFunctionOptions } from "@apollo/client";
+} from '@/components/ui/common/form';
+import { Textarea } from '@/components/ui/textarea';
+import { Button } from '@/components/ui/common/button';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import React, { useRef } from 'react';
+import { MutationFunctionOptions } from '@apollo/client';
 import {
   ChatMessageStatus,
   CreateChatMessageInput,
   Exact,
   SendMessageToChatRoomMutation,
-} from "@/gql/graphql";
-import { FragmentType, makeFragmentData, useFragment } from "@/gql";
-import { ChatMessageFragment } from "@/components/chat/chat-content";
+} from '@/gql/graphql';
+import { FragmentType, makeFragmentData, useFragment } from '@/gql';
+import { ChatMessageFragment } from '@/components/chat/chat-content';
 
 const FormSchema = z.object({
   message: z
     .string()
-    .min(1, "Message can not be empty.")
-    .max(300, "Message can not be longer than 300 characters."),
+    .min(1, 'Message can not be empty.')
+    .max(300, 'Message can not be longer than 300 characters.'),
 });
 interface IChatMessageControlsProps {
   scrollRef: React.RefObject<HTMLDivElement>;
@@ -51,7 +51,7 @@ const ChatMessageControls = ({
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      message: "",
+      message: '',
     },
   });
   const optimisticMessageRef = useRef<FragmentType<
@@ -69,15 +69,15 @@ const ChatMessageControls = ({
       optimisticResponse: {
         sendMessageToChatRoom: makeFragmentData(
           {
-            __typename: "ChatMessage",
+            __typename: 'ChatMessage',
             id: `tmp${tempMessageId}`,
             body: formInput.message,
             createdAt: new Date(),
             status: ChatMessageStatus.PENDING,
             author: {
-              __typename: "Customer",
-              name: "You", //TODO use actual name
-              role: "CUSTOMER",
+              __typename: 'Customer',
+              name: 'You', //TODO use actual name
+              role: 'CUSTOMER',
             },
           },
           ChatMessageFragment,
@@ -135,7 +135,7 @@ const ChatMessageControls = ({
           setTempMessageId((prev: number) => prev + 1);
         }}
         onKeyDown={(e) => {
-          if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
+          if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
             form.handleSubmit(onSubmit)();
           }
         }}

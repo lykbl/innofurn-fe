@@ -4,15 +4,15 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/common/card";
-import { ScrollArea, ScrollAreaViewport } from "@/components/ui/scroll-area";
-import ChatMessageControls from "@/components/chat/chat-message-controls";
-import { forwardRef, Suspense, useEffect, useRef, useState } from "react";
-import { useMutation, useSuspenseQuery } from "@apollo/client";
-import { gql } from "@/gql";
-import * as React from "react";
-import { Icons } from "@/components/icons";
-import ChatMessages from "@/components/chat/chat-messages";
+} from '@/components/ui/common/card';
+import { ScrollArea, ScrollAreaViewport } from '@/components/ui/scroll-area';
+import ChatMessageControls from '@/components/chat/chat-message-controls';
+import { forwardRef, Suspense, useRef, useState } from 'react';
+import { useMutation } from '@apollo/client';
+import { gql } from '@/gql';
+import * as React from 'react';
+import { Icons } from '@/components/icons';
+import ChatMessages from '@/components/chat/chat-messages';
 
 const SEND_MESSAGE = gql(/* GraphQL */ `
   mutation SendMessageToChatRoom($input: CreateChatMessageInput!) {

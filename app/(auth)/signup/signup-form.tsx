@@ -1,23 +1,23 @@
-"use client";
+'use client';
 
-import * as z from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from "@/components/ui/common/form";
-import { Input } from "@/components/ui/common/input";
-import { Button } from "@/components/ui/common/button";
-import { gql } from "@/gql";
-import { useMutation } from "@apollo/client";
-import { Icons } from "@/components/icons";
-import { useToast } from "@/components/ui/use-toast";
-import { useRouter } from "next/navigation";
-import ROUTES from "@/lib/routes";
+} from '@/components/ui/common/form';
+import { Input } from '@/components/ui/common/input';
+import { Button } from '@/components/ui/common/button';
+import { gql } from '@/gql';
+import { useMutation } from '@apollo/client';
+import { Icons } from '@/components/icons';
+import { useToast } from '@/components/ui/use-toast';
+import { useRouter } from 'next/navigation';
+import ROUTES from '@/lib/routes';
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -35,9 +35,9 @@ export function SignupForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
+      email: '',
     },
-    mode: "onSubmit",
+    mode: 'onSubmit',
   });
   const [mutateAsync, { loading }] = useMutation(SIGNUP_MUTATION);
   const { toast } = useToast();
@@ -55,10 +55,10 @@ export function SignupForm() {
     if (response.errors) {
       toast({
         duration: 5000,
-        type: "foreground",
-        title: "Error",
+        type: 'foreground',
+        title: 'Error',
         description: response.errors[0].message,
-        variant: "destructive",
+        variant: 'destructive',
       });
     }
     if (response.data) {

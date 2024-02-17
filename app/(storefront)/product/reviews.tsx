@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import Input from "@/components/ui/common/input";
-import { Stars } from "@/(storefront)/product/rating";
-import { calculatePercentage } from "@/lib/utils";
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
-import clsx from "clsx";
-import { Button, BUTTON_STYLES } from "@/components/ui/common/button";
-import Image from "next/image";
-import Carousel from "@/components/ui/animated/carousel/carousel";
+import Input from '@/components/ui/common/input';
+import { Stars } from '@/(storefront)/product/rating';
+import { calculatePercentage } from '@/lib/utils';
+import { motion, useInView } from 'framer-motion';
+import { useRef } from 'react';
+import clsx from 'clsx';
+import { Button, BUTTON_STYLES } from '@/components/ui/common/button';
+import Image from 'next/image';
+import Carousel from '@/components/ui/animated/carousel/carousel';
 
 const reviewImages = Array(10)
   .fill(null)
@@ -45,7 +45,7 @@ const RatingBar = ({ fillTo, className }: RatingBarProps) => {
     <div
       ref={ref}
       className={clsx(
-        "border border-blue-600 hover:border-blue-700 rounded drop-shadow-lg bg-gray-100",
+        'border border-blue-600 hover:border-blue-700 rounded drop-shadow-lg bg-gray-100',
         className,
       )}
     >
@@ -122,7 +122,7 @@ const ReviewSample = () => (
       </span>
     </p>
     <p>
-      {" "}
+      {' '}
       use this as a watercolor paint reference book. Each pocket can hold two
       swatches and keeps my variety of paint information readily at hand. I can
       quickly compare colors, light fastness, pigment numbers as the pockets are

@@ -6,14 +6,14 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/components/ui/pagination";
-import React from "react";
-import { useSearchFilterQuery } from "@/(storefront)/search/[handle]/filters";
+} from '@/components/ui/pagination';
+import React from 'react';
+import { useSearchFilterQuery } from '@/(storefront)/search/[handle]/filters';
 
 export const Paginator = () => {
   const { urlSearchParams, updateSearchFilter } = useSearchFilterQuery();
   const handlePageChange = (page: number) => {
-    urlSearchParams.set("page", page.toString());
+    urlSearchParams.set('page', page.toString());
     updateSearchFilter(urlSearchParams);
   };
 

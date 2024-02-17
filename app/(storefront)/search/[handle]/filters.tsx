@@ -1,11 +1,11 @@
-import { Accordion } from "@/components/ui/accordion";
-import React from "react";
-import { AggregatedIndexedAttributeValue } from "@/gql/graphql";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { AttributeFilters } from "@/(storefront)/search/[handle]/filters/attributes";
-import { OnSaleFilter } from "@/(storefront)/search/[handle]/filters/on-sale";
-import { RatingFilter } from "@/(storefront)/search/[handle]/filters/rating";
-import { PriceFilter } from "@/(storefront)/search/[handle]/filters/prices";
+import { Accordion } from '@/components/ui/accordion';
+import React from 'react';
+import { AggregatedIndexedAttributeValue } from '@/gql/graphql';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { AttributeFilters } from '@/(storefront)/search/[handle]/filters/attributes';
+import { OnSaleFilter } from '@/(storefront)/search/[handle]/filters/on-sale';
+import { RatingFilter } from '@/(storefront)/search/[handle]/filters/rating';
+import { PriceFilter } from '@/(storefront)/search/[handle]/filters/prices';
 
 export const Filters = ({
   dynamicAttributes,

@@ -1,4 +1,4 @@
-import { Observable, ApolloLink } from "@apollo/client";
+import { Observable, ApolloLink } from '@apollo/client';
 
 // Inspired by https://github.com/rmosolgo/graphql-ruby/blob/master/javascript_client/src/subscriptions/PusherLink.ts
 //TODO revise this
@@ -61,7 +61,7 @@ class PusherLink extends ApolloLink {
   subscribeToChannel(subscriptionChannel, observer) {
     this.pusher
       .subscribe(subscriptionChannel)
-      .bind("lighthouse-subscription", (payload) => {
+      .bind('lighthouse-subscription', (payload) => {
         if (!payload.more) {
           this.unsubscribeFromChannel(subscriptionChannel);
 
@@ -84,7 +84,7 @@ class PusherLink extends ApolloLink {
 // Turn `subscribe` arguments into an observer-like thing, see getObserver
 // https://github.com/apollographql/subscriptions-transport-ws/blob/master/src/client.ts#L329-L343
 function getObserver(observerOrNext, onError, onComplete) {
-  if (typeof observerOrNext === "function") {
+  if (typeof observerOrNext === 'function') {
     // Duck-type an observer
     return {
       next: (v) => observerOrNext(v),

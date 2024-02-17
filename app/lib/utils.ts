@@ -1,5 +1,5 @@
-import { type ClassValue, clsx } from "clsx";
-import { twMerge } from "tailwind-merge";
+import { type ClassValue, clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 
 export function formatCurrency(value: number) {
   return value;
@@ -14,7 +14,7 @@ export function getCookie(name: string) {
     return null;
   }
 
-  const cookies = document.cookie.split(";");
+  const cookies = document.cookie.split(';');
 
   for (let i = 0; i < cookies.length; i++) {
     const cookie = cookies[i].trim();
@@ -31,7 +31,7 @@ export function cookieSet(name: string) {
     return false;
   }
 
-  const cookies = document.cookie.split(";");
+  const cookies = document.cookie.split(';');
 
   return cookies.some((cookie) => cookie.trim().startsWith(`${name}=`));
 }

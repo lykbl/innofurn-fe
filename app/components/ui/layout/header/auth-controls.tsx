@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import BaseLink from "next/link";
-import ROUTES from "@/lib/routes";
-import { BiBell, BiShoppingBag } from "react-icons/bi";
-import { FragmentType, gql, useFragment } from "@/gql";
-import { Button } from "@/components/ui/common/button";
-import { useMutation, useQuery } from "@apollo/client";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import BaseLink from 'next/link';
+import ROUTES from '@/lib/routes';
+import { BiBell, BiShoppingBag } from 'react-icons/bi';
+import { FragmentType, gql, useFragment } from '@/gql';
+import { Button } from '@/components/ui/common/button';
+import { useMutation, useQuery } from '@apollo/client';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,7 +15,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from '@/components/ui/dropdown-menu';
 
 const LOGOUT_MUTATION = gql(/* GraphQL */ `
   mutation Logout {

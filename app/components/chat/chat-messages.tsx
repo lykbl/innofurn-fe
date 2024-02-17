@@ -1,25 +1,25 @@
-import { gql, useFragment } from "@/gql";
-import ChatMessage from "@/components/chat/chat-message";
-import * as React from "react";
-import { ChatMessageFragment } from "@/components/chat/chat-content";
+import { gql, useFragment } from '@/gql';
+import ChatMessage from '@/components/chat/chat-message';
+import * as React from 'react';
+import { ChatMessageFragment } from '@/components/chat/chat-content';
 import {
   MutationFunctionOptions,
   useQuery,
   useSuspenseQuery,
-} from "@apollo/client";
-import { useEffect, useRef, useState, useTransition } from "react";
-import { useIntersection } from "react-use";
+} from '@apollo/client';
+import { useEffect, useRef, useState, useTransition } from 'react';
+import { useIntersection } from 'react-use';
 import {
   CreateChatMessageInput,
   Exact,
   SendMessageToChatRoomMutation,
-} from "@/gql/graphql";
-import { Icons } from "@/components/icons";
-import { cn } from "@/lib/utils";
+} from '@/gql/graphql';
+import { Icons } from '@/components/icons';
+import { cn } from '@/lib/utils';
 import {
   CHECK_ME,
   CHECK_ME_FRAGMENT,
-} from "@/components/ui/layout/header/auth-controls";
+} from '@/components/ui/layout/header/auth-controls';
 
 const PAGE_SIZE = 3;
 const STARTING_PAGE = 1;

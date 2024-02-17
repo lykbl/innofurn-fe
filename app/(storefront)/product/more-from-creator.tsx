@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import Link from "@/components/ui/common/link";
-import Carousel from "@/components/ui/animated/carousel/carousel";
-import Rating, { RATING_STYLES } from "@/(storefront)/product/rating";
-import { Button, BUTTON_STYLES } from "@/components/ui/common/button";
-import { formatCurrency } from "@/lib/utils";
-import Image from "next/image";
+import Link from '@/components/ui/common/link';
+import Carousel from '@/components/ui/animated/carousel/carousel';
+import Rating, { RATING_STYLES } from '@/(storefront)/product/rating';
+import { Button, BUTTON_STYLES } from '@/components/ui/common/button';
+import { formatCurrency } from '@/lib/utils';
+import Image from 'next/image';
 
 const carouselItems = Array(10)
   .fill(null)

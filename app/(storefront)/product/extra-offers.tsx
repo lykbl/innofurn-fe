@@ -1,9 +1,9 @@
-import { Input } from "@/components/ui/common/input";
+import { Input } from '@/components/ui/common/input';
 
 const offersData = [
   {
-    title: "5 Year Protection Plan For $9.29",
-    details: "Popup whatever blah blah blah",
+    title: '5 Year Protection Plan For $9.29',
+    details: 'Popup whatever blah blah blah',
   },
 ];
 const ExtraOffers = () => {

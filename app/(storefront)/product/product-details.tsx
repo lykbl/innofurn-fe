@@ -1,53 +1,53 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import Variants, { Variant } from "@/(storefront)/product/variants";
-import Image from "next/image";
-import Accordion from "@/components/ui/animated/accordion";
-import Link from "@/components/ui/common/link";
-import { Button } from "@/components/ui/common/button";
-import { FaPhoneAlt } from "react-icons/fa";
-import { IoChatboxEllipses } from "react-icons/io5";
-import Rating, { RATING_STYLES } from "@/(storefront)/product/rating";
-import ExtraOffers from "@/(storefront)/product/extra-offers";
-import CartControl from "@/(storefront)/product/cart-control";
+import React, { useState } from 'react';
+import Variants, { Variant } from '@/(storefront)/product/variants';
+import Image from 'next/image';
+import Accordion from '@/components/ui/animated/accordion';
+import Link from '@/components/ui/common/link';
+import { Button } from '@/components/ui/common/button';
+import { FaPhoneAlt } from 'react-icons/fa';
+import { IoChatboxEllipses } from 'react-icons/io5';
+import Rating, { RATING_STYLES } from '@/(storefront)/product/rating';
+import ExtraOffers from '@/(storefront)/product/extra-offers';
+import CartControl from '@/(storefront)/product/cart-control';
 
 const images = [
   {
-    href: "/sample-kitchen-image-2.jpg",
-    alt: "Image",
+    href: '/sample-kitchen-image-2.jpg',
+    alt: 'Image',
   },
   {
-    href: "/sample-kitchen-image-2.jpg",
-    alt: "Image",
+    href: '/sample-kitchen-image-2.jpg',
+    alt: 'Image',
   },
   {
-    href: "/sample-kitchen-image-2.jpg",
-    alt: "Image",
+    href: '/sample-kitchen-image-2.jpg',
+    alt: 'Image',
   },
   {
-    href: "/sample-kitchen-image-2.jpg",
-    alt: "Image",
+    href: '/sample-kitchen-image-2.jpg',
+    alt: 'Image',
   },
 ];
 
 const variantOptions: Variant[] = [
   {
     id: 1,
-    name: "Black",
-    href: "/sample-kitchen-image-1.jpg",
+    name: 'Black',
+    href: '/sample-kitchen-image-1.jpg',
     price: 10.0,
   },
   {
     id: 2,
-    name: "White",
-    href: "/sample-kitchen-image-1.jpg",
+    name: 'White',
+    href: '/sample-kitchen-image-1.jpg',
     price: 12.0,
   },
   {
     id: 3,
-    name: "Purple",
-    href: "/sample-kitchen-image-1.jpg",
+    name: 'Purple',
+    href: '/sample-kitchen-image-1.jpg',
     price: 8.0,
   },
 ];

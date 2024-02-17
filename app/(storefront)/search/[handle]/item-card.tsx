@@ -1,28 +1,28 @@
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react';
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
-} from "@/components/ui/common/card";
-import { Badge } from "@/components/ui/badge";
-import Image from "next/image";
+} from '@/components/ui/common/card';
+import { Badge } from '@/components/ui/badge';
+import Image from 'next/image';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { Star } from "@/components/rating/rating-breakdown";
-import { Button } from "@/components/ui/common/button";
-import { Icons } from "@/components/icons";
-import { cn } from "@/lib/utils";
-import { FragmentType, useFragment } from "@/gql";
+} from '@/components/ui/tooltip';
+import { Star } from '@/components/rating/rating-breakdown';
+import { Button } from '@/components/ui/common/button';
+import { Icons } from '@/components/icons';
+import { cn } from '@/lib/utils';
+import { FragmentType, useFragment } from '@/gql';
 import {
   DiscountFragment,
   ProductGridFragment,
-} from "@/(storefront)/search/[handle]/products-grid";
-import { AttributeData, ColorAttributeData, PriceData } from "@/gql/scalars";
+} from '@/(storefront)/search/[handle]/products-grid';
+import { ColorAttributeData, PriceData } from '@/gql/scalars';
 
 export const Item = ({
   productFragment,
@@ -82,10 +82,10 @@ export const Item = ({
           className="rounded-t w-full"
           width={225}
           height={225}
-          alt={selectedProductVariant.images[0]?.name || "Not found"}
+          alt={selectedProductVariant.images[0]?.name || 'Not found'}
           src={
             selectedProductVariant.images[0]?.originalUrl ||
-            "/sample-kitchen-image-2.jpg"
+            '/sample-kitchen-image-2.jpg'
           }
         />
       </CardHeader>
@@ -122,7 +122,7 @@ export const Item = ({
         <ExtraBadge label={extraLabel} />
         <div className="ml-auto flex gap-1 justify-end">
           <Button className="p-2 h-7 w-7">
-            <Icons.heart className={cn(isFavorite ? "fill-white" : "")} />
+            <Icons.heart className={cn(isFavorite ? 'fill-white' : '')} />
           </Button>
           <Button className="p-2 h-7 w-7">
             <Icons.cart className="fill-primary" />
@@ -214,7 +214,7 @@ const ColorOptions = ({
 const applyDiscount = (
   price: number,
   discountFragment: FragmentType<typeof DiscountFragment>,
-  currency: "usd" | "eur" = "eur",
+  currency: 'usd' | 'eur' = 'eur',
 ) => {
   const discount = useFragment(DiscountFragment, discountFragment);
   if (discount.data.fixed_value) {

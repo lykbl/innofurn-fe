@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { gql } from "@/gql";
-import { useQuery } from "@apollo/client";
-import BaseLink from "next/link";
+import { gql } from '@/gql';
+import { useQuery } from '@apollo/client';
+import BaseLink from 'next/link';
 
 const REVIEWS_QUERY = gql(/* GraphQL */ `
   query UserReviews {

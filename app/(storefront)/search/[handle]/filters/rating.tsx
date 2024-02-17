@@ -1,19 +1,19 @@
-import { useSearchFilterQuery } from "@/(storefront)/search/[handle]/filters";
+import { useSearchFilterQuery } from '@/(storefront)/search/[handle]/filters';
 import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion";
-import { FiveStars } from "@/components/rating/rating-breakdown";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
+} from '@/components/ui/accordion';
+import { FiveStars } from '@/components/rating/rating-breakdown';
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
 
 const DEFAULT_FILTER = 3;
 
 export const RatingFilter = () => {
   const { urlSearchParams, updateSearchFilter } = useSearchFilterQuery();
   const selectedRatingFilter =
-    Number(urlSearchParams.get("rating")) || DEFAULT_FILTER;
+    Number(urlSearchParams.get('rating')) || DEFAULT_FILTER;
   const [previewRating, setPreviewRating] =
     useState<number>(selectedRatingFilter);
 
@@ -26,13 +26,13 @@ export const RatingFilter = () => {
   };
 
   const handleStarClick = (index: number) => {
-    urlSearchParams.set("rating", String(index + 1));
+    urlSearchParams.set('rating', String(index + 1));
     updateSearchFilter(urlSearchParams);
     setPreviewRating(index + 1);
   };
 
   const deleteReviewFilter = () => {
-    urlSearchParams.delete("rating");
+    urlSearchParams.delete('rating');
     updateSearchFilter(urlSearchParams);
     setPreviewRating(DEFAULT_FILTER);
   };
@@ -48,7 +48,7 @@ export const RatingFilter = () => {
             onMouseLeave={resetFilter}
             onClick={handleStarClick}
           />
-          {previewRating === 5 ? "" : <span>& Up</span>}
+          {previewRating === 5 ? '' : <span>& Up</span>}
         </div>
         <Button
           className="text-xs"

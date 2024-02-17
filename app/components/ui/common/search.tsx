@@ -1,5 +1,4 @@
-import { Input } from "@/components/ui/common/input";
-import Departments from "@/components/ui/layout/header/search-bar";
+import { Input } from '@/components/ui/common/input';
 
 export function Search() {
   return (

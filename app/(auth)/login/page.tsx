@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Card,
@@ -7,11 +7,11 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/common/card";
-import { LoginForm } from "@/(auth)/login/login-form";
-import { OAuthButtons } from "@/(auth)/oauth-buttons";
-import { TermsAndConditions } from "@/(auth)/terms-and-conditions";
-import { SeparatorWithText } from "@/(auth)/separator-with-text";
+} from '@/components/ui/common/card';
+import { LoginForm } from '@/(auth)/login/login-form';
+import { OAuthButtons } from '@/(auth)/oauth-buttons';
+import { TermsAndConditions } from '@/(auth)/terms-and-conditions';
+import { SeparatorWithText } from '@/(auth)/separator-with-text';
 export default function Page() {
   return (
     <Card className="w-1/2 p-2">

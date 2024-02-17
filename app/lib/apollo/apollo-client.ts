@@ -1,10 +1,10 @@
-import { from, HttpLink } from "@apollo/client";
+import { from, HttpLink } from '@apollo/client';
 import {
   NextSSRInMemoryCache,
   NextSSRApolloClient,
-} from "@apollo/experimental-nextjs-app-support/ssr";
-import { registerApolloClient } from "@apollo/experimental-nextjs-app-support/rsc";
-import { onError } from "@apollo/client/link/error";
+} from '@apollo/experimental-nextjs-app-support/ssr';
+import { registerApolloClient } from '@apollo/experimental-nextjs-app-support/rsc';
+import { onError } from '@apollo/client/link/error';
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {

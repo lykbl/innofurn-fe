@@ -2,16 +2,16 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion";
-import { Input } from "@/components/ui/common/input";
-import { Dispatch, SetStateAction, useState } from "react";
-import { useSearchFilterQuery } from "@/(storefront)/search/[handle]/filters";
-import { useDebounce } from "react-use";
+} from '@/components/ui/accordion';
+import { Input } from '@/components/ui/common/input';
+import { Dispatch, SetStateAction, useState } from 'react';
+import { useSearchFilterQuery } from '@/(storefront)/search/[handle]/filters';
+import { useDebounce } from 'react-use';
 
 const MAX_PRICE = 999999;
 const MIN_PRICE = 0;
-const MIN_PRICE_HANDLE = "minPrice";
-const MAX_PRICE_HANDLE = "maxPrice";
+const MIN_PRICE_HANDLE = 'minPrice';
+const MAX_PRICE_HANDLE = 'maxPrice';
 
 export const PriceFilter = () => {
   const [error, setError] = useState<string | null>(null);
@@ -45,7 +45,7 @@ type NumberInputPropsType = {
 };
 const NumberInput = ({ handle, error, setError }: NumberInputPropsType) => {
   const { urlSearchParams, updateSearchFilter } = useSearchFilterQuery();
-  const defaultValue = urlSearchParams.get(handle) || "";
+  const defaultValue = urlSearchParams.get(handle) || '';
   const [value, setValue] = useState<string>(defaultValue);
 
   useDebounce(
@@ -66,7 +66,7 @@ const NumberInput = ({ handle, error, setError }: NumberInputPropsType) => {
   const handleInputChange = (key: string, value: string) => {
     const intValue = Number(value);
     if (intValue >= MAX_PRICE || intValue < MIN_PRICE) {
-      setError("Invalid value");
+      setError('Invalid value');
 
       return;
     }
@@ -81,14 +81,14 @@ const NumberInput = ({ handle, error, setError }: NumberInputPropsType) => {
       intValue &&
       intValue >= compareValue
     ) {
-      setError("Min price must be less than max price");
+      setError('Min price must be less than max price');
     } else if (
       key === MAX_PRICE_HANDLE &&
       compareValue &&
       intValue &&
       intValue <= compareValue
     ) {
-      setError("Max price must be greater than min price");
+      setError('Max price must be greater than min price');
     } else {
       setError(null);
     }
@@ -98,7 +98,7 @@ const NumberInput = ({ handle, error, setError }: NumberInputPropsType) => {
 
   return (
     <div className="flex flex-col gap-2">
-      <label>{handle === MIN_PRICE_HANDLE ? "Min" : "Max"}</label>
+      <label>{handle === MIN_PRICE_HANDLE ? 'Min' : 'Max'}</label>
       <Input
         id={handle}
         type="number"

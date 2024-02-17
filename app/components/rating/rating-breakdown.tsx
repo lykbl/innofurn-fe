@@ -1,6 +1,6 @@
-import { Icons } from "@/components/icons";
-import { cn } from "@/lib/utils";
-import React from "react";
+import { Icons } from '@/components/icons';
+import { cn } from '@/lib/utils';
+import React from 'react';
 
 //TODO add breakdown
 type StarProps = {
@@ -18,8 +18,8 @@ export const Star = ({
   return (
     <Icons.star
       className={cn(
-        "stroke-primary w-[16px] h-[16px] cursor-pointer",
-        isFilled ? "text-primary" : "text-white",
+        'stroke-primary w-[16px] h-[16px] cursor-pointer',
+        isFilled ? 'text-primary' : 'text-white',
       )}
       withGradient={withGradient}
       onMouseOver={onMouseOver}

@@ -1,18 +1,17 @@
-import { useSearchFilterQuery } from "@/(storefront)/search/[handle]/filters";
-import { useSuspenseQuery } from "@apollo/client";
+import { useSearchFilterQuery } from '@/(storefront)/search/[handle]/filters';
+import { useSuspenseQuery } from '@apollo/client';
 import {
   ProductFilterInput,
-  ProductGridFragmentFragment,
   ProductOrderBy,
-} from "@/gql/graphql";
-import { Item } from "@/(storefront)/search/[handle]/item-card";
-import React from "react";
-import { FragmentType, gql, useFragment } from "@/gql";
+} from '@/gql/graphql';
+import { Item } from '@/(storefront)/search/[handle]/item-card';
+import React from 'react';
+import { FragmentType, gql, useFragment } from '@/gql';
 
 const PAGE_SIZE = 20;
 
 //TODO improve
-const SUPPORTED_ATTRIBUTE_FILTERS = ["color", "material"];
+const SUPPORTED_ATTRIBUTE_FILTERS = ['color', 'material'];
 
 export const DiscountFragment = gql(/* GraphQL */ `
   fragment DiscountFragment on Discount {
@@ -84,13 +83,13 @@ export const ProductsGrid = () => {
   const { data, error } = useSuspenseQuery(SearchProductsQuery, {
     variables: {
       filters: filterInput,
-      page: urlSearchParams.get("page")
-        ? Number(urlSearchParams.get("page"))
+      page: urlSearchParams.get('page')
+        ? Number(urlSearchParams.get('page'))
         : 1,
       first: PAGE_SIZE,
       orderBy: ProductOrderBy.PRICE_DESC,
     },
-    fetchPolicy: "no-cache",
+    fetchPolicy: 'no-cache',
   });
 
   return data?.findProducts.data.map(
@@ -107,7 +106,7 @@ const buildFilterInput = (
   urlSearchParams: URLSearchParams,
 ): ProductFilterInput => {
   return {
-    name: urlSearchParams.get("name") || null,
+    name: urlSearchParams.get('name') || null,
     attributes: SUPPORTED_ATTRIBUTE_FILTERS.map((handle) => {
       const values = urlSearchParams.getAll(handle);
 
@@ -117,18 +116,18 @@ const buildFilterInput = (
       };
     }).filter(Boolean),
     price: {
-      min: urlSearchParams.has("minPrice")
-        ? Number(urlSearchParams.get("minPrice")) * 100
+      min: urlSearchParams.has('minPrice')
+        ? Number(urlSearchParams.get('minPrice')) * 100
         : null,
-      max: urlSearchParams.has("maxPrice")
-        ? Number(urlSearchParams.get("maxPrice")) * 100
+      max: urlSearchParams.has('maxPrice')
+        ? Number(urlSearchParams.get('maxPrice')) * 100
         : null,
     },
     rating: {
-      avg: urlSearchParams.has("rating")
-        ? Number(urlSearchParams.get("rating"))
+      avg: urlSearchParams.has('rating')
+        ? Number(urlSearchParams.get('rating'))
         : null,
     },
-    onSale: urlSearchParams.has("onSale"),
+    onSale: urlSearchParams.has('onSale'),
   };
 };

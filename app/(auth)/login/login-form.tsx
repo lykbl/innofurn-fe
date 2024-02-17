@@ -1,23 +1,23 @@
-"use client";
+'use client';
 
-import * as z from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from "@/components/ui/common/form";
-import { Input } from "@/components/ui/common/input";
-import { Button } from "@/components/ui/common/button";
-import { useMutation } from "@apollo/client";
-import { gql } from "@/gql";
-import { useRouter } from "next/navigation";
-import { Icons } from "@/components/icons";
-import { useToast } from "@/components/ui/use-toast";
-import ROUTES from "@/lib/routes";
+} from '@/components/ui/common/form';
+import { Input } from '@/components/ui/common/input';
+import { Button } from '@/components/ui/common/button';
+import { useMutation } from '@apollo/client';
+import { gql } from '@/gql';
+import { useRouter } from 'next/navigation';
+import { Icons } from '@/components/icons';
+import { useToast } from '@/components/ui/use-toast';
+import ROUTES from '@/lib/routes';
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -34,11 +34,11 @@ export function LoginForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
+      email: '',
     },
-    mode: "onSubmit",
+    mode: 'onSubmit',
   });
-  const [mutateAsync, { loading, client }] = useMutation(LOGIN_MUTATION);
+  const [mutateAsync, { loading }] = useMutation(LOGIN_MUTATION);
   const router = useRouter();
   const { toast } = useToast();
 
@@ -54,10 +54,10 @@ export function LoginForm() {
     if (response.errors) {
       toast({
         duration: 5000,
-        type: "foreground",
-        title: "Error",
+        type: 'foreground',
+        title: 'Error',
         description: response.errors[0].message,
-        variant: "destructive",
+        variant: 'destructive',
       });
     }
     if (response.data) {

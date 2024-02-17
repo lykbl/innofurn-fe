@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
-import { BiChat } from "react-icons/bi";
-import { Button } from "@/components/ui/common/button";
-import ChatContent from "@/components/chat/chat-content";
-import { useLockBodyScroll, useToggle } from "react-use";
-import { useState } from "react";
+} from '@/components/ui/popover';
+import { BiChat } from 'react-icons/bi';
+import { Button } from '@/components/ui/common/button';
+import ChatContent from '@/components/chat/chat-content';
+import { useLockBodyScroll } from 'react-use';
+import { useState } from 'react';
 
 export default function Chat() {
   const [windowScrollLocked, setWindowScrollLocked] = useState(false);

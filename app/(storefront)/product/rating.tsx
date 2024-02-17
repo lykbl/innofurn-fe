@@ -1,10 +1,10 @@
-import Link from "@/components/ui/common/link";
-import { TiStarHalfOutline } from "react-icons/ti";
-import clsx from "clsx";
+import Link from '@/components/ui/common/link';
+import { TiStarHalfOutline } from 'react-icons/ti';
+import clsx from 'clsx';
 
 export enum RATING_STYLES {
-  WITH_RATING = "RATING",
-  WITH_REVIEWS = "REVIEWS",
+  WITH_RATING = 'RATING',
+  WITH_REVIEWS = 'REVIEWS',
 }
 
 interface RatingProps {
@@ -37,7 +37,7 @@ const Rating = ({
   totalRating,
 }: RatingProps) => {
   return (
-    <div className={clsx("flex items-center", className)}>
+    <div className={clsx('flex items-center', className)}>
       <div className="mr-2 flex">
         {/*//TODO fix stars*/}
         {Array(5)

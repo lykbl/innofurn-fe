@@ -2,9 +2,9 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion";
-import { Checkbox } from "@/components/ui/common/checkbox";
-import { useSearchFilterQuery } from "@/(storefront)/search/[handle]/filters";
+} from '@/components/ui/accordion';
+import { Checkbox } from '@/components/ui/common/checkbox';
+import { useSearchFilterQuery } from '@/(storefront)/search/[handle]/filters';
 
 export const MultiSelectFilter = ({
   handle,

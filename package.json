@@ -3,6 +3,7 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev",
+    "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
     "prettier": "prettier --write --ignore-unknown .",
     "prettier:check": "prettier --check --ignore-unknown .",
     "start": "next start",
@@ -80,6 +81,7 @@
     "eslint-config-next": "^14.0.0",
     "eslint-config-prettier": "9.0.0",
     "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-unused-imports": "^3.1.0",
     "graphql-codegen-apollo-next-ssr": "^1.7.4",
     "patch-package": "^8.0.0",
     "prettier": "3.1.1",
