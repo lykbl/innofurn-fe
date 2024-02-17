@@ -1,35 +1,73 @@
-import { Discount, Product } from "@/gql/graphql";
-import React from "react";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/common/card";
+import React, { useEffect } from "react";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/common/card";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { Star } from "@/components/rating/rating-breakdown";
 import { Button } from "@/components/ui/common/button";
 import { Icons } from "@/components/icons";
 import { cn } from "@/lib/utils";
+import { FragmentType, useFragment } from "@/gql";
+import {
+  DiscountFragment,
+  ProductGridFragment,
+} from "@/(storefront)/search/[handle]/products-grid";
+import { AttributeData, ColorAttributeData, PriceData } from "@/gql/scalars";
 
-export const Item = ({ product }: { product: Product }) => {
-  if (!product || !product.variants) {
-    return null;
-  }
+export const Item = ({
+  productFragment,
+}: {
+  productFragment: FragmentType<typeof ProductGridFragment>;
+}) => {
+  const product = useFragment(ProductGridFragment, productFragment);
+  const test = product.variants[0];
 
-  const [selectedProductVariant, setSelectedProductVariant] = React.useState(product.variants[0]);
+  const [selectedProductVariant, setSelectedProductVariant] = React.useState(
+    product.variants[0],
+  );
   const averageRating = selectedProductVariant.averageRating || 0;
   const reviewsCount = selectedProductVariant.reviewsCount || 0;
   const isFavorite = selectedProductVariant.isFavorite;
   const isFeatured = selectedProductVariant.isFeatured;
   const onSale = false;
-  const colorOptions = product.variants?.map(variant => {
-    if (!variant.attributes) {
-      return;
-    }
+  const colorOptions: Array<ColorOption> = product.variants
+    ?.map((variant) => {
+      if (!variant.attributes?.color) {
+        return;
+      }
 
-    return variant.attributes?.color;
-  }).filter(Boolean);
+      return {
+        variantId: variant.id,
+        color: variant.attributes?.color,
+      };
+    })
+    .filter((item): item is ColorOption => item !== undefined);
   const extraLabel = selectedProductVariant.attributes?.material?.en; //TODO specify lang
   const discounts = [...product.discounts, ...selectedProductVariant.discounts];
   const priceData = selectedProductVariant.prices?.[0].price;
+
+  useEffect(() => {
+    setSelectedProductVariant(product.variants[0]);
+  }, [product.variants]);
+
+  const previewVariantColor = (variantId: number) => {
+    const previewVariant = product.variants?.find(
+      (variant) => variant.id === variantId,
+    );
+    if (previewVariant) {
+      setSelectedProductVariant(previewVariant);
+    }
+  };
 
   return (
     <Card className="max-h flex flex-col">
@@ -44,12 +82,18 @@ export const Item = ({ product }: { product: Product }) => {
           className="rounded-t w-full"
           width={225}
           height={225}
-          alt={selectedProductVariant.images[0]?.name || 'Not found'}
-          src={selectedProductVariant.images[0]?.originalUrl || '/sample-kitchen-image-2.jpg'}
+          alt={selectedProductVariant.images[0]?.name || "Not found"}
+          src={
+            selectedProductVariant.images[0]?.originalUrl ||
+            "/sample-kitchen-image-2.jpg"
+          }
         />
       </CardHeader>
       <CardContent className="flex flex-col justify-end p-2 bg-muted h-full">
-        <ColorOptions values={colorOptions} />
+        <ColorOptions
+          values={colorOptions}
+          previewVariantColor={previewVariantColor}
+        />
         <p>{selectedProductVariant.name || product.name}</p>
         <TooltipProvider>
           <Tooltip>
@@ -72,10 +116,7 @@ export const Item = ({ product }: { product: Product }) => {
             <TooltipContent></TooltipContent>
           </Tooltip>
         </TooltipProvider>
-        <Price
-          priceData={priceData}
-          discounts={discounts}
-        />
+        <Price priceData={priceData} discounts={discounts} />
       </CardContent>
       <CardFooter className="bg-muted p-2 flex items-stretch">
         <ExtraBadge label={extraLabel} />
@@ -97,55 +138,67 @@ const ExtraBadge = ({ label }: { label: string }) => {
     return;
   }
 
-  return (
-    <Badge className="text-xs">{label}</Badge>
-  );
-}
+  return <Badge className="text-xs">{label}</Badge>;
+};
 
-const Price = ({ priceData, discounts }: { priceData, discounts: Array<Discount> }) => {
+const Price = ({
+  priceData,
+  discounts,
+}: {
+  priceData: PriceData;
+  discounts: Array<FragmentType<typeof DiscountFragment>>;
+}) => {
   const isOnSale = discounts.length > 0;
-  const { currencyCode, currencyName, format, value } = priceData;
+  const { currencyCode, currencyName, format, amount } = priceData;
   const bestDiscount = discounts.reduce((prev, current) => {
-    return applyDiscount(value, prev) > applyDiscount(value, current) ? prev : current;
+    return applyDiscount(amount, prev) > applyDiscount(amount, current)
+      ? prev
+      : current;
   });
-  const bestDiscountAmount = (applyDiscount(value, bestDiscount) / 100).toFixed(2);
+  const bestDiscountAmount = (
+    applyDiscount(amount, bestDiscount) / 100
+  ).toFixed(2);
 
   const centsToDollars = (cents: number) => {
     return cents / 100;
-  }
+  };
   return (
     <div>
       {isOnSale ? (
         <div className="flex items-center gap-2">
-              <span className="text-xl">
-                {bestDiscountAmount}$
-              </span>
-          <p className="text-xs line-through text-foreground/50">
-            {format}
-          </p>
+          <span className="text-xl">{bestDiscountAmount}$</span>
+          <p className="text-xs line-through text-foreground/50">{format}</p>
         </div>
       ) : (
         <p className="text-xl">{format}</p>
       )}
     </div>
   );
-}
+};
 
-const ColorOptions = ({ values }: { values: Array<string> }) => {
+type ColorOption = { variantId: number; color: ColorAttributeData };
+const ColorOptions = ({
+  values,
+  previewVariantColor,
+}: {
+  values: Array<ColorOption>;
+  previewVariantColor: (variantId: number) => void;
+}) => {
   if (!values.length) {
     return;
   }
 
   return (
     <div className="flex gap-2 justify-center py-2">
-      {
-        values.sort((a, b) => a.label > b.label).map(({ label, value }, index) => (
+      {values
+        .sort((a, b) => a.color.label.localeCompare(b.color.label))
+        .map(({ variantId, color: { label, value } }, index) => (
           <TooltipProvider key={index}>
             <Tooltip>
-              <TooltipContent>
-                {label}
-              </TooltipContent>
-              <TooltipTrigger>
+              <TooltipContent>{label}</TooltipContent>
+              <TooltipTrigger
+                onMouseEnter={() => previewVariantColor(variantId)}
+              >
                 <span
                   style={{ backgroundColor: value }}
                   className="block rounded-full border border-solid border-black w-4 h-4"
@@ -153,18 +206,23 @@ const ColorOptions = ({ values }: { values: Array<string> }) => {
               </TooltipTrigger>
             </Tooltip>
           </TooltipProvider>
-        ))
-      }
+        ))}
     </div>
   );
-}
+};
 
-const applyDiscount = (price: number, discount: Discount, currency: 'USD' | 'EUR' = 'USD') => {
+const applyDiscount = (
+  price: number,
+  discountFragment: FragmentType<typeof DiscountFragment>,
+  currency: "usd" | "eur" = "eur",
+) => {
+  const discount = useFragment(DiscountFragment, discountFragment);
   if (discount.data.fixed_value) {
-    const fixedAmountOff = Number(discount.data.fixed_values[currency]) * 100 || 0;
+    const fixedAmountOff =
+      Number(discount.data.fixed_values[currency]) * 100 || 0;
     return price - fixedAmountOff;
   }
 
   const percentageOff = price * 0.01 * Number(discount.data.percentage); //TODO cast to number BE
   return price - percentageOff;
-}
+};

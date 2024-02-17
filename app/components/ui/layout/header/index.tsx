@@ -18,7 +18,7 @@ export default async function Header() {
         </div>
         <div className="flex items-center justify-between rounded w-3/5 h-min">
           <Search />
-          <BaseLink href="/search">Search</BaseLink>
+          <BaseLink href="/search/6">Search</BaseLink>
         </div>
         <div className="flex items-center w-1/5 justify-end">
           <AuthControls />

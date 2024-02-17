@@ -6,15 +6,15 @@ export const OnSaleFilter = () => {
   const { urlSearchParams, updateSearchFilter } = useSearchFilterQuery();
 
   const handleCheckedChange = (checked: boolean) => {
-    urlSearchParams.set('onSale', String(checked));
-    updateSearchFilter(urlSearchParams)
-  }
+    urlSearchParams.set("onSale", String(checked));
+    updateSearchFilter(urlSearchParams);
+  };
 
   return (
     <div className="flex items-center space-x-2 px-1">
       <Checkbox
         id="onSale"
-        defaultChecked={urlSearchParams.get('onSale') === 'true'}
+        defaultChecked={urlSearchParams.get("onSale") === "true"}
         onCheckedChange={handleCheckedChange}
       />
       <label
@@ -25,4 +25,4 @@ export const OnSaleFilter = () => {
       </label>
     </div>
   );
-}
+};

@@ -1,9 +1,11 @@
 import {
   Pagination,
-  PaginationContent, PaginationEllipsis,
+  PaginationContent,
+  PaginationEllipsis,
   PaginationItem,
-  PaginationLink, PaginationNext,
-  PaginationPrevious
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
 } from "@/components/ui/pagination";
 import React from "react";
 import { useSearchFilterQuery } from "@/(storefront)/search/[handle]/filters";
@@ -11,7 +13,7 @@ import { useSearchFilterQuery } from "@/(storefront)/search/[handle]/filters";
 export const Paginator = () => {
   const { urlSearchParams, updateSearchFilter } = useSearchFilterQuery();
   const handlePageChange = (page: number) => {
-    urlSearchParams.set('page', page.toString());
+    urlSearchParams.set("page", page.toString());
     updateSearchFilter(urlSearchParams);
   };
 
@@ -22,10 +24,7 @@ export const Paginator = () => {
           <PaginationPrevious href="#" />
         </PaginationItem>
         <PaginationItem>
-          <PaginationLink
-            href="#"
-            isActive
-          >
+          <PaginationLink href="#" isActive>
             1
           </PaginationLink>
         </PaginationItem>
@@ -44,4 +43,4 @@ export const Paginator = () => {
       </PaginationContent>
     </Pagination>
   );
-}
+};

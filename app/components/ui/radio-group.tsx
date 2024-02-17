@@ -44,10 +44,7 @@ const RadioGroupItemIndicator = React.forwardRef<
   return (
     <RadioGroupPrimitive.Indicator
       ref={ref}
-      className={cn(
-        "flex items-center justify-center",
-        className,
-      )}
+      className={cn("flex items-center justify-center", className)}
       {...props}
     />
   );

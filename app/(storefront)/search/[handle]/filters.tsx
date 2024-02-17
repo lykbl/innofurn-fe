@@ -7,21 +7,22 @@ import { OnSaleFilter } from "@/(storefront)/search/[handle]/filters/on-sale";
 import { RatingFilter } from "@/(storefront)/search/[handle]/filters/rating";
 import { PriceFilter } from "@/(storefront)/search/[handle]/filters/prices";
 
-export const Filters = ({ dynamicAttributes }: { dynamicAttributes: Array<AggregatedIndexedAttributeValue> }) => {
+export const Filters = ({
+  dynamicAttributes,
+}: {
+  dynamicAttributes: Array<AggregatedIndexedAttributeValue>;
+}) => {
   return (
     <div className="flex flex-col w-1/5 pr-4 gap-4">
       <Accordion type="multiple">
-        <AttributeFilters
-          dynamicAttributes={dynamicAttributes}
-        />
-        <RatingFilter
-        />
+        <AttributeFilters dynamicAttributes={dynamicAttributes} />
+        <RatingFilter />
         <PriceFilter />
       </Accordion>
       <OnSaleFilter />
     </div>
   );
-}
+};
 
 export const useSearchFilterQuery = () => {
   const searchParams = useSearchParams();
@@ -30,11 +31,11 @@ export const useSearchFilterQuery = () => {
   const pathname = usePathname();
 
   const updateSearchFilter = (urlSearchParams: URLSearchParams) => {
-    replace(`${pathname}?${urlSearchParams.toString()}`, { scroll: false })
-  }
+    replace(`${pathname}?${urlSearchParams.toString()}`, { scroll: false });
+  };
 
   return {
     urlSearchParams,
     updateSearchFilter,
   };
-}
+};

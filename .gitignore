@@ -37,5 +37,6 @@ yarn-error.log*
 next-env.d.ts
 .idea
 app/gql/*
+!app/gql/scalars.ts
 app/styles/output.css
 tailwind.config.js

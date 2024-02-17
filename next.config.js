@@ -8,11 +8,11 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'innofurn-products.s3.eu-west-1.amazonaws.com',
+        protocol: "https",
+        hostname: "innofurn-products.s3.eu-west-1.amazonaws.com",
         // port: '',
-        pathname: '/**',
-      }
+        pathname: "/**",
+      },
     ],
   },
 };
