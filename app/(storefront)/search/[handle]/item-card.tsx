@@ -23,6 +23,7 @@ import {
   ProductGridFragment,
 } from '@/(storefront)/search/[handle]/products-grid';
 import { ColorAttributeData, PriceData } from '@/gql/scalars';
+import { Discount } from "@/gql/graphql";
 
 export const Item = ({
   productFragment,
@@ -30,8 +31,6 @@ export const Item = ({
   productFragment: FragmentType<typeof ProductGridFragment>;
 }) => {
   const product = useFragment(ProductGridFragment, productFragment);
-  const test = product.variants[0];
-
   const [selectedProductVariant, setSelectedProductVariant] = React.useState(
     product.variants[0],
   );
@@ -40,7 +39,7 @@ export const Item = ({
   const isFavorite = selectedProductVariant.isFavorite;
   const isFeatured = selectedProductVariant.isFeatured;
   const onSale = false;
-  const colorOptions: Array<ColorOption> = product.variants
+  const colorOptions = product.variants
     ?.map((variant) => {
       if (!variant.attributes?.color) {
         return;
@@ -149,22 +148,14 @@ const Price = ({
   discounts: Array<FragmentType<typeof DiscountFragment>>;
 }) => {
   const isOnSale = discounts.length > 0;
-  const { currencyCode, currencyName, format, amount } = priceData;
-  const bestDiscount = discounts.reduce((prev, current) => {
-    return applyDiscount(amount, prev) > applyDiscount(amount, current)
-      ? prev
-      : current;
-  });
-  const bestDiscountAmount = (
-    applyDiscount(amount, bestDiscount) / 100
-  ).toFixed(2);
-
-  const centsToDollars = (cents: number) => {
-    return cents / 100;
-  };
+  const { format, value } = priceData;
+  const bestDiscountAmount = calculateBestDiscountAmount(discounts, value);
+  // const centsToDollars = (cents: number) => {
+  //   return cents / 100;
+  // };
   return (
     <div>
-      {isOnSale ? (
+      {isOnSale && bestDiscountAmount ? (
         <div className="flex items-center gap-2">
           <span className="text-xl">{bestDiscountAmount}$</span>
           <p className="text-xs line-through text-foreground/50">{format}</p>
@@ -175,6 +166,22 @@ const Price = ({
     </div>
   );
 };
+
+const calculateBestDiscountAmount = (discounts: Array<FragmentType<typeof DiscountFragment>>, value: number) => {
+  if (!discounts.length) {
+    return 0;
+  }
+
+  const bestDiscount = discounts.reduce((prev, current) => {
+    return applyDiscount(value, prev) > applyDiscount(value, current)
+      ? prev
+      : current;
+  });
+
+  const bestDiscountAmount = (
+    applyDiscount(value, bestDiscount) / 100
+  ).toFixed(2);
+}
 
 type ColorOption = { variantId: number; color: ColorAttributeData };
 const ColorOptions = ({

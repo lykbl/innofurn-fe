@@ -1,5 +1,5 @@
 export type PriceData = {
-  amount: number;
+  value: number;
   format: number;
   currencyCode: string;
   currencyName: string;
