@@ -1,12 +1,9 @@
-import { useSearchFilterQuery } from '@/(storefront)/search/[handle]/filters';
-import { useSuspenseQuery } from '@apollo/client';
-import {
-  ProductFilterInput,
-  ProductOrderBy,
-} from '@/gql/graphql';
-import { Item } from '@/(storefront)/search/[handle]/item-card';
-import React from 'react';
-import { FragmentType, gql, useFragment } from '@/gql';
+import { useSearchFilterQuery } from "@/(storefront)/search/[handle]/filters";
+import { useSuspenseQuery } from "@apollo/client";
+import { ProductFilterInput, ProductOrderBy } from "@/gql/graphql";
+import { Item } from "@/(storefront)/search/[handle]/item-card";
+import React from "react";
+import { FragmentType, gql, useFragment } from "@/gql";
 
 const PAGE_SIZE = 20;
 
@@ -87,7 +84,7 @@ export const ProductsGrid = () => {
         ? Number(urlSearchParams.get('page'))
         : 1,
       first: PAGE_SIZE,
-      orderBy: ProductOrderBy.PRICE_DESC,
+      orderBy: urlSearchParams.get('orderBy')?.toUpperCase() as ProductOrderBy || ProductOrderBy.PRICE_DESC,
     },
     fetchPolicy: 'no-cache',
   });
@@ -108,11 +105,9 @@ const buildFilterInput = (
   return {
     name: urlSearchParams.get('name') || null,
     attributes: SUPPORTED_ATTRIBUTE_FILTERS.map((handle) => {
-      const values = urlSearchParams.getAll(handle);
-
       return {
         handle,
-        values,
+        values: urlSearchParams.getAll(handle),
       };
     }).filter(Boolean),
     price: {
@@ -128,6 +123,6 @@ const buildFilterInput = (
         ? Number(urlSearchParams.get('rating'))
         : null,
     },
-    onSale: urlSearchParams.has('onSale'),
+    onSaleOnly: urlSearchParams.has('onSaleOnly'),
   };
 };

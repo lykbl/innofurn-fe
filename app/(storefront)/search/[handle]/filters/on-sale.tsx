@@ -4,9 +4,10 @@ import { useSearchFilterQuery } from '@/(storefront)/search/[handle]/filters';
 
 export const OnSaleFilter = () => {
   const { urlSearchParams, updateSearchFilter } = useSearchFilterQuery();
+  const filterKey = 'onSaleOnly'; //TS ?
 
   const handleCheckedChange = (checked: boolean) => {
-    urlSearchParams.set('onSale', String(checked));
+    checked ? urlSearchParams.set(filterKey, 'true') : urlSearchParams.delete(filterKey);
     updateSearchFilter(urlSearchParams);
   };
 
@@ -14,7 +15,7 @@ export const OnSaleFilter = () => {
     <div className="flex items-center space-x-2 px-1">
       <Checkbox
         id="onSale"
-        defaultChecked={urlSearchParams.get('onSale') === 'true'}
+        defaultChecked={urlSearchParams.get(filterKey) === 'true'}
         onCheckedChange={handleCheckedChange}
       />
       <label

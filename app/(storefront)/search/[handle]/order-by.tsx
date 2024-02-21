@@ -23,9 +23,9 @@ export const OrderBySelect = () => {
         <SelectValue placeholder="Sort By" />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="avg_review">Average customer review</SelectItem>
-        <SelectItem value="price_desc">Price: High to Low</SelectItem>
-        <SelectItem value="price_asc">Price: Low to High</SelectItem>
+        <SelectItem value={ProductOrderBy.AVG_RATING}>Average customer review</SelectItem>
+        <SelectItem value={ProductOrderBy.PRICE_DESC}>Price: High to Low</SelectItem>
+        <SelectItem value={ProductOrderBy.PRICE_ASC}>Price: Low to High</SelectItem>
       </SelectContent>
     </Select>
   );
