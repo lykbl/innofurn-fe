@@ -1,28 +1,27 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/common/button";
-import { useKey, useToggle } from "react-use";
-import { BiMenu } from "react-icons/bi";
-import { IoIosArrowForward } from "react-icons/io";
-import clsx from "clsx";
-import Accordion from "@/components/ui/animated/accordion";
-import { AnimatePresence, motion } from "framer-motion";
+import { Button } from '@/components/ui/common/button';
+import { useKey, useToggle } from 'react-use';
+import { BiMenu } from 'react-icons/bi';
+import { IoIosArrowForward } from 'react-icons/io';
+import Accordion from '@/components/ui/animated/accordion';
+import { AnimatePresence, motion } from 'framer-motion';
 
 const categories = [
-  "Shop By Department",
-  "Programs & Promos",
+  'Shop By Department',
+  'Programs & Promos',
   // ...Array(5).fill(null).map((_, index) => 'Test_' + index)
 ];
 const subcategories = [
-  "Beds",
-  "Chairs",
-  "Tables",
+  'Beds',
+  'Chairs',
+  'Tables',
   // ...Array(20).fill('Accordion')
 ];
 
 enum VARIANT_NAMES {
-  OPEN = "open",
-  CLOSED = "closed",
+  OPEN = 'open',
+  CLOSED = 'closed',
 }
 
 function SubcategoryButton({ subheader }: { subheader: string }) {
@@ -39,7 +38,7 @@ function SubcategoryButton({ subheader }: { subheader: string }) {
 
 export default function CategoriesMenu() {
   const [isOpen, toggle] = useToggle(false);
-  useKey("Escape", () => toggle(false));
+  useKey('Escape', () => toggle(false));
 
   return (
     <>
@@ -57,8 +56,8 @@ export default function CategoriesMenu() {
               animate={VARIANT_NAMES.OPEN}
               exit={VARIANT_NAMES.CLOSED}
               variants={{
-                [VARIANT_NAMES.OPEN]: { transform: "translateX(0%)" },
-                [VARIANT_NAMES.CLOSED]: { transform: "translateX(-100%)" },
+                [VARIANT_NAMES.OPEN]: { transform: 'translateX(0%)' },
+                [VARIANT_NAMES.CLOSED]: { transform: 'translateX(-100%)' },
               }}
               className="bg-gray-50 w-2/12 min-h-screen h-full relative z-20"
             >
@@ -100,8 +99,8 @@ export default function CategoriesMenu() {
               animate={VARIANT_NAMES.OPEN}
               exit={VARIANT_NAMES.CLOSED}
               variants={{
-                [VARIANT_NAMES.OPEN]: { background: "rgba(0,0,0,0.5)" },
-                [VARIANT_NAMES.CLOSED]: { background: "rgba(0,0,0,0.0)" },
+                [VARIANT_NAMES.OPEN]: { background: 'rgba(0,0,0,0.5)' },
+                [VARIANT_NAMES.CLOSED]: { background: 'rgba(0,0,0,0.0)' },
               }}
               className="cursor-pointer w-full h-full left-0 top-0 fixed"
               onClick={toggle}

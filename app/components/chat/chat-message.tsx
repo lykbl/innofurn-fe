@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Card,
@@ -6,32 +6,32 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/common/card";
-import { cn } from "@/lib/utils";
-import React, { forwardRef } from "react";
-import { Separator } from "@/components/ui/common/separator";
+} from '@/components/ui/common/card';
+import { cn } from '@/lib/utils';
+import React, { forwardRef } from 'react';
+import { Separator } from '@/components/ui/common/separator';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { Icons } from "@/components/icons";
-import { Button } from "@/components/ui/common/button";
-import { MutationFunctionOptions, useQuery } from "@apollo/client";
-import { ChatMessageFragment } from "@/components/ui/chat/chat-content";
+} from '@/components/ui/tooltip';
+import { Icons } from '@/components/icons';
+import { Button } from '@/components/ui/common/button';
+import { MutationFunctionOptions, useQuery } from '@apollo/client';
+import { ChatMessageFragment } from '@/components/chat/chat-content';
 import {
   ChatMessageFragmentFragment,
   ChatMessageStatus,
   CreateChatMessageInput,
   Exact,
   SendMessageToChatRoomMutation,
-} from "@/gql/graphql";
-import { makeFragmentData, useFragment } from "@/gql";
+} from '@/gql/graphql';
+import { makeFragmentData, useFragment } from '@/gql';
 import {
   CHECK_ME,
   CHECK_ME_FRAGMENT,
-} from "@/components/ui/layout/header/auth-controls";
+} from '@/components/ui/layout/header/auth-controls';
 
 interface IChatMessageProps {
   message: ChatMessageFragmentFragment;
@@ -67,11 +67,11 @@ const ChatMessage =
       const chatRoomId = Number(customer?.activeChatRoom.id);
 
       let statusIndicator;
-      if (status.toLowerCase() === "error") {
+      if (status.toLowerCase() === 'error') {
         statusIndicator = (
           <Icons.error className="w-[12px] h-[12px] text-destructive" />
         );
-      } else if (status.toLowerCase() === "pending") {
+      } else if (status.toLowerCase() === 'pending') {
         statusIndicator = (
           <Icons.spinner className="animate-spin w-[12px] h-[12px]" />
         );
@@ -82,15 +82,15 @@ const ChatMessage =
       }
 
       //TODO is this necessary?
-      if (userData) {
+      if (!userData) {
         return;
       }
 
       return (
         <Card
           className={cn(
-            "w-[40%] relative",
-            author.role === "admin" ? "mr-auto" : "ml-auto",
+            'w-[40%] relative',
+            author.role === 'admin' ? 'mr-auto' : 'ml-auto',
             className,
           )}
           ref={ref}
@@ -106,27 +106,27 @@ const ChatMessage =
           <CardFooter className="px-2 py-0 text-foreground flex justify-between">
             <TooltipProvider skipDelayDuration={1000}>
               <Tooltip delayDuration={300}>
-                <TooltipTrigger className="text-3xs">
-                  {new Intl.DateTimeFormat("en-US", {
-                    hour: "numeric",
-                    minute: "numeric",
+                <TooltipTrigger className="text-3xs py-1">
+                  {new Intl.DateTimeFormat('en-US', {
+                    hour: 'numeric',
+                    minute: 'numeric',
                   }).format(date)}
                 </TooltipTrigger>
                 <TooltipContent className="text-3xs px-2 py-1">
-                  {new Intl.DateTimeFormat("en-US", {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric",
-                    hour: "numeric",
-                    minute: "numeric",
-                    second: "numeric",
+                  {new Intl.DateTimeFormat('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    second: 'numeric',
                   }).format(date)}
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
             {statusIndicator}
           </CardFooter>
-          {status.toLowerCase() === "error" && (
+          {status.toLowerCase() === 'error' && (
             <Button
               onClick={async () => {
                 await resendMessage({
@@ -140,14 +140,14 @@ const ChatMessage =
                     sendMessageToChatRoom: makeFragmentData(
                       {
                         id: id,
-                        __typename: "ChatMessage",
+                        __typename: 'ChatMessage',
                         body: body,
                         createdAt: new Date(),
                         status: ChatMessageStatus.PENDING,
                         author: {
-                          __typename: "Customer",
+                          __typename: 'Customer',
                           name: `${customer?.firstName} ${customer?.lastName}`,
-                          role: customer?.role || "",
+                          role: customer?.role || '',
                         },
                       },
                       ChatMessageFragment,

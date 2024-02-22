@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   PaymentElement,
   useStripe,
   useElements,
   Elements,
-} from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
-import axios from "axios";
+} from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+import axios from 'axios';
 
 function CheckoutForm() {
   const stripe = useStripe();
@@ -23,7 +23,7 @@ function CheckoutForm() {
     }
 
     const clientSecret = new URLSearchParams(window.location.search).get(
-      "payment_intent_client_secret",
+      'payment_intent_client_secret',
     );
 
     if (!clientSecret) {
@@ -34,17 +34,17 @@ function CheckoutForm() {
       .retrievePaymentIntent(clientSecret)
       .then(({ paymentIntent }: any) => {
         switch (paymentIntent.status) {
-          case "succeeded":
-            setMessage("Payment succeeded!");
+          case 'succeeded':
+            setMessage('Payment succeeded!');
             break;
-          case "processing":
-            setMessage("Your payment is processing.");
+          case 'processing':
+            setMessage('Your payment is processing.');
             break;
-          case "requires_payment_method":
-            setMessage("Your payment was not successful, please try again.");
+          case 'requires_payment_method':
+            setMessage('Your payment was not successful, please try again.');
             break;
           default:
-            setMessage("Something went wrong.");
+            setMessage('Something went wrong.');
             break;
         }
       });
@@ -74,17 +74,17 @@ function CheckoutForm() {
     // your `return_url`. For some payment methods like iDEAL, your customer will
     // be redirected to an intermediate site first to authorize the payment, then
     // redirected to the `return_url`.
-    if (error.type === "card_error" || error.type === "validation_error") {
+    if (error.type === 'card_error' || error.type === 'validation_error') {
       setMessage(error.message);
     } else {
-      setMessage("An unexpected error occurred.");
+      setMessage('An unexpected error occurred.');
     }
 
     setIsLoading(false);
   };
 
   const paymentElementOptions: any = {
-    layout: "tabs",
+    layout: 'tabs',
   };
 
   return (
@@ -92,7 +92,7 @@ function CheckoutForm() {
       <PaymentElement id="payment-element" options={paymentElementOptions} />
       <button disabled={isLoading || !stripe || !elements} id="submit">
         <span id="button-text">
-          {isLoading ? <div className="spinner" id="spinner"></div> : "Pay now"}
+          {isLoading ? <div className="spinner" id="spinner"></div> : 'Pay now'}
         </span>
       </button>
       {/* Show any error or success messages */}
@@ -103,11 +103,11 @@ function CheckoutForm() {
 
 export default function Page() {
   const stripePromise = loadStripe(
-    "pk_test_51IqhrJJv2dzDDjOjDBuSb240GhU920A8zQhCXC6NHYexqcippO3F4gH2KDYznj8Pu4uDwBVFi16r8e31MVnTyhbj00ue2Xp0rI", //TODO move to env
+    'pk_test_51IqhrJJv2dzDDjOjDBuSb240GhU920A8zQhCXC6NHYexqcippO3F4gH2KDYznj8Pu4uDwBVFi16r8e31MVnTyhbj00ue2Xp0rI', //TODO move to env
   );
-  const [clientSecret, setClientSecret] = useState<string>("");
+  const [clientSecret, setClientSecret] = useState<string>('');
   const appearance = {
-    theme: "stripe",
+    theme: 'stripe',
   };
 
   useEffect(() => {
@@ -119,7 +119,7 @@ export default function Page() {
         {
           billingAddressId: 4,
           shippingAddressId: 4,
-          shippingMethodId: "BASDEL",
+          shippingMethodId: 'BASDEL',
         },
       );
       console.log(jsonResult.data);

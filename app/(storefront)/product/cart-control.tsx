@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { IoIosHeart, IoIosHome } from "react-icons/io";
-import { BiMinus, BiPlus, BiSearchAlt } from "react-icons/bi";
-import { useState } from "react";
-import { Button, BUTTON_STYLES } from "@/components/ui/common/button";
-import { formatCurrency } from "@/lib/utils";
+import { IoIosHeart } from 'react-icons/io';
+import { BiMinus, BiPlus, BiSearchAlt } from 'react-icons/bi';
+import { useState } from 'react';
+import { Button, BUTTON_STYLES } from '@/components/ui/common/button';
+import { formatCurrency } from '@/lib/utils';
 
 interface CartControlProps {
   price: number;

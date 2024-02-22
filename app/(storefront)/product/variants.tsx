@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { ReactNode } from "react";
-import Image from "next/image";
+import { ReactNode } from 'react';
+import Image from 'next/image';
 
 export type Variant = {
   id: number;

@@ -1,34 +1,38 @@
-import { CodegenConfig } from "@graphql-codegen/cli";
-import { addTypenameSelectionDocumentTransform } from "@graphql-codegen/client-preset";
+import { CodegenConfig } from '@graphql-codegen/cli';
 
 const config: CodegenConfig = {
-  schema: process.env.GRAPHQL_ENDPOINT || "http://localhost/graphql",
-  documents: ["app/**/*.{ts,tsx}"],
+  schema: process.env.GRAPHQL_ENDPOINT || 'http://localhost/graphql',
+  documents: ['app/**/*.{ts,tsx}'],
   ignoreNoDocuments: true, // for better experience with the watcher
   generates: {
-    "app/gql/": {
-      preset: "client",
+    'app/gql/': {
+      preset: 'client',
       config: {
         strictScalars: true,
         scalars: {
-          IntID: "number",
-          DateTime: "Date",
-          Dimension: "{format: string, value: number, unit: string}",
-          Email: "string",
-          JSON: "{[key: string]: any}",
-          Phone: "number | string",
-          Price: "number",
-          Rating: "1 | 2 | 3 | 4 | 5",
+          IntID: 'number',
+          DateTime: 'Date',
+          Dimension: '{format: string, value: number, unit: string}',
+          Email: 'string',
+          JSON: '{[key: string]: any}',
+          Phone: 'number | string',
+          Price: 'number',
+          Rating: 'Rating',
+          PriceData: 'PriceData',
+          AttributeData: 'AttributeData',
+          Map: 'Map',
+          DiscountData: 'DiscountData',
+          AggregatedValues: 'Array',
         },
         enumsAsTypes: false,
         constEnums: true,
         namingConvention: {
-          typeNames: "change-case-all#pascalCase",
-          enumValues: "change-case-all#upperCase",
+          typeNames: 'change-case-all#pascalCase',
+          enumValues: 'change-case-all#upperCase',
         },
       },
       presetConfig: {
-        gqlTagName: "gql",
+        gqlTagName: 'gql',
         // fragmentMasking: false
       },
       // documentTransforms: [addTypenameSelectionDocumentTransform]

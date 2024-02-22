@@ -1,7 +1,7 @@
-import "@/styles/global.css";
-import React from "react";
-import Header from "@/components/ui/layout/header";
-import Chat from "@/components/ui/chat/chat";
+import '@/styles/global.css';
+import React from 'react';
+import Header from '@/components/ui/layout/header';
+import Chat from '@/components/chat/chat';
 
 export default function RootLayout({
   children,
