@@ -1,5 +1,5 @@
 module.exports = {
-  'extends': [
+  extends: [
     'next/core-web-vitals',
     'eslint:recommended',
     'plugin:import/errors',
@@ -16,8 +16,5 @@ module.exports = {
     'no-unused-vars': 'error',
     'unused-imports/no-unused-imports': 'error',
   },
-  ignorePatterns: [
-    'gql/**/*',
-    'lib/**/*',
-  ],
-}
+  ignorePatterns: ['gql/**/*', 'lib/**/*'],
+};

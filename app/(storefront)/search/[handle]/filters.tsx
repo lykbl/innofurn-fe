@@ -6,7 +6,7 @@ import { AttributeFilters } from '@/(storefront)/search/[handle]/filters/attribu
 import { OnSaleFilter } from '@/(storefront)/search/[handle]/filters/on-sale';
 import { RatingFilter } from '@/(storefront)/search/[handle]/filters/rating';
 import { PriceFilter } from '@/(storefront)/search/[handle]/filters/prices';
-import { useDebounce } from "react-use";
+import { useDebounce } from 'react-use';
 
 export const Filters = ({
   dynamicAttributes,
@@ -30,12 +30,18 @@ export const useSearchFilterQuery = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const urlSearchParams = new URLSearchParams(searchParams.toString());
-  const [newQuery, setNewQuery] = React.useState<string>(urlSearchParams.toString());
-  useDebounce(() => {
-    if (urlSearchParams.toString() !== newQuery) {
-      replace(`${pathname}?${newQuery}`, { scroll: false });
-    }
-  }, 500, [newQuery]);
+  const [newQuery, setNewQuery] = React.useState<string>(
+    urlSearchParams.toString(),
+  );
+  useDebounce(
+    () => {
+      if (urlSearchParams.toString() !== newQuery) {
+        replace(`${pathname}?${newQuery}`, { scroll: false });
+      }
+    },
+    500,
+    [newQuery],
+  );
 
   const updateSearchFilter = (urlSearchParams: URLSearchParams) => {
     setNewQuery(urlSearchParams.toString());

@@ -19,7 +19,10 @@ import { Icons } from '@/components/icons';
 import { cn } from '@/lib/utils';
 import { FragmentType, useFragment } from '@/gql';
 import { ColorAttributeData, PriceData } from '@/gql/scalars';
-import { DiscountFragmentFragmentDoc, ProductGridFragmentFragmentDoc } from "@/gql/graphql";
+import {
+  DiscountFragmentFragmentDoc,
+  ProductGridFragmentFragmentDoc,
+} from '@/gql/graphql';
 
 export const Item = ({
   productFragment,
@@ -48,9 +51,13 @@ export const Item = ({
     })
     .filter((item): item is ColorOption => item !== undefined);
   const extraLabel = selectedProductVariant.attributes?.material?.en; //TODO specify lang
-  const discounts = [...product.discounts, ...selectedProductVariant.discounts]
-    .filter((discount) => !useFragment(DiscountFragmentFragmentDoc, discount).data.fixed_value)
-  ;
+  const discounts = [
+    ...product.discounts,
+    ...selectedProductVariant.discounts,
+  ].filter(
+    (discount) =>
+      !useFragment(DiscountFragmentFragmentDoc, discount).data.fixed_value,
+  );
   const priceData = selectedProductVariant.prices?.[0].price;
 
   useEffect(() => {
@@ -163,19 +170,20 @@ const Price = ({
   );
 };
 
-const calculateBestDiscountAmount = (discounts: Array<FragmentType<typeof DiscountFragmentFragmentDoc>>, value: number): number => {
+const calculateBestDiscountAmount = (
+  discounts: Array<FragmentType<typeof DiscountFragmentFragmentDoc>>,
+  value: number,
+): number => {
   if (!discounts.length) {
     return 0;
   }
 
   const bestDiscount = discounts.reduce((prev, current) =>
-    applyDiscount(value, prev) < applyDiscount(value, current)
-      ? prev
-      : current
+    applyDiscount(value, prev) < applyDiscount(value, current) ? prev : current,
   );
 
-  return (applyDiscount(value, bestDiscount) / 100);
-}
+  return applyDiscount(value, bestDiscount) / 100;
+};
 
 type ColorOption = { variantId: number; color: ColorAttributeData };
 const ColorOptions = ({
@@ -220,10 +228,10 @@ const applyDiscount = (
   const discount = useFragment(DiscountFragmentFragmentDoc, discountFragment);
   // if (discount.data.fixed_value) {
   //   return price;
-    // TODO add cart logic
-    // const fixedAmountOff = Number(discount.data.fixed_values[currency]) * 100 || 0;
-    //
-    // return price - fixedAmountOff;
+  // TODO add cart logic
+  // const fixedAmountOff = Number(discount.data.fixed_values[currency]) * 100 || 0;
+  //
+  // return price - fixedAmountOff;
   // }
 
   const percentageOff = price * 0.01 * Number(discount.data.percentage); //TODO cast to number BE

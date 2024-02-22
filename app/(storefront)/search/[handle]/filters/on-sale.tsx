@@ -7,7 +7,9 @@ export const OnSaleFilter = () => {
   const filterKey = 'onSaleOnly'; //TS ?
 
   const handleCheckedChange = (checked: boolean) => {
-    checked ? urlSearchParams.set(filterKey, 'true') : urlSearchParams.delete(filterKey);
+    checked
+      ? urlSearchParams.set(filterKey, 'true')
+      : urlSearchParams.delete(filterKey);
     updateSearchFilter(urlSearchParams);
   };
 

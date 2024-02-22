@@ -3,11 +3,14 @@
 import React, { Suspense } from 'react';
 import { useSuspenseQuery } from '@apollo/client';
 import { gql } from '@/gql';
-import { Filters, useSearchFilterQuery } from "@/(storefront)/search/[handle]/filters";
+import {
+  Filters,
+  useSearchFilterQuery,
+} from '@/(storefront)/search/[handle]/filters';
 import { OrderBySelect } from '@/(storefront)/search/[handle]/order-by';
 import { Paginator } from '@/(storefront)/search/[handle]/paginator';
 import { ProductsGrid } from '@/(storefront)/search/[handle]/products-grid';
-import { ProductFilterInput, ProductOrderBy } from "@/gql/graphql";
+import { ProductFilterInput, ProductOrderBy } from '@/gql/graphql';
 
 const FILTERS_QUERY = gql(/* GraphQL */ `
   query filterableAttributesForCollection($productTypeId: IntID!) {
@@ -21,69 +24,69 @@ const FILTERS_QUERY = gql(/* GraphQL */ `
 `);
 
 const DiscountFragment = gql(/* GraphQL */ `
-    fragment DiscountFragment on Discount {
-        id
-        data
-        name
-        type
-    }
+  fragment DiscountFragment on Discount {
+    id
+    data
+    name
+    type
+  }
 `);
 
 const ProductGridFragment = gql(/* GraphQL */ `
-    fragment ProductGridFragment on Product {
-        id
-        name
-        discounts {
-            ...DiscountFragment
-        }
-        variants {
-            id
-            name
-            attributes
-            images {
-                name
-                originalUrl
-            }
-            isFeatured
-            isFavorite
-            prices {
-                id
-                price
-            }
-            averageRating
-            reviewsCount
-            discounts {
-                ...DiscountFragment
-            }
-        }
+  fragment ProductGridFragment on Product {
+    id
+    name
+    discounts {
+      ...DiscountFragment
     }
+    variants {
+      id
+      name
+      attributes
+      images {
+        name
+        originalUrl
+      }
+      isFeatured
+      isFavorite
+      prices {
+        id
+        price
+      }
+      averageRating
+      reviewsCount
+      discounts {
+        ...DiscountFragment
+      }
+    }
+  }
 `);
 
 const SearchProductsQuery = gql(/* GraphQL */ `
-    query FindProducts(
-        $filters: ProductFilterInput!
-        $first: Int!
-        $page: Int!
-        $orderBy: ProductOrderBy!
+  query FindProducts(
+    $filters: ProductFilterInput!
+    $first: Int!
+    $page: Int!
+    $orderBy: ProductOrderBy!
+  ) {
+    findProducts(
+      filters: $filters
+      first: $first
+      page: $page
+      orderBy: $orderBy
     ) {
-        findProducts(
-            filters: $filters
-            first: $first
-            page: $page
-            orderBy: $orderBy
-        ) {
-            data {
-                ...ProductGridFragment
-            }
-            paginatorInfo {
-                perPage
-                total
-                lastPage
-                hasMorePages
-                currentPage
-            }
-        }
+      data {
+        ...ProductGridFragment
+      }
+      paginatorInfo {
+        perPage
+        total
+        lastPage
+        hasMorePages
+        currentPage
+      }
     }
+  }
 `);
 
 const PAGE_SIZE = 20;
@@ -113,7 +116,9 @@ export default function Page({
         ? Number(urlSearchParams.get('page'))
         : 1,
       first: PAGE_SIZE,
-      orderBy: urlSearchParams.get('orderBy')?.toUpperCase() as ProductOrderBy || ProductOrderBy.PRICE_DESC,
+      orderBy:
+        (urlSearchParams.get('orderBy')?.toUpperCase() as ProductOrderBy) ||
+        ProductOrderBy.PRICE_DESC,
     },
     fetchPolicy: 'no-cache',
   });

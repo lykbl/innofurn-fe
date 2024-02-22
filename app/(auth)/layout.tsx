@@ -8,9 +8,7 @@ import { AuthControls } from '@/(auth)/header';
 import { Button } from '@/components/ui/common/button';
 import { redirect } from 'next/navigation';
 import { useQuery } from '@apollo/client';
-import {
-  CHECK_ME,
-} from '@/components/ui/layout/header/auth-controls';
+import { CHECK_ME } from '@/components/ui/layout/header/auth-controls';
 
 export default function RootLayout({
   children,
