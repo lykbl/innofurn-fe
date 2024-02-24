@@ -5,10 +5,10 @@ import Reviews from '@/(storefront)/product/reviews';
 
 export default function Page() {
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 w-full">
       {/*<Breadcrumb />*/}
       <ProductDetails />
-      {/*<MoreFromCreator />*/}
+      <MoreFromCreator />
       {/*<Reviews />*/}
     </div>
   );

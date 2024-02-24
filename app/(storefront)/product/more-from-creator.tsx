@@ -1,10 +1,11 @@
 'use client';
 
 import Rating, { RATING_STYLES } from '@/(storefront)/product/rating';
-import { Button, BUTTON_STYLES } from '@/components/ui/common/button';
 import { formatCurrency } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Button } from "@/components/ui/common/button";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 
 const carouselItems = Array(10)
   .fill(null)
@@ -12,7 +13,7 @@ const carouselItems = Array(10)
     return (
       <div
         key={index}
-        className="flex w-max flex-col gap-1 rounded bg-blue-100 p-2"
+        className="flex w-max flex-col rounded bg-blue-100 p-2"
       >
         <div className="pointer-events-none">
           <Image
@@ -36,7 +37,7 @@ const carouselItems = Array(10)
           reviewsCount={299}
           style={RATING_STYLES.WITH_RATING}
         />
-        <Button style={BUTTON_STYLES.BLUE} className="w-full">
+        <Button className="w-full">
           Select Options
         </Button>
       </div>
@@ -46,18 +47,26 @@ const carouselItems = Array(10)
 const MoreFromCreator = () => {
   return (
     <div className="flex w-full flex-col gap-2 border-y border-black py-2">
-      <div className="flex items-center justify-between">
-        <h2>
-          More from
-          <Link className="ml-2" href="/brand/test">
-            TestBrand
-          </Link>
-        </h2>
-        <Link href="/search?brand=test" className="text-lg">
-          See All
+      <h2>
+        More from
+        <Link className="ml-2" href="/brand/test">
+          TestBrand
         </Link>
-      </div>
-      <Carousel className="flex justify-between" items={carouselItems} />
+      </h2>
+      <Link href="/search?brand=test" className="text-lg">
+        See All
+      </Link>
+      <Carousel>
+        <CarouselContent>
+          {carouselItems.map((item, index) => (
+            <CarouselItem className="basis-1/5">
+              {item}
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselNext />
+        <CarouselPrevious />
+      </Carousel>
     </div>
   );
 };
