@@ -1,40 +1,34 @@
-import { AggregatedIndexedAttributeValue } from '@/gql/graphql';
+import { ProductOptionFragmentFragmentDoc } from '@/gql/graphql';
 import React from 'react';
 import { ColorFilter } from '@/(storefront)/search/[handle]/filters/attributes/color';
 import { MultiSelectFilter } from '@/(storefront)/search/[handle]/filters/attributes/multi-select';
+import { FragmentType, useFragment } from '@/gql';
 
 export const AttributeFilters = ({
-  dynamicAttributes,
+  productOptions,
 }: {
-  dynamicAttributes: Array<AggregatedIndexedAttributeValue>;
+  productOptions: Array<FragmentType<typeof ProductOptionFragmentFragmentDoc>>;
 }) => {
-  return dynamicAttributes.map(({ values, handle, label, type }, index) => (
-    <AttributeFilterInTypeContext
+  return productOptions.map((productOptionFragment, index) => (
+    <ProductOptionFilterInTypeContext
       key={index}
-      values={values}
-      handle={handle}
-      label={label}
-      type={type}
+      productOptionFragment={productOptionFragment}
     />
   ));
 };
 
-const AttributeFilterInTypeContext = ({
-  values,
-  handle,
-  label,
-  type,
+const ProductOptionFilterInTypeContext = ({
+  productOptionFragment,
 }: {
-  values: Array<any>;
-  handle: string;
-  label: string;
-  type: string;
+  productOptionFragment: FragmentType<typeof ProductOptionFragmentFragmentDoc>;
 }) => {
-  if (type === 'color') {
+  const { handle, label, values } = useFragment(
+    ProductOptionFragmentFragmentDoc,
+    productOptionFragment,
+  );
+  if (handle === 'color') {
     return <ColorFilter values={values} handle={handle} label={label} />;
-  } else if (type === 'multi-select') {
-    return <MultiSelectFilter values={values} handle={handle} label={label} />;
-  } else {
-    console.log('Unsupported filter type', type);
   }
+
+  return <MultiSelectFilter values={values} handle={handle} label={label} />;
 };

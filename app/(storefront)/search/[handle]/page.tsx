@@ -12,13 +12,26 @@ import { Paginator } from '@/(storefront)/search/[handle]/paginator';
 import { ProductsGrid } from '@/(storefront)/search/[handle]/products-grid';
 import { ProductFilterInput, ProductOrderBy } from '@/gql/graphql';
 
+const ProductOptionValueFragment = gql(/* GraphQL */ `
+  fragment ProductOptionValueFragment on ProductOptionValue {
+    name
+  }
+`);
+
+const ProductOptionFragment = gql(/* GraphQL */ `
+  fragment ProductOptionFragment on ProductOption {
+    values {
+      ...ProductOptionValueFragment
+    }
+    handle
+    label
+  }
+`);
+
 const FILTERS_QUERY = gql(/* GraphQL */ `
-  query filterableAttributesForCollection($productTypeId: IntID!) {
-    filterableAttributesForCollection(productTypeId: $productTypeId) {
-      values
-      handle
-      label
-      type
+  query optionFiltersForCollection($productTypeId: IntID!) {
+    optionFiltersForCollection(productTypeId: $productTypeId) {
+      ...ProductOptionFragment
     }
   }
 `);
@@ -62,6 +75,16 @@ const ProductGridFragment = gql(/* GraphQL */ `
   }
 `);
 
+const PaginatorInfoFragment = gql(/* GraphQL */ `
+  fragment PaginatorInfoFragment on PaginatorInfo {
+    perPage
+    total
+    lastPage
+    hasMorePages
+    currentPage
+  }
+`);
+
 const SearchProductsQuery = gql(/* GraphQL */ `
   query FindProducts(
     $filters: ProductFilterInput!
@@ -79,11 +102,7 @@ const SearchProductsQuery = gql(/* GraphQL */ `
         ...ProductGridFragment
       }
       paginatorInfo {
-        perPage
-        total
-        lastPage
-        hasMorePages
-        currentPage
+        ...PaginatorInfoFragment
       }
     }
   }
@@ -99,14 +118,12 @@ export default function Page({
 }: {
   params: { handle: string };
 }) {
-  const { data: availableFiltersQuery, error: filtersError } = useSuspenseQuery(
-    FILTERS_QUERY,
-    {
+  const { data: availableOptionsQuery, error: optionsFilterError } =
+    useSuspenseQuery(FILTERS_QUERY, {
       variables: {
         productTypeId: Number(handle),
       },
-    },
-  );
+    });
   const { urlSearchParams } = useSearchFilterQuery();
   const filterInput = buildFilterInput(urlSearchParams);
   const { data, error } = useSuspenseQuery(SearchProductsQuery, {
@@ -128,9 +145,7 @@ export default function Page({
     <div className="flex w-full gap-2 pb-10">
       <Suspense fallback={<div>Loading...</div>}>
         <Filters
-          dynamicAttributes={
-            availableFiltersQuery?.filterableAttributesForCollection
-          }
+          productOptions={availableOptionsQuery?.optionFiltersForCollection}
         />
       </Suspense>
       <div className="flex w-4/5 flex-col gap-8 border-l pl-4">

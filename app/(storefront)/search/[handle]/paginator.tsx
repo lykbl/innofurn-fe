@@ -9,14 +9,18 @@ import {
 } from '@/components/ui/pagination';
 import React from 'react';
 import { useSearchFilterQuery } from '@/(storefront)/search/[handle]/filters';
-import { PaginatorInfo } from '@/gql/graphql';
+import { PaginatorInfoFragmentFragmentDoc } from '@/gql/graphql';
+import { FragmentType, useFragment } from '@/gql';
 
 export const Paginator = ({
   paginatorInfo,
 }: {
-  paginatorInfo: PaginatorInfo;
+  paginatorInfo: FragmentType<typeof PaginatorInfoFragmentFragmentDoc>;
 }) => {
-  const { currentPage, lastPage, hasMorePages } = paginatorInfo;
+  const { currentPage, lastPage, hasMorePages } = useFragment(
+    PaginatorInfoFragmentFragmentDoc,
+    paginatorInfo,
+  );
   const { urlSearchParams, updateSearchFilter } = useSearchFilterQuery();
   const handlePageChange = (page: number) => {
     urlSearchParams.set('page', page.toString());
