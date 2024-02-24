@@ -3,14 +3,14 @@
 import React, { useState } from 'react';
 import Variants, { Variant } from '@/(storefront)/product/variants';
 import Image from 'next/image';
-import Accordion from '@/components/ui/animated/accordion';
-import Link from '@/components/ui/common/link';
 import { Button } from '@/components/ui/common/button';
 import { FaPhoneAlt } from 'react-icons/fa';
 import { IoChatboxEllipses } from 'react-icons/io5';
 import Rating, { RATING_STYLES } from '@/(storefront)/product/rating';
 import ExtraOffers from '@/(storefront)/product/extra-offers';
 import CartControl from '@/(storefront)/product/cart-control';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import Link from "next/link";
 
 const images = [
   {
@@ -78,70 +78,71 @@ const ProductDetails = () => {
           <Button className="w-full">Show More</Button>
         </div>
         <div>
-          <Accordion>
-            <Accordion.Toggle className="text-lg p-2">
-              Description
-            </Accordion.Toggle>
-            <Accordion.Content className="p-2">
-              <div>
-                Create a warm, homey feeling with deep primitive colors in a
-                curl-resistant jute blend that adds style and safety anywhere a
-                small accent rug is needed. The Kettle Grove Jute Rug measures
-                16.5x33 inches and features a classic half circle shape and
-                tight braids constructed with a durable jute blend. The special
-                blend relaxes faster and stays flat. The included PVC mat makes
-                sure your beautifully braided jute rug stays exactly where it
-                should. The unique shape makes this rug the perfect fit for
-                doorways and in front of kitchen sinks. Features a blend of warm
-                caramel, country black and dark crème with primitive-style stars
-                stenciled in black for a natural, rustic look that complements a
-                wide array of country farmhouse decor. Features
-                <ol>
-                  <li>
-                    Includes one 16.5 by 33 inch half circle area rug and one
-                    PVC rug pad for added traction to hold your rug in place.
-                  </li>
-                  <li>
-                    This rustic area rug is constructed with tightly woven
-                    braids made of 80 percent jute and 20 percent cotton and
-                    other fibers for a heavier rug that relaxes faster and stays
-                    flat.
-                  </li>
-                  <li>
-                    Warm, natural tones form the perfect accent piece for modern
-                    primitive, classic country and rustic cabin decor.
-                  </li>
-                  <li>
-                    Alternating braids of warm caramel and country black with
-                    deep creme highlights are surrounded by a ring of
-                    primitive-style stars stenciled black to add rustic, durable
-                    style to any surface.
-                  </li>
-                  <li>
-                    Spot clean with a damp cloth and a mild, clear detergent.
-                  </li>
-                  <li>
-                    The Kettle Grove Collection by VHC captures the cozy, rustic
-                    feel of modern primitive decor with country black, warm
-                    khaki and dark crème designs in a mix of traditional
-                    patterns. Primitive five-point stars and crow accent pieces
-                    feel at home in traditional country homes and backcountry
-                    cabins.
-                  </li>
-                  <li>
-                    Due to the difference of monitor colors, some rug colors may
-                    vary slightly. We try to represent all rug colors as
-                    accurately as possible.
-                  </li>
-                </ol>
-              </div>
-            </Accordion.Content>
-          </Accordion>
-          <Accordion>
-            <Accordion.Toggle className="text-lg p-2">
+          <Accordion type="multiple">
+            <AccordionItem value="description">
+              <AccordionTrigger className="text-lg p-2">
+                Description
+              </AccordionTrigger>
+              <AccordionContent className="p-2">
+                <div>
+                  Create a warm, homey feeling with deep primitive colors in a
+                  curl-resistant jute blend that adds style and safety anywhere a
+                  small accent rug is needed. The Kettle Grove Jute Rug measures
+                  16.5x33 inches and features a classic half circle shape and
+                  tight braids constructed with a durable jute blend. The special
+                  blend relaxes faster and stays flat. The included PVC mat makes
+                  sure your beautifully braided jute rug stays exactly where it
+                  should. The unique shape makes this rug the perfect fit for
+                  doorways and in front of kitchen sinks. Features a blend of warm
+                  caramel, country black and dark crème with primitive-style stars
+                  stenciled in black for a natural, rustic look that complements a
+                  wide array of country farmhouse decor. Features
+                  <ol>
+                    <li>
+                      Includes one 16.5 by 33 inch half circle area rug and one
+                      PVC rug pad for added traction to hold your rug in place.
+                    </li>
+                    <li>
+                      This rustic area rug is constructed with tightly woven
+                      braids made of 80 percent jute and 20 percent cotton and
+                      other fibers for a heavier rug that relaxes faster and stays
+                      flat.
+                    </li>
+                    <li>
+                      Warm, natural tones form the perfect accent piece for modern
+                      primitive, classic country and rustic cabin decor.
+                    </li>
+                    <li>
+                      Alternating braids of warm caramel and country black with
+                      deep creme highlights are surrounded by a ring of
+                      primitive-style stars stenciled black to add rustic, durable
+                      style to any surface.
+                    </li>
+                    <li>
+                      Spot clean with a damp cloth and a mild, clear detergent.
+                    </li>
+                    <li>
+                      The Kettle Grove Collection by VHC captures the cozy, rustic
+                      feel of modern primitive decor with country black, warm
+                      khaki and dark crème designs in a mix of traditional
+                      patterns. Primitive five-point stars and crow accent pieces
+                      feel at home in traditional country homes and backcountry
+                      cabins.
+                    </li>
+                    <li>
+                      Due to the difference of monitor colors, some rug colors may
+                      vary slightly. We try to represent all rug colors as
+                      accurately as possible.
+                    </li>
+                  </ol>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="specifications">
+            <AccordionTrigger className="text-lg p-2">
               Specifications
-            </Accordion.Toggle>
-            <Accordion.Content className="p-2">
+            </AccordionTrigger>
+            <AccordionContent className="p-2">
               <div>
                 <div className="flex gap-2">
                   <p>Additional Documents</p>
@@ -202,7 +203,8 @@ const ProductDetails = () => {
                   </tbody>
                 </table>
               </div>
-            </Accordion.Content>
+            </AccordionContent>
+            </AccordionItem>
           </Accordion>
         </div>
         <div className="flex justify-between items-center">
