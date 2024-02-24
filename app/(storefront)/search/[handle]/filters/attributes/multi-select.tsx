@@ -28,7 +28,7 @@ export const MultiSelectFilter = ({
     <AccordionItem value={handle}>
       <AccordionTrigger className="px-1">{label}</AccordionTrigger>
       {values.map((value, index) => (
-        <AccordionContent key={index} className="flex gap-2 items-center px-1">
+        <AccordionContent key={index} className="flex items-center gap-2 px-1">
           <Checkbox
             id={value}
             defaultChecked={urlSearchParams.has(handle, value)}

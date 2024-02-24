@@ -4,7 +4,7 @@ import {
 } from '@/gql/graphql';
 import { Item } from '@/(storefront)/search/[handle]/item-card';
 import React from 'react';
-import { FragmentType, gql, useFragment } from '@/gql';
+import { FragmentType, useFragment } from '@/gql';
 import { ApolloError } from '@apollo/client';
 
 export const ProductsGrid = ({

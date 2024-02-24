@@ -23,7 +23,7 @@ export default function Page() {
         <LoginForm />
       </CardContent>
       <SeparatorWithText>Or continue with</SeparatorWithText>
-      <CardFooter className="p-4 justify-evenly">
+      <CardFooter className="justify-evenly p-4">
         <OAuthButtons />
       </CardFooter>
       <TermsAndConditions />

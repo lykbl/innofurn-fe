@@ -17,7 +17,7 @@ export default function Chat() {
 
   return (
     <Popover>
-      <PopoverTrigger asChild className="fixed right-16 bottom-16">
+      <PopoverTrigger asChild className="fixed bottom-16 right-16">
         <Button variant="outline">
           <BiChat size={24} />
         </Button>

@@ -69,15 +69,15 @@ const ChatMessage =
       let statusIndicator;
       if (status.toLowerCase() === 'error') {
         statusIndicator = (
-          <Icons.error className="w-[12px] h-[12px] text-destructive" />
+          <Icons.error className="h-[12px] w-[12px] text-destructive" />
         );
       } else if (status.toLowerCase() === 'pending') {
         statusIndicator = (
-          <Icons.spinner className="animate-spin w-[12px] h-[12px]" />
+          <Icons.spinner className="h-[12px] w-[12px] animate-spin" />
         );
       } else {
         statusIndicator = (
-          <Icons.check className="w-[12px] h-[12px] text-blue-500" />
+          <Icons.check className="h-[12px] w-[12px] text-blue-500" />
         );
       }
 
@@ -89,30 +89,30 @@ const ChatMessage =
       return (
         <Card
           className={cn(
-            'w-[40%] relative',
+            'relative w-[40%]',
             author.role === 'admin' ? 'mr-auto' : 'ml-auto',
             className,
           )}
           ref={ref}
         >
-          <CardHeader className="px-2 pt-2 pb-1">
+          <CardHeader className="px-2 pb-1 pt-2">
             <CardTitle className="text-xs">{author?.name}</CardTitle>
           </CardHeader>
           <Separator />
-          <CardContent className="px-2 py-1 text-2xs min-h-[50px]">
+          <CardContent className="min-h-[50px] px-2 py-1 text-2xs">
             {body}
           </CardContent>
           <Separator />
-          <CardFooter className="px-2 py-0 text-foreground flex justify-between">
+          <CardFooter className="flex justify-between px-2 py-0 text-foreground">
             <TooltipProvider skipDelayDuration={1000}>
               <Tooltip delayDuration={300}>
-                <TooltipTrigger className="text-3xs py-1">
+                <TooltipTrigger className="py-1 text-3xs">
                   {new Intl.DateTimeFormat('en-US', {
                     hour: 'numeric',
                     minute: 'numeric',
                   }).format(date)}
                 </TooltipTrigger>
-                <TooltipContent className="text-3xs px-2 py-1">
+                <TooltipContent className="px-2 py-1 text-3xs">
                   {new Intl.DateTimeFormat('en-US', {
                     year: 'numeric',
                     month: 'short',
@@ -195,10 +195,10 @@ const ChatMessage =
                 });
               }}
               variant="ghost"
-              className="absolute bottom-[5px] left-[-17px] p-0 hover:bg-none hover:text-blue-500 cursor-pointer"
+              className="absolute bottom-[5px] left-[-17px] cursor-pointer p-0 hover:bg-none hover:text-blue-500"
               asChild
             >
-              <Icons.retry className="w-[12px] h-[12px]" />
+              <Icons.retry className="h-[12px] w-[12px]" />
             </Button>
           )}
         </Card>

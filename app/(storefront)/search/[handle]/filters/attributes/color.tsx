@@ -33,7 +33,7 @@ export const ColorFilter = ({
   return (
     <AccordionItem value={handle}>
       <AccordionTrigger className="px-1">{label}</AccordionTrigger>
-      <AccordionContent className="flex gap-2 pt-2 px-1">
+      <AccordionContent className="flex gap-2 px-1 pt-2">
         {values.map(({ label, value }, index) => (
           <TooltipProvider key={index}>
             <Tooltip>
@@ -42,9 +42,9 @@ export const ColorFilter = ({
                 <span
                   style={{ backgroundColor: value }}
                   className={cn(
-                    'block rounded-full border border-solid border-black w-6 h-6',
+                    'block h-6 w-6 rounded-full border border-solid border-black',
                     urlSearchParams.has('color', label) &&
-                      'outline-1 outline outline-offset-2 outline-black',
+                      'outline outline-1 outline-offset-2 outline-black',
                   )}
                 />
               </TooltipTrigger>

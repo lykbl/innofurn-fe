@@ -1,6 +1,6 @@
 import { TiStarHalfOutline } from 'react-icons/ti';
 import clsx from 'clsx';
-import Link from "next/link";
+import Link from 'next/link';
 
 export enum RATING_STYLES {
   WITH_RATING = 'RATING',

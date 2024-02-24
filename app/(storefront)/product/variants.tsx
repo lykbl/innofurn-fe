@@ -18,7 +18,7 @@ interface VariantProp {
 const Variant = ({ variant: { id, href, name }, handleClick }: VariantProp) => {
   return (
     <button
-      className="border-2 border-black hover:border-blue-600 rounded"
+      className="rounded border-2 border-black hover:border-blue-600"
       onClick={() => handleClick(id)}
     >
       <Image src={href} alt={name} width={100} height={100} />
@@ -39,7 +39,7 @@ const Variants = ({
   handleSelect,
 }: VariantsProps): ReactNode => {
   return (
-    <div className="flex gap-2 flex-col">
+    <div className="flex flex-col gap-2">
       {/*TODO use label instead of id*/}
       <p>
         Choose {type}: {selectedOption.name}

@@ -18,7 +18,7 @@ export const Star = ({
   return (
     <Icons.star
       className={cn(
-        'stroke-primary w-[16px] h-[16px] cursor-pointer',
+        'h-[16px] w-[16px] cursor-pointer stroke-primary',
         isFilled ? 'text-primary' : 'text-white',
       )}
       withGradient={withGradient}

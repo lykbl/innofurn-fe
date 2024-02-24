@@ -4,7 +4,7 @@ import { IoIosHeart } from 'react-icons/io';
 import { BiMinus, BiPlus, BiSearchAlt } from 'react-icons/bi';
 import { useState } from 'react';
 import { formatCurrency } from '@/lib/utils';
-import { Button } from "@/components/ui/common/button";
+import { Button } from '@/components/ui/common/button';
 
 interface CartControlProps {
   price: number;
@@ -17,28 +17,34 @@ const CartControl = ({ price }: CartControlProps) => {
   const totalPrice = count > 1 ? price * count : price;
 
   return (
-    <div className="flex flex-col p-2 w-full bg-secondary rounded gap-2">
+    <div className="flex w-full flex-col gap-2 rounded bg-secondary p-2">
       <Button>Add to cart</Button>
       <div className="flex gap-4">
-        <div className="outline outline-1 outline-black rounded bg-white flex justify-center w-1/3 gap-6 items-center">
-          <Button className="p-0 h-min" onClick={decrement}>
+        <div className="flex w-1/3 items-center justify-center gap-6 rounded bg-white outline outline-1 outline-black">
+          <Button className="h-min p-0" onClick={decrement}>
             <BiMinus size={24} />
           </Button>
           <span>
             {formatCurrency(price)} x {count}
           </span>
-          <Button className="p-0 h-min" onClick={increment}>
+          <Button className="h-min p-0" onClick={increment}>
             <BiPlus size={24} />
           </Button>
         </div>
-        <span className="text-3xl w-1/3 text-center">
+        <span className="w-1/3 text-center text-3xl">
           {formatCurrency(totalPrice)}
         </span>
-        <div className="flex gap-2 w-1/3 justify-end">
-          <Button variant="outline" className="text-pink-500 border-pink-500 hover:border-pink-700 hover:text-pink-700">
+        <div className="flex w-1/3 justify-end gap-2">
+          <Button
+            variant="outline"
+            className="border-pink-500 text-pink-500 hover:border-pink-700 hover:text-pink-700"
+          >
             <IoIosHeart size={24} />
           </Button>
-          <Button variant="outline" className="text-blue-600 border-blue-600 hover:border-blue-700 hover:text-blue-700">
+          <Button
+            variant="outline"
+            className="border-blue-600 text-blue-600 hover:border-blue-700 hover:text-blue-700"
+          >
             <BiSearchAlt size={24} />
           </Button>
         </div>

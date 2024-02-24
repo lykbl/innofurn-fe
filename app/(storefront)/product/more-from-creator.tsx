@@ -1,11 +1,10 @@
 'use client';
 
-import Link from '@/components/ui/common/link';
-import Carousel from '@/components/ui/animated/carousel/carousel';
 import Rating, { RATING_STYLES } from '@/(storefront)/product/rating';
 import { Button, BUTTON_STYLES } from '@/components/ui/common/button';
 import { formatCurrency } from '@/lib/utils';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const carouselItems = Array(10)
   .fill(null)
@@ -13,7 +12,7 @@ const carouselItems = Array(10)
     return (
       <div
         key={index}
-        className="flex flex-col gap-1 rounded bg-blue-100 p-2 w-max"
+        className="flex w-max flex-col gap-1 rounded bg-blue-100 p-2"
       >
         <div className="pointer-events-none">
           <Image
@@ -25,8 +24,8 @@ const carouselItems = Array(10)
           />
           <h3>Atley Throw Pillow</h3>
           <div className="flex items-center">
-            <span className="text-lg mr-2">{formatCurrency(3499)}</span>
-            <span className="text-zinc-500 line-through text-sm">
+            <span className="mr-2 text-lg">{formatCurrency(3499)}</span>
+            <span className="text-sm text-zinc-500 line-through">
               {formatCurrency(4799)}
             </span>
           </div>
@@ -46,7 +45,7 @@ const carouselItems = Array(10)
 
 const MoreFromCreator = () => {
   return (
-    <div className="flex-col w-full gap-2 flex py-2 border-y border-black">
+    <div className="flex w-full flex-col gap-2 border-y border-black py-2">
       <div className="flex items-center justify-between">
         <h2>
           More from

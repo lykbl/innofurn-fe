@@ -14,7 +14,7 @@ export const Filters = ({
   dynamicAttributes: Array<AggregatedIndexedAttributeValue>;
 }) => {
   return (
-    <div className="flex flex-col w-1/5 pr-4 gap-4">
+    <div className="flex w-1/5 flex-col gap-4 pr-4">
       <Accordion type="multiple">
         <AttributeFilters dynamicAttributes={dynamicAttributes} />
         <RatingFilter />

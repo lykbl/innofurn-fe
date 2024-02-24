@@ -54,7 +54,7 @@ function UserControls({ user }: IUserControlsProps) {
   };
 
   return (
-    <div className="flex gap-4 items-center">
+    <div className="flex items-center gap-4">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="relative h-8 w-8 rounded-full">
@@ -90,7 +90,7 @@ function UserControls({ user }: IUserControlsProps) {
           <DropdownMenuSeparator />
           <DropdownMenuItem className="p-0">
             <Button
-              className="font-normal w-full justify-start px-2 py-1.5 h-8"
+              className="h-8 w-full justify-start px-2 py-1.5 font-normal"
               onClick={handleLogout}
               variant="ghost"
               size="sm"
@@ -168,7 +168,7 @@ function AuthControls() {
   }
 
   return (
-    <div className="flex gap-2 items-center">
+    <div className="flex items-center gap-2">
       <NotificationsControls />
       <CartControls />
       {user ? <UserControls user={user} /> : <GuestControls />}

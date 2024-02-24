@@ -125,7 +125,7 @@ export default function Page({
   const paginatorInfo = data?.findProducts.paginatorInfo;
 
   return (
-    <div className="flex gap-2 w-full pb-10">
+    <div className="flex w-full gap-2 pb-10">
       <Suspense fallback={<div>Loading...</div>}>
         <Filters
           dynamicAttributes={
@@ -133,12 +133,12 @@ export default function Page({
           }
         />
       </Suspense>
-      <div className="flex flex-col gap-8 w-4/5 pl-4 border-l">
-        <div className="flex justify-between items-end">
+      <div className="flex w-4/5 flex-col gap-8 border-l pl-4">
+        <div className="flex items-end justify-between">
           <h1 className="text-3xl">Results for: {'Search query'}</h1>
           <OrderBySelect />
         </div>
-        <div className="grid gap-4 lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-2">
+        <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5">
           <Suspense fallback={<div>Loading...</div>}>
             <ProductsGrid data={data} error={error} />
           </Suspense>
