@@ -1,14 +1,18 @@
 'use client';
 
-import Input from '@/components/ui/common/input';
 import { Stars } from '@/(storefront)/product/rating';
-import { calculatePercentage } from '@/lib/utils';
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import clsx from 'clsx';
-import { Button, BUTTON_STYLES } from '@/components/ui/common/button';
 import Image from 'next/image';
-import Carousel from '@/components/ui/animated/carousel/carousel';
+import { Button } from '@/components/ui/common/button';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from '@/components/ui/carousel';
+import { Input } from '@/components/ui/common/input';
+import { calculatePercentage } from '@/lib/utils';
 
 const reviewImages = Array(10)
   .fill(null)
@@ -32,12 +36,13 @@ const ratings = [
   { count: 2, rating: 1 },
 ];
 
-interface RatingBarProps {
+const RatingBar = ({
+  fillTo,
+  className,
+}: {
   fillTo: number;
   className?: string;
-}
-
-const RatingBar = ({ fillTo, className }: RatingBarProps) => {
+}) => {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
 
@@ -45,12 +50,12 @@ const RatingBar = ({ fillTo, className }: RatingBarProps) => {
     <div
       ref={ref}
       className={clsx(
-        'rounded border border-blue-600 bg-gray-100 drop-shadow-lg hover:border-blue-700',
+        'rounded border border-primary bg-gray-100 drop-shadow-lg hover:border-primary/90',
         className,
       )}
     >
       <motion.div
-        className="h-full w-0 bg-blue-600 duration-300 group-hover:bg-blue-700"
+        className="h-full w-0 bg-primary duration-300 group-hover:bg-primary/90"
         animate={isInView ? { width: `${fillTo}%` } : { width: 0 }}
       />
     </div>
@@ -63,17 +68,17 @@ interface ReviewsBreakdownProps {
 
 const ReviewsBreakdown = ({ totalCount }: ReviewsBreakdownProps) => {
   return (
-    <div className="flex h-min w-1/5 flex-col rounded bg-blue-100 p-2">
+    <div className="flex h-min w-1/5 flex-col rounded bg-secondary p-2">
       <h2>Customer Reviews</h2>
-      <div className="flex flex-col border-b border-black py-2">
+      <div className="flex flex-col gap-2 border-b border-primary py-2">
         <div className="flex gap-2 text-lg">
           <Stars size={24} /> 4.8 of 5
         </div>
-        <div className="flex flex-col">
+        <div className="flex flex-col gap-2">
           {ratings.map((review, index) => (
             <Button
-              className="group flex w-full gap-2 bg-transparent text-black hover:bg-transparent hover:text-blue-600 hover:underline"
-              style={BUTTON_STYLES.BLUE}
+              variant="outline"
+              className="group flex w-full border-primary bg-transparent text-black hover:bg-transparent hover:text-primary/90 hover:underline"
               key={index}
             >
               <span className="w-1/5 text-left">{`${review.rating} star`}</span>
@@ -93,9 +98,7 @@ const ReviewsBreakdown = ({ totalCount }: ReviewsBreakdownProps) => {
         <span className="text-sm">
           Share your thoughts with other customers
         </span>
-        <Button className="py-1" style={BUTTON_STYLES.BLUE}>
-          Leave a review
-        </Button>
+        <Button className="py-1">Leave a review</Button>
       </div>
     </div>
   );
@@ -135,35 +138,39 @@ const ReviewSample = () => (
       <span>Reviewed in the United States on October 9, 2023</span>
     </p>
     <div className="py-2">
-      <Carousel
-        items={Array(10)
-          .fill(null)
-          .map((_, index) => (
-            <Image
-              key={index}
-              className="min-w-[100px] rounded"
-              width={100}
-              height={100}
-              src="/sample-kitchen-image-2.jpg"
-              alt="customer pohoto"
-            />
-          ))}
-      />
+      <Carousel>
+        <CarouselContent>
+          {Array(10)
+            .fill(null)
+            .map((_, index) => (
+              <CarouselItem>
+                <Image
+                  key={index}
+                  className="min-w-[100px] rounded"
+                  width={100}
+                  height={100}
+                  src="/sample-kitchen-image-2.jpg"
+                  alt="customer pohoto"
+                />
+              </CarouselItem>
+            ))}
+        </CarouselContent>
+      </Carousel>
     </div>
     <div className="mt-2 flex gap-2">
-      <Button style={BUTTON_STYLES.BLUE}>Helpful</Button>
+      <Button>Helpful</Button>
       <Button>Report</Button>
     </div>
   </div>
 );
 const ReviewsSummary = ({}: ReviewsSummaryProps) => {
   return (
-    <div className="flex w-3/5 flex-col rounded bg-blue-100 p-2">
+    <div className="flex w-3/5 flex-col rounded bg-secondary p-2">
       <div className="flex flex-col gap-2 border-neutral-200">
         <h3 className="font-medium">Looking for specific info?</h3>
         <Input
           type="text"
-          className="rounded border border-solid border-black"
+          // className="rounded border border-solid border-black"
           placeholder="Search in reviews, Q&A..."
         />
       </div>
@@ -178,7 +185,14 @@ const ReviewsSummary = ({}: ReviewsSummaryProps) => {
         <div className="border-b border-black py-2">
           <h3>Reviews with images</h3>
           <div className="py-2">
-            <Carousel items={reviewImages} controlsSize={20} />
+            {/*<Carousel items={reviewImages} controlsSize={20} />*/}
+            <Carousel>
+              <CarouselContent>
+                {reviewImages.map((item, index) => (
+                  <CarouselItem key={index}>{item}</CarouselItem>
+                ))}
+              </CarouselContent>
+            </Carousel>
           </div>
         </div>
         <div className="py-2">

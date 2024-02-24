@@ -4,24 +4,27 @@ import Rating, { RATING_STYLES } from '@/(storefront)/product/rating';
 import { formatCurrency } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Button } from "@/components/ui/common/button";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { Button } from '@/components/ui/common/button';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '@/components/ui/carousel';
 
 const carouselItems = Array(10)
   .fill(null)
-  .map((el, index) => {
+  .map((_, index) => {
     return (
-      <div
-        key={index}
-        className="flex w-max flex-col rounded bg-blue-100 p-2"
-      >
+      <div key={index} className="flex w-max flex-col rounded bg-secondary p-2">
         <div className="pointer-events-none">
           <Image
             className="rounded"
             src="/sample-kitchen-image-2.jpg"
             alt="image"
-            width={275}
-            height={275}
+            width={200}
+            height={200}
           />
           <h3>Atley Throw Pillow</h3>
           <div className="flex items-center">
@@ -37,9 +40,7 @@ const carouselItems = Array(10)
           reviewsCount={299}
           style={RATING_STYLES.WITH_RATING}
         />
-        <Button className="w-full">
-          Select Options
-        </Button>
+        <Button className="w-full">Select Options</Button>
       </div>
     );
   });
@@ -59,9 +60,7 @@ const MoreFromCreator = () => {
       <Carousel>
         <CarouselContent>
           {carouselItems.map((item, index) => (
-            <CarouselItem className="basis-1/5">
-              {item}
-            </CarouselItem>
+            <CarouselItem className="basis-1/7">{item}</CarouselItem>
           ))}
         </CarouselContent>
         <CarouselNext />

@@ -160,7 +160,7 @@ const ProductDetails = () => {
                     </Link>
                   </div>
                   <p>Features: </p>
-                  <table className="w-full table-auto bg-blue-100">
+                  <table className="w-full table-auto bg-secondary">
                     <tbody>
                       <tr>
                         <td> Base Style</td>
