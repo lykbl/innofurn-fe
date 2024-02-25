@@ -7,7 +7,6 @@ import { FaPhoneAlt } from 'react-icons/fa';
 import { IoChatboxEllipses } from 'react-icons/io5';
 import CartControl from '@/(storefront)/product/cart-control';
 
-
 import Link from 'next/link';
 import { FragmentType, useFragment } from '@/gql';
 
