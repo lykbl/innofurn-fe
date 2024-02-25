@@ -1,7 +1,7 @@
 'use client';
 
 import Rating, { RATING_STYLES } from '@/(storefront)/product/rating';
-import { formatCurrency } from '@/lib/utils';
+import { formatToCurrency } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/common/button';
@@ -28,9 +28,9 @@ const carouselItems = Array(10)
           />
           <h3>Atley Throw Pillow</h3>
           <div className="flex items-center">
-            <span className="mr-2 text-lg">{formatCurrency(3499)}</span>
+            <span className="mr-2 text-lg">{formatToCurrency(3499)}</span>
             <span className="text-sm text-zinc-500 line-through">
-              {formatCurrency(4799)}
+              {formatToCurrency(4799)}
             </span>
           </div>
         </div>

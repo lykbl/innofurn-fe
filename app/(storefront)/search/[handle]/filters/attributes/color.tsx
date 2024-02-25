@@ -12,9 +12,7 @@ import {
 import { useSearchFilterQuery } from '@/(storefront)/search/[handle]/filters';
 import { cn } from '@/lib/utils';
 import { FragmentType, useFragment } from '@/gql';
-import {
-  ProductOptionValueFragmentFragmentDoc,
-} from '@/gql/graphql';
+import { ProductOptionValueFragmentFragmentDoc } from '@/gql/graphql';
 
 export const ColorFilter = ({
   handle,
