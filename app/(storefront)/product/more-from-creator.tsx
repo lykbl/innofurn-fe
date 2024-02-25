@@ -60,7 +60,9 @@ const MoreFromCreator = () => {
       <Carousel>
         <CarouselContent>
           {carouselItems.map((item, index) => (
-            <CarouselItem className="basis-1/7">{item}</CarouselItem>
+            <CarouselItem key={index} className="basis-1/7">
+              {item}
+            </CarouselItem>
           ))}
         </CarouselContent>
         <CarouselNext />

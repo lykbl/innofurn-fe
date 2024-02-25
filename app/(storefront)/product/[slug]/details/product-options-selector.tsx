@@ -22,6 +22,7 @@ const ProductOptionsSelector = ({
       <div className="flex flex-col gap-2">
         {availableProductOptionValues.map((productOption) => (
           <ProductOptionValues
+            key={productOption.handle}
             selectedOptionValues={selectedOptionValues}
             productOption={productOption}
             handleSelectOption={handleSelectOption}

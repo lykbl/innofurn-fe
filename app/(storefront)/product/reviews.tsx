@@ -115,9 +115,7 @@ const ReviewSample = () => (
     <div className="flex items-center gap-1">
       <Stars size={16} />
     </div>
-    <p>
-      <h4 className="text-lg font-semibold">Nice Travel Size</h4>
-    </p>
+    <h4 className="text-lg font-semibold">Nice Travel Size</h4>
     <p>
       <span>Color: Blue</span>
       <span className="ml-2 border-l border-black pl-2 text-green-500">

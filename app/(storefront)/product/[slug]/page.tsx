@@ -1,11 +1,9 @@
 'use client';
 
 import React from 'react';
-import ProductDetails from '@/(storefront)/product/product-details';
-import MoreFromCreator from '@/(storefront)/product/more-from-creator';
-import Reviews from '@/(storefront)/product/reviews';
 import { useQuery } from '@apollo/client';
 import { gql } from '@/gql';
+import Details from '@/(storefront)/product/[slug]/details';
 
 const BrandFragment = gql(/* GraphQL */ `
   fragment BrandFragment on Brand {
@@ -23,21 +21,36 @@ const PriceFragment = gql(/* GraphQL */ `
   }
 `);
 
+const MediaPaginatorFragment = gql(/* GraphQL */ `
+  fragment MediaPaginatorFragment on MediaPaginator {
+    data {
+      id
+      name
+      originalUrl
+    }
+    paginatorInfo {
+      hasMorePages
+      currentPage
+    }
+  }
+`);
+
 const ProductDetailsVariantFragment = gql(/* GraphQL */ `
   fragment ProductDetailsVariantFragment on ProductVariant {
+    id
     name
     description
     attributes
     averageRating
     reviewsCount
-    images {
-      originalUrl
-      name
+    images(page: $page) {
+      ...MediaPaginatorFragment
     }
     prices {
       ...PriceFragment
     }
     values {
+      id
       name
       option {
         handle
@@ -49,6 +62,7 @@ const ProductDetailsVariantFragment = gql(/* GraphQL */ `
 
 const ProductDetailsFragment = gql(/* GraphQL */ `
   fragment ProductDetailsFragment on Product {
+    id
     name
     brand {
       ...BrandFragment
@@ -60,7 +74,7 @@ const ProductDetailsFragment = gql(/* GraphQL */ `
 `);
 
 const PRODUCT_DETAILS_QUERY = gql(/* GraphQL */ `
-  query ProductDetails($slug: String!) {
+  query ProductDetails($slug: String!, $page: Int!) {
     productDetails(slug: $slug) {
       ...ProductDetailsFragment
     }
@@ -72,22 +86,24 @@ export default function Page({
 }: {
   params: { slug: string };
 }) {
-  const { data: productDetailsQuery, loading } = useQuery(
-    PRODUCT_DETAILS_QUERY,
-    {
-      variables: { slug },
-    },
-  );
+  const {
+    data: productDetailsQuery,
+    fetchMore: fetchMoreImages,
+    loading,
+  } = useQuery(PRODUCT_DETAILS_QUERY, {
+    variables: { slug, page: 1 },
+  });
   const productDetailsFragment = productDetailsQuery?.productDetails;
-  if (!productDetailsFragment) {
+  if (!productDetailsFragment || loading) {
     return <>error!</>;
   }
 
   return (
     <div className="flex w-full flex-col gap-2">
-      <ProductDetails productDetailsFragment={productDetailsFragment} />
-      <MoreFromCreator />
-      <Reviews />
+      <Details
+        productDetailsFragment={productDetailsFragment}
+        fetchMoreImages={fetchMoreImages}
+      />
     </div>
   );
 }

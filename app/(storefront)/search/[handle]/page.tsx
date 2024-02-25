@@ -57,8 +57,10 @@ const ProductGridFragment = gql(/* GraphQL */ `
       name
       attributes
       images {
-        name
-        originalUrl
+        data {
+          name
+          originalUrl
+        }
       }
       isFeatured
       isFavorite

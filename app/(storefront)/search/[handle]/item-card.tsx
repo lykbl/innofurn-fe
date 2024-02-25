@@ -86,9 +86,9 @@ export const Item = ({
           className="w-full rounded-t"
           width={225}
           height={225}
-          alt={selectedProductVariant.images[0]?.name || 'Not found'}
+          alt={selectedProductVariant.images.data[0]?.name || 'Not found'}
           src={
-            selectedProductVariant.images[0]?.originalUrl ||
+            selectedProductVariant.images.data[0]?.originalUrl ||
             '/sample-kitchen-image-2.jpg'
           }
         />

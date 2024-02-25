@@ -1,23 +1,24 @@
 'use client';
 
 import React, { useState } from 'react';
-import Image from 'next/image';
 import { Button } from '@/components/ui/common/button';
 import { FaPhoneAlt } from 'react-icons/fa';
 import { IoChatboxEllipses } from 'react-icons/io5';
-import CartControl from '@/(storefront)/product/cart-control';
+import CartControl from '@/(storefront)/product/[slug]/details/cart-control';
 
-import Link from 'next/link';
 import { FragmentType, useFragment } from '@/gql';
 
 import {
-  BrandFragmentFragmentDoc,
   ProductDetailsFragmentFragmentDoc,
+  ProductDetailsQuery,
   ProductDetailsVariantFragmentFragment,
   ProductDetailsVariantFragmentFragmentDoc,
 } from '@/gql/graphql';
-import ProductOptionsSelector from '@/(storefront)/product/product-options-selector';
+import ProductOptionsSelector from '@/(storefront)/product/[slug]/details/product-options-selector';
 import { Star } from '@/components/rating/rating-breakdown';
+import { QueryResult } from '@apollo/client';
+import BrandLink from '@/(storefront)/product/[slug]/details/brand-link';
+import Images from '@/(storefront)/product/[slug]/details/images';
 
 const getAvailableProductOptionValues = (
   variants: Array<ProductDetailsVariantFragmentFragment>,
@@ -63,27 +64,28 @@ const getVariantOptionValues = (
 const findSelectedVariant = (
   variants: Array<ProductDetailsVariantFragmentFragment>,
   selectedOptionValues: { [key: string]: string },
-): ProductDetailsVariantFragmentFragment => {
-  return (
-    variants.find((variant) =>
-      variant.values.every(
-        ({ name, option: { handle } }) => selectedOptionValues[handle] === name,
-      ),
-    ) || variants[0]
+): ProductDetailsVariantFragmentFragment | undefined => {
+  return variants.find((variant) =>
+    variant.values.every(
+      ({ name, option: { handle } }) => selectedOptionValues[handle] === name,
+    ),
   );
 };
 
-const ProductDetails = ({
+const Details = ({
   productDetailsFragment,
+  fetchMoreImages,
 }: {
   productDetailsFragment: FragmentType<
     typeof ProductDetailsFragmentFragmentDoc
   >;
+  fetchMoreImages: QueryResult<ProductDetailsQuery>['fetchMore'];
 }) => {
   const productDetails = useFragment(
     ProductDetailsFragmentFragmentDoc,
     productDetailsFragment,
   );
+
   const variants = productDetails.variants.map((variantFragment) =>
     useFragment(ProductDetailsVariantFragmentFragmentDoc, variantFragment),
   );
@@ -92,7 +94,9 @@ const ProductDetails = ({
   const [selectedOptionValues, setSelectedOptionValues] = useState<{
     [key: string]: string;
   }>(getVariantOptionValues(variants[0]));
-  const selectedVariant = findSelectedVariant(variants, selectedOptionValues);
+
+  const selectedVariant =
+    findSelectedVariant(variants, selectedOptionValues) || variants[0];
   const reviewsCount = selectedVariant.reviewsCount;
   const averageRating = selectedVariant.averageRating;
   const priceFragment = selectedVariant.prices[0];
@@ -104,20 +108,10 @@ const ProductDetails = ({
   return (
     <div className="flex gap-4">
       <div className="w-1/2 pt-2">
-        <div className="flex flex-wrap justify-between gap-y-2">
-          {selectedVariant.images.map(({ originalUrl, name }, index) => (
-            <div key={index}>
-              <Image
-                width={364}
-                height={364}
-                src={originalUrl}
-                alt={name}
-                className="rounded"
-              />
-            </div>
-          ))}
-          <Button className="w-full">Show More</Button>
-        </div>
+        <Images
+          variantImagesFragment={selectedVariant.images}
+          fetchMoreImages={fetchMoreImages}
+        />
       </div>
       <div className="sticky top-0 flex w-1/2 flex-col gap-2 pt-2">
         <h1 className="text-4xl">{selectedVariant.name}</h1>
@@ -166,25 +160,4 @@ const ProductDetails = ({
     </div>
   );
 };
-
-const BrandLink = ({
-  brandFragment,
-}: {
-  brandFragment: FragmentType<typeof BrandFragmentFragmentDoc>;
-}) => {
-  const brand = useFragment(BrandFragmentFragmentDoc, brandFragment);
-
-  return (
-    <div className="flex gap-1 text-xl">
-      <p className="">See more by</p>
-      <Link
-        href={`/brand/${brand.defaultUrl.slug}`}
-        className="hover:text-blue-600 hover:underline"
-      >
-        {brand.name}
-      </Link>
-    </div>
-  );
-};
-
-export default ProductDetails;
+export default Details;
