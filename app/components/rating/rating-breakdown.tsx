@@ -8,18 +8,22 @@ type StarProps = {
   withGradient: boolean;
   onMouseOver?: () => void;
   onClick?: () => void;
+  className?: string;
 };
 export const Star = ({
   isFilled,
   withGradient,
   onMouseOver,
   onClick,
+  className,
 }: StarProps) => {
   return (
     <Icons.star
       className={cn(
-        'stroke-primary w-[16px] h-[16px] cursor-pointer',
+        'h-[16px] w-[16px] stroke-primary',
         isFilled ? 'text-primary' : 'text-white',
+        className,
+        onClick && 'cursor-pointer',
       )}
       withGradient={withGradient}
       onMouseOver={onMouseOver}

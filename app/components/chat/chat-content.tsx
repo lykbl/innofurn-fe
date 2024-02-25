@@ -52,14 +52,14 @@ const ChatContent = forwardRef<
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
   return (
-    <Card className="p-2 *:px-1 *:py-1 w-[400px]" ref={forwardRef} {...props}>
+    <Card className="w-[400px] p-2 *:px-1 *:py-1" ref={forwardRef} {...props}>
       <CardHeader className="py-2">
         <CardTitle className="text-xl">Customer Chat</CardTitle>
       </CardHeader>
       <CardContent>
         <ScrollArea className="flex h-[33vh] rounded-md border p-4">
           <Suspense
-            fallback={<Icons.spinner className="animate-spin m-auto" />}
+            fallback={<Icons.spinner className="m-auto animate-spin" />}
           >
             <ScrollAreaViewport ref={scrollRef}>
               <ChatMessages sendMessage={sendMessage} scrollRef={scrollRef} />

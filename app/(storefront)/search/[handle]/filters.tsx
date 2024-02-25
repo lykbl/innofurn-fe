@@ -1,22 +1,23 @@
 import { Accordion } from '@/components/ui/accordion';
 import React from 'react';
-import { AggregatedIndexedAttributeValue } from '@/gql/graphql';
+import { ProductOptionFragmentFragmentDoc } from '@/gql/graphql';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { AttributeFilters } from '@/(storefront)/search/[handle]/filters/attributes';
 import { OnSaleFilter } from '@/(storefront)/search/[handle]/filters/on-sale';
 import { RatingFilter } from '@/(storefront)/search/[handle]/filters/rating';
 import { PriceFilter } from '@/(storefront)/search/[handle]/filters/prices';
 import { useDebounce } from 'react-use';
+import { FragmentType } from '@/gql';
 
 export const Filters = ({
-  dynamicAttributes,
+  productOptions,
 }: {
-  dynamicAttributes: Array<AggregatedIndexedAttributeValue>;
+  productOptions: Array<FragmentType<typeof ProductOptionFragmentFragmentDoc>>;
 }) => {
   return (
-    <div className="flex flex-col w-1/5 pr-4 gap-4">
+    <div className="flex w-1/5 flex-col gap-4 pr-4">
       <Accordion type="multiple">
-        <AttributeFilters dynamicAttributes={dynamicAttributes} />
+        <AttributeFilters productOptions={productOptions} />
         <RatingFilter />
         <PriceFilter />
       </Accordion>

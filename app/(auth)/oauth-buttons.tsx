@@ -25,7 +25,7 @@ export const OAuthButtons = () => {
   ];
 
   return (
-    <div className="flex flex-col gap-2 w-full">
+    <div className="flex w-full flex-col gap-2">
       {types.map(
         (
           config: { icon: ReactElement; type: string; label: string },
@@ -39,7 +39,7 @@ export const OAuthButtons = () => {
             key={i}
             href={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${ROUTES.OAUTH_REDIRECT}/${config.type}`}
           >
-            <span className="flex gap-2 w-1/5 items-center">
+            <span className="flex w-1/5 items-center gap-2">
               {config.icon}
               {config.label}
             </span>
