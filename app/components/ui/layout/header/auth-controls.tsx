@@ -16,6 +16,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+import { Card, CardContent } from '@/components/ui/common/card';
+import Image from 'next/image';
+import { formatToCurrency } from '@/lib/utils';
+import { Separator } from '@/components/ui/common/separator';
+import { CartLineFragmentFragmentDoc } from '@/gql/graphql';
 
 const LOGOUT_MUTATION = gql(/* GraphQL */ `
   mutation Logout {
@@ -25,13 +35,118 @@ const LOGOUT_MUTATION = gql(/* GraphQL */ `
   }
 `);
 
+const CartLineFragment = gql(/* GraphQL */ `
+  fragment CartLineFragment on CartLine {
+    id
+    quantity
+    purchasable {
+      id
+      name
+      images(primaryOnly: true) {
+        data {
+          originalUrl
+          name
+        }
+      }
+      prices {
+        id
+        price
+      }
+    }
+  }
+`);
+
+const CART_QUERY = gql(/* GraphQL */ `
+  query MyCart {
+    myCart {
+      id
+      lines {
+        ...CartLineFragment
+      }
+    }
+  }
+`);
+
 function CartControls() {
+  const { data: myCartQuery, loading } = useQuery(CART_QUERY);
+
+  if (loading || myCartQuery === undefined) {
+    return <>...</>;
+  }
+
   return (
-    <Button variant="outline">
-      <BiShoppingBag size={24} />
-    </Button>
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button variant="outline" className="relative">
+          <BiShoppingBag size={24} />
+          {myCartQuery.myCart.lines.length > 0 && (
+            <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-2xs font-medium text-white">
+              {myCartQuery.myCart.lines.length}
+            </span>
+          )}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-64" align="end" forceMount asChild>
+        <CartItems lines={myCartQuery.myCart.lines} />
+      </PopoverContent>
+    </Popover>
   );
 }
+
+const CartItems = ({
+  lines,
+}: {
+  lines: Array<FragmentType<typeof CartLineFragmentFragmentDoc>>;
+}) => {
+  return (
+    <Card className="w-64 p-2">
+      <CardContent className="p-2">
+        <h3 className="text-lg font-medium">Your cart</h3>
+        <ul>
+          {lines.map((line) => (
+            <CartItemLine
+              key={useFragment(CartLineFragmentFragmentDoc, line).id}
+              lineFragment={line}
+            />
+          ))}
+        </ul>
+      </CardContent>
+    </Card>
+  );
+};
+
+const CartItemLine = ({
+  lineFragment,
+}: {
+  lineFragment: FragmentType<typeof CartLineFragmentFragmentDoc>;
+}) => {
+  const line = useFragment(CartLineFragmentFragmentDoc, lineFragment);
+
+  return (
+    <li className="flex gap-2 rounded border-b border-solid border-secondary p-1">
+      <Image
+        src={line.purchasable.images.data[0].originalUrl}
+        alt={line.purchasable.images.data[0].name}
+        width={50}
+        height={50}
+      />
+      <div className="text-xs">
+        <h4>{line.purchasable.name}</h4>
+        <p>
+          {line.quantity} x{' '}
+          {formatToCurrency(line.purchasable.prices[0].price.value)}
+        </p>
+        <Separator orientation="horizontal" className="my-0.5" />
+        <span className="text-foreground">
+          Subtotal:{' '}
+          {formatToCurrency(
+            line.quantity * line.purchasable.prices[0].price.value,
+          )}
+        </span>
+      </div>
+    </li>
+  );
+};
 
 function NotificationsControls() {
   return (
@@ -44,6 +159,7 @@ function NotificationsControls() {
 interface IUserControlsProps {
   user: FragmentType<typeof CHECK_ME_FRAGMENT> | null;
 }
+
 function UserControls({ user }: IUserControlsProps) {
   const [logoutAsync, { client }] = useMutation(LOGOUT_MUTATION);
   const userData = useFragment(CHECK_ME_FRAGMENT, user);
@@ -142,13 +258,6 @@ export const CHECK_ME_FRAGMENT = gql(/* GraphQL */ `
       fullName
       firstName
       lastName
-      role
-      activeCart {
-        ...ActiveCartFragment
-      }
-      activeChatRoom {
-        id
-      }
     }
   }
 `);

@@ -113,7 +113,7 @@ const Details = ({
           fetchMoreImages={fetchMoreImages}
         />
       </div>
-      <div className="h-max sticky top-0 flex w-1/2 flex-col gap-2 pt-2">
+      <div className="sticky top-0 flex h-max w-1/2 flex-col gap-2 pt-2">
         <h1 className="text-4xl">{selectedVariant.name}</h1>
         <BrandLink brandFragment={productDetails.brand} />
         <div className="flex items-center gap-1">
