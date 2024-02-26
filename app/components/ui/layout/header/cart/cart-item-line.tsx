@@ -24,11 +24,10 @@ const CartLineFragment = gql(/* GraphQL */ `
       id
       name
       sku
-      images(primaryOnly: true) {
-        data {
-          originalUrl
-          name
-        }
+      primaryImage {
+        id
+        originalUrl
+        name
       }
       prices {
         id
@@ -56,8 +55,8 @@ export const CartItemLine = ({
     <li className="flex gap-2 rounded border-b border-solid border-secondary p-1">
       <Image
         className="w-1/3"
-        src={line.purchasable.images.data[0].originalUrl}
-        alt={line.purchasable.images.data[0].name}
+        src={line.purchasable.primaryImage.originalUrl}
+        alt={line.purchasable.primaryImage.name}
         width={50}
         height={50}
       />

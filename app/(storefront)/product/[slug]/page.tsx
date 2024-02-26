@@ -87,15 +87,15 @@ export default function Page({
 }: {
   params: { slug: string };
 }) {
-  const {
-    data: productDetailsQuery,
-    fetchMore: fetchMoreImages,
-    loading,
-  } = useQuery(PRODUCT_DETAILS_QUERY, {
-    variables: { slug, page: 1 },
-  });
+  const { data: productDetailsQuery, fetchMore: fetchMoreImages } = useQuery(
+    PRODUCT_DETAILS_QUERY,
+    {
+      variables: { slug, page: 1 },
+      nextFetchPolicy: 'cache-only',
+    },
+  );
   const productDetailsFragment = productDetailsQuery?.productDetails;
-  if (!productDetailsFragment || loading) {
+  if (!productDetailsFragment) {
     return <>error!</>;
   }
 
