@@ -10,10 +10,7 @@ export default function RootLayout({
 }) {
   return (
     <>
-      {/*<header className="w-full">*/}
       <Header />
-      {/*  <Subheader />*/}
-      {/*</header>*/}
       <main className="mx-auto flex w-full max-w-screen-2xl flex-col items-center py-4">
         {children}
         <Chat />

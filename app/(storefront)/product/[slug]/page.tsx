@@ -43,6 +43,7 @@ const ProductDetailsVariantFragment = gql(/* GraphQL */ `
     attributes
     averageRating
     reviewsCount
+    sku
     images(page: $page) {
       ...MediaPaginatorFragment
     }

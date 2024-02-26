@@ -24,7 +24,7 @@ const formSchema = z.object({
 });
 
 const SIGNUP_MUTATION = gql(/* GraphQL */ `
-  mutation SignUp($input: SignupInput!) {
+  mutation SignUp($input: SignUpInput!) {
     signUp(input: $input) {
       id
     }

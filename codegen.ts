@@ -14,7 +14,7 @@ const config: CodegenConfig = {
           DateTime: 'Date',
           Dimension: '{format: string, value: number, unit: string}',
           Email: 'string',
-          JSON: '{[key: string]: any}',
+          JSON: '{[key: string]: object | string | number | boolean | null }',
           Phone: 'number | string',
           Price: 'number',
           Rating: 'Rating',

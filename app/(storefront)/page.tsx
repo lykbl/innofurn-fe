@@ -29,7 +29,7 @@ export default function Page() {
     <>
       Main page
       {/*{user && <p>Hello there {user.name}!</p>}*/}
-      <BaseLink href="/product/test">Product page</BaseLink>
+      <BaseLink href="/product/adde">Product page</BaseLink>
       <div>
         Reviews:
         <div className="flex flex-col">

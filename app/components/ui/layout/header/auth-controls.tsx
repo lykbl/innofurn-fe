@@ -2,7 +2,7 @@
 
 import BaseLink from 'next/link';
 import ROUTES from '@/lib/routes';
-import { BiBell, BiShoppingBag } from 'react-icons/bi';
+import { BiBell } from 'react-icons/bi';
 import { FragmentType, gql, useFragment } from '@/gql';
 import { Button } from '@/components/ui/common/button';
 import { useMutation, useQuery } from '@apollo/client';
@@ -16,6 +16,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import * as React from 'react';
+import { CartPopover } from '@/components/ui/layout/header/cart/cart-control';
 
 const LOGOUT_MUTATION = gql(/* GraphQL */ `
   mutation Logout {
@@ -24,14 +26,6 @@ const LOGOUT_MUTATION = gql(/* GraphQL */ `
     }
   }
 `);
-
-function CartControls() {
-  return (
-    <Button variant="outline">
-      <BiShoppingBag size={24} />
-    </Button>
-  );
-}
 
 function NotificationsControls() {
   return (
@@ -44,6 +38,7 @@ function NotificationsControls() {
 interface IUserControlsProps {
   user: FragmentType<typeof CHECK_ME_FRAGMENT> | null;
 }
+
 function UserControls({ user }: IUserControlsProps) {
   const [logoutAsync, { client }] = useMutation(LOGOUT_MUTATION);
   const userData = useFragment(CHECK_ME_FRAGMENT, user);
@@ -111,19 +106,6 @@ function GuestControls() {
   );
 }
 
-export const ACTIVE_CART_FRAGMENT = gql(/* GraphQL */ `
-  fragment ActiveCartFragment on Cart {
-    id
-    lines {
-      id
-      quantity
-      purchasable {
-        id
-        name
-      }
-    }
-  }
-`);
 export const ACTIVE_CHAT_ROOM_FRAGMENT = gql(/* GraphQL */ `
   fragment ActiveChatRoomFragment on ChatRoom {
     id
@@ -142,13 +124,6 @@ export const CHECK_ME_FRAGMENT = gql(/* GraphQL */ `
       fullName
       firstName
       lastName
-      role
-      activeCart {
-        ...ActiveCartFragment
-      }
-      activeChatRoom {
-        id
-      }
     }
   }
 `);
@@ -159,6 +134,7 @@ export const CHECK_ME = gql(/* GraphQL */ `
     }
   }
 `);
+
 function AuthControls() {
   const { data, loading } = useQuery(CHECK_ME);
   const user = data?.checkMe ?? null;
@@ -170,7 +146,7 @@ function AuthControls() {
   return (
     <div className="flex items-center gap-2">
       <NotificationsControls />
-      <CartControls />
+      <CartPopover />
       {user ? <UserControls user={user} /> : <GuestControls />}
     </div>
   );

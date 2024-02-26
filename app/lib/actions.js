@@ -16,11 +16,11 @@ var __awaiter =
     function adopt(value) {
       return value instanceof P
         ? value
-        : new P(function (resolve) {
+        : new P((resolve) => {
             resolve(value);
           });
     }
-    return new (P || (P = Promise))(function (resolve, reject) {
+    return new (P || (P = Promise))((resolve, reject) => {
       function fulfilled(value) {
         try {
           step(generator.next(value));
@@ -160,7 +160,7 @@ var CreateInvoiceValidator = FormSchema.omit({ id: true, date: true });
 function createInvoice(formData) {
   return __awaiter(this, void 0, void 0, function () {
     var _a, customerId, amount, status, amountInCents, date, error_1;
-    return __generator(this, function (_b) {
+    return __generator(this, (_b) => {
       switch (_b.label) {
         case 0:
           (_a = CreateInvoice.parse({
@@ -226,7 +226,7 @@ var UpdateInvoice = FormSchema.omit({ id: true, date: true });
 function updateInvoice(id, formData) {
   return __awaiter(this, void 0, void 0, function () {
     var _a, customerId, amount, status, amountInCents, error_2;
-    return __generator(this, function (_b) {
+    return __generator(this, (_b) => {
       switch (_b.label) {
         case 0:
           (_a = UpdateInvoice.parse({
@@ -288,7 +288,7 @@ exports.updateInvoice = updateInvoice;
 function deleteInvoice(id) {
   return __awaiter(this, void 0, void 0, function () {
     var error_3;
-    return __generator(this, function (_a) {
+    return __generator(this, (_a) => {
       switch (_a.label) {
         case 0:
           throw new Error('Failed to Delete Invoice');
