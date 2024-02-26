@@ -12,7 +12,7 @@
     "watch:code-gen": "graphql-codegen -w",
     "watch:tailwind": "npx tailwindcss -i ./app/styles/global.css -o ./app/styles/output.css --watch",
     "watch:prettier": "onchange \"**/*\" -- prettier --write --ignore-unknown {{changed}}",
-    "watch:all": "npm run watch:code-gen & npm run watch:tailwind & npm run watch:prettier",
+    "watch:all": "npm run watch:code-gen & npm run watch:tailwind",
     "watch": "npm run watch:all",
     "postinstall": "patch-package"
   },

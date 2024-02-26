@@ -6,25 +6,39 @@ import { useState } from 'react';
 import { formatToCurrency } from '@/lib/utils';
 import { Button } from '@/components/ui/common/button';
 import { PriceFragmentFragmentDoc } from '@/gql/graphql';
-import { FragmentType, useFragment } from '@/gql';
+import { FragmentType, gql, useFragment } from '@/gql';
+import { useMutation } from '@apollo/client';
+
+const ADD_TO_CART_MUTATION = gql(/* GraphQL */ `
+  mutation AddToCart($sku: String!, $quantity: Int!) {
+    addItem(sku: $sku, quantity: $quantity) {
+      ...CartFragment
+    }
+  }
+`);
 
 const CartControl = ({
   priceFragment,
+  sku,
 }: {
   priceFragment: FragmentType<typeof PriceFragmentFragmentDoc>;
+  sku: string;
 }) => {
   const {
     price: { value },
   } = useFragment(PriceFragmentFragmentDoc, priceFragment);
-  const price = 0;
   const [count, setCount] = useState<number>(1);
   const increment = () => setCount((prev) => prev + 1);
   const decrement = () => setCount((prev) => prev - 1 || prev);
   const totalPrice = count > 1 ? value * count : value;
+  const [addItem] = useMutation(ADD_TO_CART_MUTATION);
+  const handleAddToCart = (sku: string, quantity: number) => {
+    addItem({ variables: { sku, quantity } });
+  };
 
   return (
     <div className="flex w-full flex-col gap-2 rounded bg-secondary p-2">
-      <Button>Add to cart</Button>
+      <Button onClick={() => handleAddToCart(sku, count)}>Add to cart</Button>
       <div className="flex gap-4">
         <div className="flex w-1/3 items-center justify-center gap-6 rounded bg-white outline outline-1 outline-black">
           <Button className="h-min p-0" onClick={decrement}>

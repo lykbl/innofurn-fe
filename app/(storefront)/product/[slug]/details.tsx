@@ -155,7 +155,7 @@ const Details = ({
             </Button>
           </div>
         </div>
-        <CartControl priceFragment={priceFragment} />
+        <CartControl priceFragment={priceFragment} sku={selectedVariant.sku} />
       </div>
     </div>
   );

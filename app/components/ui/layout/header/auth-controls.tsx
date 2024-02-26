@@ -2,7 +2,7 @@
 
 import BaseLink from 'next/link';
 import ROUTES from '@/lib/routes';
-import { BiBell, BiShoppingBag } from 'react-icons/bi';
+import { BiBell } from 'react-icons/bi';
 import { FragmentType, gql, useFragment } from '@/gql';
 import { Button } from '@/components/ui/common/button';
 import { useMutation, useQuery } from '@apollo/client';
@@ -16,16 +16,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
-import { Card, CardContent } from '@/components/ui/common/card';
-import Image from 'next/image';
-import { formatToCurrency } from '@/lib/utils';
-import { Separator } from '@/components/ui/common/separator';
-import { CartLineFragmentFragmentDoc } from '@/gql/graphql';
+import * as React from 'react';
+import { CartPopover } from '@/components/ui/layout/header/cart/cart-control';
 
 const LOGOUT_MUTATION = gql(/* GraphQL */ `
   mutation Logout {
@@ -34,119 +26,6 @@ const LOGOUT_MUTATION = gql(/* GraphQL */ `
     }
   }
 `);
-
-const CartLineFragment = gql(/* GraphQL */ `
-  fragment CartLineFragment on CartLine {
-    id
-    quantity
-    purchasable {
-      id
-      name
-      images(primaryOnly: true) {
-        data {
-          originalUrl
-          name
-        }
-      }
-      prices {
-        id
-        price
-      }
-    }
-  }
-`);
-
-const CART_QUERY = gql(/* GraphQL */ `
-  query MyCart {
-    myCart {
-      id
-      lines {
-        ...CartLineFragment
-      }
-    }
-  }
-`);
-
-function CartControls() {
-  const { data: myCartQuery, loading } = useQuery(CART_QUERY);
-
-  if (loading || myCartQuery === undefined) {
-    return <>...</>;
-  }
-
-  return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <Button variant="outline" className="relative">
-          <BiShoppingBag size={24} />
-          {myCartQuery.myCart.lines.length > 0 && (
-            <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-2xs font-medium text-white">
-              {myCartQuery.myCart.lines.length}
-            </span>
-          )}
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-64" align="end" forceMount asChild>
-        <CartItems lines={myCartQuery.myCart.lines} />
-      </PopoverContent>
-    </Popover>
-  );
-}
-
-const CartItems = ({
-  lines,
-}: {
-  lines: Array<FragmentType<typeof CartLineFragmentFragmentDoc>>;
-}) => {
-  return (
-    <Card className="w-64 p-2">
-      <CardContent className="p-2">
-        <h3 className="text-lg font-medium">Your cart</h3>
-        <ul>
-          {lines.map((line) => (
-            <CartItemLine
-              key={useFragment(CartLineFragmentFragmentDoc, line).id}
-              lineFragment={line}
-            />
-          ))}
-        </ul>
-      </CardContent>
-    </Card>
-  );
-};
-
-const CartItemLine = ({
-  lineFragment,
-}: {
-  lineFragment: FragmentType<typeof CartLineFragmentFragmentDoc>;
-}) => {
-  const line = useFragment(CartLineFragmentFragmentDoc, lineFragment);
-
-  return (
-    <li className="flex gap-2 rounded border-b border-solid border-secondary p-1">
-      <Image
-        src={line.purchasable.images.data[0].originalUrl}
-        alt={line.purchasable.images.data[0].name}
-        width={50}
-        height={50}
-      />
-      <div className="text-xs">
-        <h4>{line.purchasable.name}</h4>
-        <p>
-          {line.quantity} x{' '}
-          {formatToCurrency(line.purchasable.prices[0].price.value)}
-        </p>
-        <Separator orientation="horizontal" className="my-0.5" />
-        <span className="text-foreground">
-          Subtotal:{' '}
-          {formatToCurrency(
-            line.quantity * line.purchasable.prices[0].price.value,
-          )}
-        </span>
-      </div>
-    </li>
-  );
-};
 
 function NotificationsControls() {
   return (
@@ -227,19 +106,6 @@ function GuestControls() {
   );
 }
 
-export const ACTIVE_CART_FRAGMENT = gql(/* GraphQL */ `
-  fragment ActiveCartFragment on Cart {
-    id
-    lines {
-      id
-      quantity
-      purchasable {
-        id
-        name
-      }
-    }
-  }
-`);
 export const ACTIVE_CHAT_ROOM_FRAGMENT = gql(/* GraphQL */ `
   fragment ActiveChatRoomFragment on ChatRoom {
     id
@@ -268,6 +134,7 @@ export const CHECK_ME = gql(/* GraphQL */ `
     }
   }
 `);
+
 function AuthControls() {
   const { data, loading } = useQuery(CHECK_ME);
   const user = data?.checkMe ?? null;
@@ -279,7 +146,7 @@ function AuthControls() {
   return (
     <div className="flex items-center gap-2">
       <NotificationsControls />
-      <CartControls />
+      <CartPopover />
       {user ? <UserControls user={user} /> : <GuestControls />}
     </div>
   );
