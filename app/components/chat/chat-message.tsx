@@ -26,8 +26,8 @@ import {
   CreateChatMessageInput,
   Exact,
   SendMessageToChatRoomMutation,
-} from '@/gql/graphql';
-import { makeFragmentData, useFragment } from '@/gql';
+} from '@/gql/generated/graphql';
+import { makeFragmentData, useFragment } from '@/gql/generated';
 import {
   CHECK_ME,
   CHECK_ME_FRAGMENT,

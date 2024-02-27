@@ -5,7 +5,7 @@ const config: CodegenConfig = {
   documents: ['app/**/*.{ts,tsx}'],
   ignoreNoDocuments: true, // for better experience with the watcher
   generates: {
-    'app/gql/': {
+    'app/gql/generated/': {
       preset: 'client',
       config: {
         strictScalars: true,

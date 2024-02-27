@@ -1,13 +1,10 @@
-import { useFragment } from '@/gql';
-import {
-  CartFragmentFragment,
-  CartLineFragmentFragmentDoc,
-} from '@/gql/graphql';
 import { PriceData } from '@/gql/scalars';
 import { forwardRef } from 'react';
 import * as React from 'react';
 import { Card, CardContent } from '@/components/ui/common/card';
 import { CartItemLine } from '@/components/ui/layout/header/cart/cart-item-line';
+import { CartFragmentFragment, CartLineFragmentFragmentDoc } from '@/gql/generated/graphql';
+import { useFragment } from '@/gql/generated';
 
 type CartItemsProps = {
   myCart: CartFragmentFragment;

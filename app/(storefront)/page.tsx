@@ -1,6 +1,6 @@
 'use client';
 
-import { gql } from '@/gql';
+import { gql } from '@/gql/generated';
 import { useQuery } from '@apollo/client';
 import BaseLink from 'next/link';
 

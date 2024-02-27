@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useQuery } from '@apollo/client';
-import { gql } from '@/gql';
+import { gql } from '@/gql/generated';
 import Details from '@/(storefront)/product/[slug]/details';
 
 const BrandFragment = gql(/* GraphQL */ `

@@ -17,12 +17,12 @@ import { Star } from '@/components/rating/rating-breakdown';
 import { Button } from '@/components/ui/common/button';
 import { Icons } from '@/components/icons';
 import { cn } from '@/lib/utils';
-import { FragmentType, useFragment } from '@/gql';
+import { FragmentType, useFragment } from '@/gql/generated';
 import { ColorAttributeData, PriceData } from '@/gql/scalars';
 import {
   DiscountFragmentFragmentDoc,
   ProductGridFragmentFragmentDoc,
-} from '@/gql/graphql';
+} from '@/gql/generated/graphql';
 
 export const Item = ({
   productFragment,
@@ -61,6 +61,7 @@ export const Item = ({
   const priceData = selectedProductVariant.prices?.[0].price;
 
   useEffect(() => {
+    //TODO is this needed?
     setSelectedProductVariant(product.variants[0]);
   }, [product.variants]);
 

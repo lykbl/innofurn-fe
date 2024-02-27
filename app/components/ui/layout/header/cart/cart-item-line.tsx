@@ -1,5 +1,5 @@
-import { FragmentType, gql, useFragment } from '@/gql';
-import { CartLineFragmentFragmentDoc } from '@/gql/graphql';
+import { FragmentType, gql, useFragment } from '@/gql/generated';
+import { CartLineFragmentFragmentDoc } from '@/gql/generated/graphql';
 import { useMutation } from '@apollo/client';
 import Image from 'next/image';
 import { formatToCurrency } from '@/lib/utils';

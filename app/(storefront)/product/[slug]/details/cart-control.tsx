@@ -5,8 +5,8 @@ import { BiMinus, BiPlus, BiSearchAlt } from 'react-icons/bi';
 import { useState } from 'react';
 import { formatToCurrency } from '@/lib/utils';
 import { Button } from '@/components/ui/common/button';
-import { PriceFragmentFragmentDoc } from '@/gql/graphql';
-import { FragmentType, gql, useFragment } from '@/gql';
+import { PriceFragmentFragmentDoc } from '@/gql/generated/graphql';
+import { FragmentType, gql, useFragment } from '@/gql/generated';
 import { useMutation } from '@apollo/client';
 
 const ADD_TO_CART_MUTATION = gql(/* GraphQL */ `

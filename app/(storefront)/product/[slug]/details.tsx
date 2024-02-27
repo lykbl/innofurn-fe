@@ -6,14 +6,14 @@ import { FaPhoneAlt } from 'react-icons/fa';
 import { IoChatboxEllipses } from 'react-icons/io5';
 import CartControl from '@/(storefront)/product/[slug]/details/cart-control';
 
-import { FragmentType, useFragment } from '@/gql';
+import { FragmentType, useFragment } from '@/gql/generated';
 
 import {
   ProductDetailsFragmentFragmentDoc,
   ProductDetailsQuery,
   ProductDetailsVariantFragmentFragment,
   ProductDetailsVariantFragmentFragmentDoc,
-} from '@/gql/graphql';
+} from '@/gql/generated/graphql';
 import ProductOptionsSelector from '@/(storefront)/product/[slug]/details/product-options-selector';
 import { Star } from '@/components/rating/rating-breakdown';
 import { QueryResult } from '@apollo/client';

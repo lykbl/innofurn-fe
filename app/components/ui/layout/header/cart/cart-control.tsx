@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/client';
-import { gql, useFragment } from '@/gql';
-import { CartFragmentFragment, CartFragmentFragmentDoc } from '@/gql/graphql';
+import { gql, useFragment } from '@/gql/generated';
+import { CartFragmentFragment, CartFragmentFragmentDoc } from '@/gql/generated/graphql';
 import {
   Popover,
   PopoverContent,

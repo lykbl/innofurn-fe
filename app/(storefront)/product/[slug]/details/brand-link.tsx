@@ -1,5 +1,5 @@
-import { FragmentType, useFragment } from '@/gql';
-import { BrandFragmentFragmentDoc } from '@/gql/graphql';
+import { FragmentType, useFragment } from '@/gql/generated';
+import { BrandFragmentFragmentDoc } from '@/gql/generated/graphql';
 import Link from 'next/link';
 import React from 'react';
 

@@ -9,8 +9,8 @@ import {
 } from '@/components/ui/pagination';
 import React from 'react';
 import { useSearchFilterQuery } from '@/(storefront)/search/[handle]/filters';
-import { PaginatorInfoFragmentFragmentDoc } from '@/gql/graphql';
-import { FragmentType, useFragment } from '@/gql';
+import { PaginatorInfoFragmentFragmentDoc } from '@/gql/generated/graphql';
+import { FragmentType, useFragment } from '@/gql/generated';
 
 export const Paginator = ({
   paginatorInfo,

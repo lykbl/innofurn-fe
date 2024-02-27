@@ -11,8 +11,8 @@ import {
 } from '@/components/ui/tooltip';
 import { useSearchFilterQuery } from '@/(storefront)/search/[handle]/filters';
 import { cn } from '@/lib/utils';
-import { FragmentType, useFragment } from '@/gql';
-import { ProductOptionValueFragmentFragmentDoc } from '@/gql/graphql';
+import { FragmentType, useFragment } from '@/gql/generated';
+import { ProductOptionValueFragmentFragmentDoc } from '@/gql/generated/graphql';
 
 export const ColorFilter = ({
   handle,
@@ -27,10 +27,9 @@ export const ColorFilter = ({
     <AccordionItem value={handle}>
       <AccordionTrigger className="px-1">{label}</AccordionTrigger>
       <AccordionContent className="flex gap-2 px-1 pt-2">
-        {values.map((valueFragment, index) => (
+        {values.map((valueFragment) => (
           <ColorFilterOption
-            index={index}
-            handle={handle}
+            key={handle}
             valueFragment={valueFragment}
           />
         ))}
@@ -47,12 +46,8 @@ const labelToColor = (label: string) => {
   return '#ffffff';
 };
 const ColorFilterOption = ({
-  index,
-  handle,
   valueFragment,
 }: {
-  index: number;
-  handle: string;
   valueFragment: FragmentType<typeof ProductOptionValueFragmentFragmentDoc>;
 }) => {
   const { urlSearchParams, updateSearchFilter } = useSearchFilterQuery();
@@ -69,7 +64,7 @@ const ColorFilterOption = ({
   };
 
   return (
-    <TooltipProvider key={index}>
+    <TooltipProvider>
       <Tooltip>
         <TooltipContent>{name}</TooltipContent>
         <TooltipTrigger onClick={handleColorClick.bind(null, name)}>

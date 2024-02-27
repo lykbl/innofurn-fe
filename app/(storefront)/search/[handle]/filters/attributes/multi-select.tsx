@@ -5,8 +5,8 @@ import {
 } from '@/components/ui/accordion';
 import { Checkbox } from '@/components/ui/common/checkbox';
 import { useSearchFilterQuery } from '@/(storefront)/search/[handle]/filters';
-import { FragmentType, useFragment } from '@/gql';
-import { ProductOptionValueFragmentFragmentDoc } from '@/gql/graphql';
+import { FragmentType, useFragment } from '@/gql/generated';
+import { ProductOptionValueFragmentFragmentDoc } from '@/gql/generated/graphql';
 
 export const MultiSelectFilter = ({
   handle,
