@@ -1,4 +1,4 @@
-import { FragmentType, gql, useFragment } from '@/gql/generated';
+import { FragmentType, useFragment } from '@/gql/generated';
 import { CartLineFragmentFragmentDoc } from '@/gql/generated/graphql';
 import { useMutation } from '@apollo/client';
 import Image from 'next/image';
@@ -7,35 +7,7 @@ import { Button } from '@/components/ui/common/button';
 import { XIcon } from 'lucide-react';
 import { Separator } from '@/components/ui/common/separator';
 import * as React from 'react';
-
-const CLEAR_CART_MUTATION = gql(/* GraphQL */ `
-  mutation ClearItem($sku: String!) {
-    clearCartItem(sku: $sku) {
-      ...CartFragment
-    }
-  }
-`);
-
-const CartLineFragment = gql(/* GraphQL */ `
-  fragment CartLineFragment on CartLine {
-    id
-    quantity
-    purchasable {
-      id
-      name
-      sku
-      primaryImage {
-        id
-        originalUrl
-        name
-      }
-      prices {
-        id
-        price
-      }
-    }
-  }
-`);
+import { CLEAR_CART_MUTATION } from '@/gql/queries/cart';
 
 export const CartItemLine = ({
   lineFragment,

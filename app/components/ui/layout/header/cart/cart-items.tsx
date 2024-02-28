@@ -3,8 +3,14 @@ import { forwardRef } from 'react';
 import * as React from 'react';
 import { Card, CardContent } from '@/components/ui/common/card';
 import { CartItemLine } from '@/components/ui/layout/header/cart/cart-item-line';
-import { CartFragmentFragment, CartLineFragmentFragmentDoc } from '@/gql/generated/graphql';
+import {
+  CartFragmentFragment,
+  CartLineFragmentFragmentDoc,
+} from '@/gql/generated/graphql';
 import { useFragment } from '@/gql/generated';
+import Link from 'next/link';
+import { cn } from '@/lib/utils';
+import { buttonVariants } from '@/components/ui/common/button';
 
 type CartItemsProps = {
   myCart: CartFragmentFragment;
@@ -59,6 +65,9 @@ const Totals = ({
       <p>Tax Total: {taxTotal.format}</p>
       <p>Discount Total: {discountTotal.format}</p>
       <p className="text-base font-bold">Items Total: {total.format}</p>
+      <Link className={cn(buttonVariants({ variant: 'default' }))} href="/cart">
+        Checkout
+      </Link>
     </div>
   );
 };

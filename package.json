@@ -46,6 +46,7 @@
     "clsx": "^2.1.0",
     "cmdk": "^0.2.0",
     "embla-carousel-react": "^8.0.0",
+    "feather-icons": "^4.29.1",
     "framer-motion": "^10.16.5",
     "graphql": "^16.8.1",
     "graphql-ws": "^5.14.3",

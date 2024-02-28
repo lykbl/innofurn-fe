@@ -28,10 +28,7 @@ export const ColorFilter = ({
       <AccordionTrigger className="px-1">{label}</AccordionTrigger>
       <AccordionContent className="flex gap-2 px-1 pt-2">
         {values.map((valueFragment) => (
-          <ColorFilterOption
-            key={handle}
-            valueFragment={valueFragment}
-          />
+          <ColorFilterOption key={handle} valueFragment={valueFragment} />
         ))}
       </AccordionContent>
     </AccordionItem>
