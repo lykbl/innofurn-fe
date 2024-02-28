@@ -11,7 +11,7 @@ import { useMutation } from '@apollo/client';
 
 const ADD_TO_CART_MUTATION = gql(/* GraphQL */ `
   mutation AddToCart($sku: String!, $quantity: Int!) {
-    addItem(sku: $sku, quantity: $quantity) {
+    addOrUpdatePurchasable(sku: $sku, quantity: $quantity) {
       ...CartFragment
     }
   }

@@ -4,7 +4,7 @@ import { Card } from '@/components/ui/common/card';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
-import { cn, formatToCurrency } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import { Button, buttonVariants } from '@/components/ui/common/button';
 import {
   Popover,
@@ -22,7 +22,7 @@ const CartItem = ({
   lineFragment: FragmentType<typeof CartLineFragmentFragmentDoc>;
 }) => {
   const line = useFragment(CartLineFragmentFragmentDoc, lineFragment);
-  const { purchasable } = line;
+  const { purchasable, subTotal, subTotalDiscounted } = line;
   const { name, prices, primaryImage, sku } = purchasable;
   const { price } = prices?.[0] || {};
   const { brand } = purchasable.product;
@@ -79,12 +79,22 @@ const CartItem = ({
         </div>
         <div className="flex flex-col justify-between">
           <div className="flex flex-col items-end gap-1">
-            <p className="text-2xl">$15.00</p>
-            <p className="line-through">{price.format}</p>
+            <p className="text-2xl">{price.format}</p>
             <QuantityInput quantity={quantity} setQuantity={setQuantity} />
           </div>
           <div className="text-xl">
-            Subtotal: {formatToCurrency(price.value * quantity)}
+            {subTotalDiscounted.value !== subTotal.value ? (
+              <div className="flex flex-col items-end">
+                <p className="text-primary/50 line-through">
+                  {subTotal.format}
+                </p>
+                <p className="text-2xl">
+                  Subtotal: {subTotalDiscounted.format}
+                </p>
+              </div>
+            ) : (
+              <p className="text-2xl">Subtotal: {subTotal.format}</p>
+            )}
           </div>
         </div>
       </div>

@@ -20,6 +20,20 @@ const CartFragment = gql(/* GraphQL */ `
   }
 `);
 
+const DiscountBreakdownFragment = gql(/* GraphQL */ `
+  fragment DiscountBreakdownFragment on DiscountBreakdown {
+    discount {
+      data
+    }
+    price
+    lines {
+      line {
+        id
+      }
+    }
+  }
+`);
+
 export const CLEAR_CART_MUTATION = gql(/* GraphQL */ `
   mutation ClearItem($sku: String!) {
     clearCartItem(sku: $sku) {
@@ -32,6 +46,9 @@ const CartLineFragment = gql(/* GraphQL */ `
   fragment CartLineFragment on CartLine {
     id
     quantity
+    subTotal
+    discountTotal
+    subTotalDiscounted
     purchasable {
       id
       name
