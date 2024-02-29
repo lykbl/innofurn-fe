@@ -2,7 +2,7 @@
 
 import React, { Suspense } from 'react';
 import { useSuspenseQuery } from '@apollo/client';
-import { gql } from '@/gql';
+import { gql } from '@/gql/generated';
 import {
   Filters,
   useSearchFilterQuery,
@@ -10,7 +10,7 @@ import {
 import { OrderBySelect } from '@/(storefront)/search/[handle]/order-by';
 import { Paginator } from '@/(storefront)/search/[handle]/paginator';
 import { ProductsGrid } from '@/(storefront)/search/[handle]/products-grid';
-import { ProductFilterInput, ProductOrderBy } from '@/gql/graphql';
+import { ProductFilterInput, ProductOrderBy } from '@/gql/generated/graphql';
 
 const ProductOptionValueFragment = gql(/* GraphQL */ `
   fragment ProductOptionValueFragment on ProductOptionValue {

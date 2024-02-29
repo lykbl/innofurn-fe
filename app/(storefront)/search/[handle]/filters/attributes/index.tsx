@@ -1,8 +1,8 @@
-import { ProductOptionFragmentFragmentDoc } from '@/gql/graphql';
+import { ProductOptionFragmentFragmentDoc } from '@/gql/generated/graphql';
 import React from 'react';
 import { ColorFilter } from '@/(storefront)/search/[handle]/filters/attributes/color';
 import { MultiSelectFilter } from '@/(storefront)/search/[handle]/filters/attributes/multi-select';
-import { FragmentType, useFragment } from '@/gql';
+import { FragmentType, useFragment } from '@/gql/generated';
 
 export const AttributeFilters = ({
   productOptions,

@@ -1,4 +1,4 @@
-import { gql, useFragment } from '@/gql';
+import { gql, useFragment } from '@/gql/generated';
 import ChatMessage from '@/components/chat/chat-message';
 import * as React from 'react';
 import { ChatMessageFragment } from '@/components/chat/chat-content';
@@ -13,7 +13,7 @@ import {
   CreateChatMessageInput,
   Exact,
   SendMessageToChatRoomMutation,
-} from '@/gql/graphql';
+} from '@/gql/generated/graphql';
 import { Icons } from '@/components/icons';
 import { cn } from '@/lib/utils';
 import {

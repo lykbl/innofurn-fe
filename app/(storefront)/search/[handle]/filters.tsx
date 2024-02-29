@@ -1,13 +1,13 @@
 import { Accordion } from '@/components/ui/accordion';
 import React from 'react';
-import { ProductOptionFragmentFragmentDoc } from '@/gql/graphql';
+import { ProductOptionFragmentFragmentDoc } from '@/gql/generated/graphql';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { AttributeFilters } from '@/(storefront)/search/[handle]/filters/attributes';
 import { OnSaleFilter } from '@/(storefront)/search/[handle]/filters/on-sale';
 import { RatingFilter } from '@/(storefront)/search/[handle]/filters/rating';
 import { PriceFilter } from '@/(storefront)/search/[handle]/filters/prices';
 import { useDebounce } from 'react-use';
-import { FragmentType } from '@/gql';
+import { FragmentType } from '@/gql/generated';
 
 export const Filters = ({
   productOptions,

@@ -9,7 +9,7 @@ import { ScrollArea, ScrollAreaViewport } from '@/components/ui/scroll-area';
 import ChatMessageControls from '@/components/chat/chat-message-controls';
 import { forwardRef, Suspense, useRef, useState } from 'react';
 import { useMutation } from '@apollo/client';
-import { gql } from '@/gql';
+import { gql } from '@/gql/generated';
 import * as React from 'react';
 import { Icons } from '@/components/icons';
 import ChatMessages from '@/components/chat/chat-messages';

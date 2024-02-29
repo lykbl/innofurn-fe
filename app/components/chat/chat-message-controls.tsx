@@ -17,8 +17,8 @@ import {
   CreateChatMessageInput,
   Exact,
   SendMessageToChatRoomMutation,
-} from '@/gql/graphql';
-import { FragmentType, makeFragmentData, useFragment } from '@/gql';
+} from '@/gql/generated/graphql';
+import { FragmentType, makeFragmentData, useFragment } from '@/gql/generated';
 import { ChatMessageFragment } from '@/components/chat/chat-content';
 
 const FormSchema = z.object({

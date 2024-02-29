@@ -1,6 +1,9 @@
 import { useQuery } from '@apollo/client';
-import { gql, useFragment } from '@/gql';
-import { CartFragmentFragment, CartFragmentFragmentDoc } from '@/gql/graphql';
+import { useFragment } from '@/gql/generated';
+import {
+  CartFragmentFragment,
+  CartFragmentFragmentDoc,
+} from '@/gql/generated/graphql';
 import {
   Popover,
   PopoverContent,
@@ -10,26 +13,7 @@ import { Button } from '@/components/ui/common/button';
 import { BiShoppingBag } from 'react-icons/bi';
 import * as React from 'react';
 import { CartItems } from '@/components/ui/layout/header/cart/cart-items';
-
-const CART_QUERY = gql(/* GraphQL */ `
-  query MyCart {
-    myCart {
-      ...CartFragment
-    }
-  }
-`);
-
-const CartFragment = gql(/* GraphQL */ `
-  fragment CartFragment on Cart {
-    id
-    total
-    taxTotal
-    discountTotal
-    lines {
-      ...CartLineFragment
-    }
-  }
-`);
+import { CART_QUERY } from '@/gql/queries/cart';
 
 export const CartPopover = () => {
   const { data: myCartQuery, loading } = useQuery(CART_QUERY);

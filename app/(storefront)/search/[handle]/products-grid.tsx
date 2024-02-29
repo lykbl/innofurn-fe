@@ -1,10 +1,10 @@
 import {
   FindProductsQuery,
   ProductGridFragmentFragmentDoc,
-} from '@/gql/graphql';
+} from '@/gql/generated/graphql';
 import { Item } from '@/(storefront)/search/[handle]/item-card';
 import React from 'react';
-import { FragmentType, useFragment } from '@/gql';
+import { FragmentType, useFragment } from '@/gql/generated';
 import { ApolloError } from '@apollo/client';
 
 export const ProductsGrid = ({

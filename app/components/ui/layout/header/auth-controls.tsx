@@ -3,7 +3,7 @@
 import BaseLink from 'next/link';
 import ROUTES from '@/lib/routes';
 import { BiBell } from 'react-icons/bi';
-import { FragmentType, gql, useFragment } from '@/gql';
+import { FragmentType, gql, useFragment } from '@/gql/generated';
 import { Button } from '@/components/ui/common/button';
 import { useMutation, useQuery } from '@apollo/client';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';

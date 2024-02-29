@@ -3,11 +3,11 @@
 import React from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/common/button';
-import { FragmentType, useFragment } from '@/gql';
+import { FragmentType, useFragment } from '@/gql/generated';
 import {
   MediaPaginatorFragmentFragmentDoc,
   ProductDetailsQuery,
-} from '@/gql/graphql';
+} from '@/gql/generated/graphql';
 import { QueryResult } from '@apollo/client';
 
 const Images = ({

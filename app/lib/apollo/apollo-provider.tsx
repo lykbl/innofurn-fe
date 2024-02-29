@@ -112,13 +112,15 @@ function createClient() {
           fields: {
             images: {
               keyArgs: false,
-              merge: (existing, incoming) => ({
-                __typename: incoming.__typename,
-                data: existing?.data
-                  ? [...existing.data, ...incoming.data]
-                  : incoming.data,
-                paginatorInfo: incoming.paginatorInfo,
-              }),
+              merge: (existing, incoming, { args }) => {
+                if (!existing) return incoming;
+
+                return {
+                  __typename: existing.__typename,
+                  data: [...existing.data, ...incoming.data],
+                  paginatorInfo: incoming.paginatorInfo,
+                };
+              },
             },
           },
         },
