@@ -9,11 +9,12 @@ import {
 } from '@/gql/generated/graphql';
 import { Card, CardContent } from '@/components/ui/common/card';
 import { Separator } from '@/components/ui/common/separator';
-import { Button } from '@/components/ui/common/button';
+import { buttonVariants } from '@/components/ui/common/button';
 import CartItem from '@/(storefront)/cart/cart-item';
 import { Suspense, useTransition } from 'react';
 import { cn } from '@/lib/utils';
 import { ADD_OR_UPDATE_PURCHASABLE } from '@/gql/mutations/cart';
+import Link from 'next/link';
 
 const Page = () => {
   const { data: myCartQuery, loading } = useQuery(CART_QUERY);
@@ -75,9 +76,12 @@ const Page = () => {
                   </div>
                 )}
               </div>
-              <Button variant="default" className="w-full">
+              <Link
+                className={cn(buttonVariants({ variant: 'default' }))}
+                href="/checkout"
+              >
                 Proceed to Checkout
-              </Button>
+              </Link>
             </CardContent>
           </Card>
         </div>

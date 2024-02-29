@@ -8,7 +8,17 @@ import {
   Elements,
 } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
-import axios from 'axios';
+import { gql, useFragment } from '@/gql/generated';
+import * as process from 'process';
+import { useQuery } from '@apollo/client';
+import { Card, CardContent } from '@/components/ui/common/card';
+import { CartFragmentFragmentDoc } from '@/gql/generated/graphql';
+import { cn } from '@/lib/utils';
+import { Separator } from '@/components/ui/common/separator';
+import Link from 'next/link';
+import { buttonVariants } from '@/components/ui/common/button';
+import { CART_QUERY } from '@/gql/queries/cart';
+import AddressStep from '@/(storefront)/checkout/components/address-step';
 
 function CheckoutForm() {
   const stripe = useStripe();
@@ -101,41 +111,107 @@ function CheckoutForm() {
   );
 }
 
-export default function Page() {
-  const stripePromise = loadStripe(
-    'pk_test_51IqhrJJv2dzDDjOjDBuSb240GhU920A8zQhCXC6NHYexqcippO3F4gH2KDYznj8Pu4uDwBVFi16r8e31MVnTyhbj00ue2Xp0rI', //TODO move to env
-  );
-  const [clientSecret, setClientSecret] = useState<string>('');
-  const appearance = {
-    theme: 'stripe',
-  };
+const CREATE_PAYMENT_INTENT_MUTATION = gql(/* GraphQL */ `
+  mutation createPaymentIntent($input: CreatePaymentIntentInput!) {
+    createPaymentIntent(input: $input) {
+      clientSecret
+    }
+  }
+`);
 
-  useEffect(() => {
-    (async () => {
-      axios.defaults.withCredentials = true;
-      axios.defaults.withXSRFToken = true;
-      const jsonResult = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_HOST}/api/create-payment-intent`,
-        {
-          billingAddressId: 4,
-          shippingAddressId: 4,
-          shippingMethodId: 'BASDEL',
-        },
-      );
-      console.log(jsonResult.data);
-      setClientSecret(jsonResult.data.clientSecret);
-    })();
-  }, []);
+const Stripe = () => {
+  const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY ?? ''); //TODO move to env
+  // const [clientSecret, setClientSecret] = useState<string>('');
+  // const appearance = {
+  //   theme: 'stripe',
+  // };
+
+  // useEffect(() => {
+  //   (async () => {
+  //     axios.defaults.withCredentials = true;
+  //     axios.defaults.withXSRFToken = true;
+  //     const jsonResult = await axios.post(
+  //       `${process.env.NEXT_PUBLIC_API_HOST}/api/create-payment-intent`,
+  //       {
+  //         billingAddressId: 4,
+  //         shippingAddressId: 4,
+  //         shippingMethodId: 'BASDEL',
+  //       },
+  //     );
+  //     console.log(jsonResult.data);
+  //     setClientSecret(jsonResult.data.clientSecret);
+  //   })();
+  // }, []);
 
   const options = {
-    clientSecret,
-    appearance,
+    clientSecret: 'abc',
+    appearance: {
+      theme: 'stripe',
+    },
   } as any;
+
   return (
-    clientSecret && (
-      <Elements stripe={stripePromise} options={options}>
-        <CheckoutForm />
-      </Elements>
-    )
+    <Elements stripe={stripePromise} options={options}>
+      <CheckoutForm />
+    </Elements>
+  );
+};
+
+export default function Page() {
+  const { data: myCartQuery, loading: cartLoading } = useQuery(CART_QUERY);
+  const myCart = useFragment(CartFragmentFragmentDoc, myCartQuery?.myCart);
+  const [addressStepFinished, setAddressStepFinished] =
+    useState<boolean>(false);
+
+  return (
+    <div className="w-full">
+      <h1>Checkout</h1>
+      <div className="flex gap-4">
+        <div className="flex w-3/5 flex-col gap-2">
+          {!addressStepFinished && (
+            <AddressStep setAddressStepFinished={setAddressStepFinished} />
+          )}
+        </div>
+        <div className="flex w-2/5 flex-col">
+          <Card className={cn(false && 'animate-pulse')}>
+            <CardContent className="flex flex-col gap-6 p-4">
+              <div className="flex flex-col gap-2">
+                <p className="flex justify-between">
+                  <span>Items subtotal:</span>
+                  <span>{myCart?.total.format}</span>
+                </p>
+                <p className="flex justify-between">
+                  <span>Ship to</span>
+                  <span>FREE</span>
+                </p>
+                <p className="flex justify-between">
+                  <span>Tax Total:</span>
+                  <span>{myCart?.taxTotal.format}</span>
+                </p>
+              </div>
+              <Separator />
+              <div>
+                <div className="flex justify-between">
+                  <span className="font-me">Total:</span>
+                  <span>{myCart?.total.format}</span>
+                </div>
+                {myCart?.discountTotal.value > 0 && (
+                  <div className="flex justify-between">
+                    <span>You save: </span>
+                    <span>{myCart?.discountTotal.format}</span>
+                  </div>
+                )}
+              </div>
+              <Link
+                className={cn(buttonVariants({ variant: 'default' }))}
+                href="/checkout"
+              >
+                Proceed to Checkout
+              </Link>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
   );
 }
