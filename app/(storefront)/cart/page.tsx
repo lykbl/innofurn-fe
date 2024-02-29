@@ -1,6 +1,6 @@
 'use client';
 
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { CART_QUERY } from '@/gql/queries/cart';
 import { useFragment } from '@/gql/generated';
 import {
@@ -11,11 +11,22 @@ import { Card, CardContent } from '@/components/ui/common/card';
 import { Separator } from '@/components/ui/common/separator';
 import { Button } from '@/components/ui/common/button';
 import CartItem from '@/(storefront)/cart/cart-item';
+import { Suspense, useTransition } from 'react';
+import { cn } from '@/lib/utils';
+import { ADD_OR_UPDATE_PURCHASABLE } from '@/gql/mutations/cart';
 
 const Page = () => {
   const { data: myCartQuery, loading } = useQuery(CART_QUERY);
   const myCart = useFragment(CartFragmentFragmentDoc, myCartQuery?.myCart);
   const cartItems = myCart?.lines || [];
+  const [isPending, startTransition] = useTransition();
+  const [updateQuantity] = useMutation(ADD_OR_UPDATE_PURCHASABLE);
+
+  const handleQuantityUpdate = (sku: string, quantity: number) => {
+    startTransition(async () => {
+      await updateQuantity({ variables: { sku, quantity } });
+    });
+  };
 
   return (
     <div className="w-full">
@@ -23,14 +34,20 @@ const Page = () => {
       <div className="flex gap-4">
         <div className="flex w-3/5 flex-col gap-2">
           {cartItems.map((line) => (
-            <CartItem
+            <Suspense
+              fallback={<div>Loading</div>}
               key={useFragment(CartLineFragmentFragmentDoc, line).id}
-              lineFragment={line}
-            />
+            >
+              <CartItem
+                lineFragment={line}
+                handleQuantityUpdate={handleQuantityUpdate}
+                isUpdating={isPending}
+              />
+            </Suspense>
           ))}
         </div>
         <div className="flex w-2/5 flex-col">
-          <Card>
+          <Card className={cn(isPending && 'animate-pulse')}>
             <CardContent className="flex flex-col gap-6 p-4">
               <div className="flex flex-col gap-2">
                 <p className="flex justify-between">

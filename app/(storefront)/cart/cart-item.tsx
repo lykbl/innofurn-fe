@@ -5,37 +5,38 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
-import { Button, buttonVariants } from '@/components/ui/common/button';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
-import { Icons } from '@/components/icons';
-import React, { ChangeEventHandler, Dispatch, useState } from 'react';
-import { Input } from '@/components/ui/common/input';
-import { Star } from '@/components/rating/rating-breakdown';
+import { buttonVariants } from '@/components/ui/common/button';
+import React from 'react';
+import { QuantityInput } from '@/(storefront)/cart/quantity-input';
+import { PriceData } from '@/gql/scalars';
+import FiveStars from '@/components/ui/common/five-stars';
 
 const CartItem = ({
   lineFragment,
+  handleQuantityUpdate,
+  isUpdating,
 }: {
   lineFragment: FragmentType<typeof CartLineFragmentFragmentDoc>;
+  handleQuantityUpdate: (sku: string, quantity: number) => void;
+  isUpdating: boolean;
 }) => {
   const line = useFragment(CartLineFragmentFragmentDoc, lineFragment);
-  const { purchasable, subTotal, subTotalDiscounted } = line;
+  const { purchasable, subTotal, subTotalDiscounted, quantity } = line;
   const { name, prices, primaryImage, sku } = purchasable;
-  const { price } = prices?.[0] || {};
-  const { brand } = purchasable.product;
-  const { originalUrl, name: imageAlt } = primaryImage;
-  const values = purchasable.values;
-  const { averageRating, reviewsCount } = purchasable;
-  const [quantity, setQuantity] = useState(line.quantity);
+  const { price } = prices[0];
+  const {
+    product: { brand },
+    values: productOptions,
+    averageRating,
+    reviewsCount,
+  } = purchasable;
+  const { originalUrl: imageUrl, name: imageAlt } = primaryImage;
 
   return (
-    <Card className="flex gap-4 p-4">
+    <Card className={cn('flex gap-4 p-4', isUpdating && 'animate-pulse')}>
       <Image
         className="rounded"
-        src={originalUrl}
+        src={imageUrl}
         alt={imageAlt}
         width={200}
         height={200}
@@ -56,23 +57,13 @@ const CartItem = ({
               </Link>
               <span> | {sku}</span>
             </h3>
-            <div className="flex items-center gap-2 py-1">
-              <div className="flex">
-                {Array.from({ length: 5 })
-                  .fill(null)
-                  .map((_, index) => (
-                    <Star
-                      key={index}
-                      isFilled={index + 1 < averageRating}
-                      withGradient={index + 1 === Math.ceil(averageRating)}
-                    />
-                  ))}
-              </div>
-              ({reviewsCount})
-            </div>
+            <FiveStars
+              averageRating={averageRating}
+              reviewsCount={reviewsCount}
+            />
           </div>
           <div>
-            {values?.map((value) => (
+            {productOptions?.map((value) => (
               <Badge key={value.name}>{value.name}</Badge>
             ))}
           </div>
@@ -80,21 +71,16 @@ const CartItem = ({
         <div className="flex flex-col justify-between">
           <div className="flex flex-col items-end gap-1">
             <p className="text-2xl">{price.format}</p>
-            <QuantityInput quantity={quantity} setQuantity={setQuantity} />
+            <QuantityInput
+              quantity={quantity}
+              updateQuantity={handleQuantityUpdate.bind(null, sku)}
+            />
           </div>
           <div className="text-xl">
-            {subTotalDiscounted.value !== subTotal.value ? (
-              <div className="flex flex-col items-end">
-                <p className="text-primary/50 line-through">
-                  {subTotal.format}
-                </p>
-                <p className="text-2xl">
-                  Subtotal: {subTotalDiscounted.format}
-                </p>
-              </div>
-            ) : (
-              <p className="text-2xl">Subtotal: {subTotal.format}</p>
-            )}
+            <ItemSubtotal
+              subTotal={subTotal}
+              subTotalDiscounted={subTotalDiscounted}
+            />
           </div>
         </div>
       </div>
@@ -102,75 +88,23 @@ const CartItem = ({
   );
 };
 
-const QuantityInput = ({
-  quantity,
-  setQuantity,
+const ItemSubtotal = ({
+  subTotal,
+  subTotalDiscounted,
 }: {
-  quantity: number;
-  setQuantity: Dispatch<React.SetStateAction<number>>;
+  subTotal: PriceData;
+  subTotalDiscounted: PriceData;
 }) => {
-  const [isCustomQuantityMode, setIsCustomQuantityMode] = useState(false);
-  const [buttonsView, setButtonsView] = useState(false);
-
-  const handleOnClick = (newQuantity: number) => {
-    if (newQuantity !== quantity) {
-      setQuantity(newQuantity);
-    }
-    setButtonsView(false);
-  };
-  const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    setQuantity(parseInt(e.target.value));
-  };
-
-  if (isCustomQuantityMode) {
+  if (subTotalDiscounted.value !== subTotal.value) {
     return (
-      <Input
-        type="number"
-        className="w-16 rounded border border-secondary text-end"
-        value={quantity}
-        onChange={handleChange}
-      />
+      <div className="flex flex-col items-end">
+        <p className="text-primary/50 line-through">{subTotal.format}</p>
+        <p className="text-2xl">Subtotal: {subTotalDiscounted.format}</p>
+      </div>
     );
   }
 
-  return (
-    <Popover open={buttonsView}>
-      <PopoverTrigger
-        className="flex w-20 items-center justify-between gap-2 rounded border px-2 py-1"
-        onClick={() => setButtonsView(!buttonsView)}
-      >
-        <span>Qty: </span>
-        <span>{quantity}</span>
-      </PopoverTrigger>
-      <PopoverContent
-        className="flex w-32 flex-col gap-1 p-2"
-        onInteractOutside={() => setIsCustomQuantityMode(false)}
-      >
-        {Array.from({ length: 9 }, (_, index) => index + 1).map((i: number) => (
-          <Button
-            key={i}
-            variant="ghost"
-            className="justify-between"
-            onClick={() => handleOnClick(i)}
-          >
-            {i}
-            <Icons.check
-              className={cn(i !== quantity && 'hidden')}
-              width={16}
-              height={16}
-            />
-          </Button>
-        ))}
-        <Button
-          variant="ghost"
-          className="content-start"
-          onClick={() => setIsCustomQuantityMode(true)}
-        >
-          10+
-        </Button>
-      </PopoverContent>
-    </Popover>
-  );
+  return <p className="text-2xl">Subtotal: {subTotal.format}</p>;
 };
 
 export default CartItem;

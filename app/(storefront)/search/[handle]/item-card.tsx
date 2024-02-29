@@ -13,7 +13,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { Star } from '@/components/rating/rating-breakdown';
 import { Button } from '@/components/ui/common/button';
 import { Icons } from '@/components/icons';
 import { cn } from '@/lib/utils';
@@ -23,6 +22,7 @@ import {
   DiscountFragmentFragmentDoc,
   ProductGridFragmentFragmentDoc,
 } from '@/gql/generated/graphql';
+import FiveStars from '@/components/ui/common/five-stars';
 
 export const Item = ({
   productFragment,
@@ -103,20 +103,10 @@ export const Item = ({
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger>
-              <div className="flex items-center gap-2 py-1">
-                <div className="flex">
-                  {Array.from({ length: 5 })
-                    .fill(null)
-                    .map((_, index) => (
-                      <Star
-                        key={index}
-                        isFilled={index + 1 < averageRating}
-                        withGradient={index + 1 === Math.ceil(averageRating)}
-                      />
-                    ))}
-                </div>
-                ({reviewsCount})
-              </div>
+              <FiveStars
+                averageRating={averageRating}
+                reviewsCount={reviewsCount}
+              />
             </TooltipTrigger>
             <TooltipContent></TooltipContent>
           </Tooltip>

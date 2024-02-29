@@ -6,16 +6,9 @@ import { useState } from 'react';
 import { formatToCurrency } from '@/lib/utils';
 import { Button } from '@/components/ui/common/button';
 import { PriceFragmentFragmentDoc } from '@/gql/generated/graphql';
-import { FragmentType, gql, useFragment } from '@/gql/generated';
+import { FragmentType, useFragment } from '@/gql/generated';
 import { useMutation } from '@apollo/client';
-
-const ADD_TO_CART_MUTATION = gql(/* GraphQL */ `
-  mutation AddToCart($sku: String!, $quantity: Int!) {
-    addOrUpdatePurchasable(sku: $sku, quantity: $quantity) {
-      ...CartFragment
-    }
-  }
-`);
+import { ADD_OR_UPDATE_PURCHASABLE } from '@/gql/mutations/cart';
 
 const CartControl = ({
   priceFragment,
@@ -31,7 +24,7 @@ const CartControl = ({
   const increment = () => setCount((prev) => prev + 1);
   const decrement = () => setCount((prev) => prev - 1 || prev);
   const totalPrice = count > 1 ? value * count : value;
-  const [addItem] = useMutation(ADD_TO_CART_MUTATION);
+  const [addItem] = useMutation(ADD_OR_UPDATE_PURCHASABLE);
   const handleAddToCart = (sku: string, quantity: number) => {
     addItem({ variables: { sku, quantity } });
   };
