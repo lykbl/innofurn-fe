@@ -30,7 +30,6 @@ const Page = () => {
 
   return (
     <div className="w-full">
-      My cart
       <div className="flex gap-4">
         <div className="flex w-3/5 flex-col gap-2">
           {cartItems.map((line) => (
