@@ -7,14 +7,14 @@ import React from 'react';
 type AddressCardProps = {
   address: AddressFragmentFragment;
   isSelected: boolean;
-  setSelectedAddress: (addressId: number) => void;
+  handleAddressChange: (addressId: number) => void;
   setAddressStepFinished: (v: boolean) => void;
 };
 
 const AddressCard = ({
   address,
   isSelected,
-  setSelectedAddress,
+  handleAddressChange,
   setAddressStepFinished,
 }: AddressCardProps) => {
   return (
@@ -24,12 +24,12 @@ const AddressCard = ({
         'flex h-full w-full justify-between rounded border border-input p-4 transition-all duration-500 ease-in-out',
         isSelected && 'border-primary',
       )}
-      onClick={() => setSelectedAddress(address.id)}
+      onClick={() => handleAddressChange(address.id)}
     >
       <AddressCardContent
         address={address}
         isSelected={isSelected}
-        setSelectedAddress={setSelectedAddress}
+        handleAddressChange={handleAddressChange}
         setAddressStepFinished={setAddressStepFinished}
       />
     </div>

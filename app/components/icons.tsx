@@ -37,7 +37,6 @@ export const Icons = {
   ),
   error: (props: IconProps) => (
     <svg
-      data-testid="geist-icon"
       fill="none"
       height="24"
       shapeRendering="geometricPrecision"
@@ -68,7 +67,6 @@ export const Icons = {
   ),
   check: (props: IconProps) => (
     <svg
-      data-testid="geist-icon"
       fill="none"
       height="24"
       shapeRendering="geometricPrecision"
@@ -85,7 +83,6 @@ export const Icons = {
   ),
   retry: (props: IconProps) => (
     <svg
-      data-testid="geist-icon"
       fill="none"
       height="24"
       shapeRendering="geometricPrecision"
@@ -180,8 +177,6 @@ export const Icons = {
   ),
   trash: (props: IconProps) => (
     <svg
-      className="with-icon_icon__MHUeb"
-      data-testid="geist-icon"
       fill="none"
       height="24"
       shapeRendering="geometricPrecision"
@@ -201,6 +196,40 @@ export const Icons = {
   ),
   edit: (props: IconProps) => (
     <svg
+      fill="none"
+      height="24"
+      shapeRendering="geometricPrecision"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="1.5"
+      viewBox="0 0 24 24"
+      width="24"
+      {...props}
+    >
+      <path d="M17 3a2.828 2.828 0 114 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
+    </svg>
+  ),
+  plus: (props: IconProps) => (
+    <svg
+      className="with-icon_icon__MHUeb"
+      data-testid="geist-icon"
+      fill="none"
+      height="24"
+      shapeRendering="geometricPrecision"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="1.5"
+      viewBox="0 0 24 24"
+      width="24"
+    >
+      <path d="M12 5v14" />
+      <path d="M5 12h14" />
+    </svg>
+  ),
+  x: (props: IconProps) => (
+    <svg
       className="with-icon_icon__MHUeb"
       data-testid="geist-icon"
       fill="none"
@@ -214,7 +243,8 @@ export const Icons = {
       width="24"
       {...props}
     >
-      <path d="M17 3a2.828 2.828 0 114 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
+      <path d="M18 6L6 18" />
+      <path d="M6 6l12 12" />
     </svg>
   ),
 };

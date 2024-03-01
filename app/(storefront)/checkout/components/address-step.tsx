@@ -1,9 +1,13 @@
-import { AddressFragmentFragmentDoc } from '@/gql/generated/graphql';
+import {
+  AddressFragmentFragment,
+  AddressFragmentFragmentDoc,
+} from '@/gql/generated/graphql';
 import { useSuspenseQuery } from '@apollo/client';
 import { FragmentType, gql, useFragment } from '@/gql/generated';
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/common/button';
 import AddressCard from '@/(storefront)/checkout/components/address-card';
+import Form from '@/(storefront)/checkout/components/address-form/form';
 
 const AddressFragment = gql(/* GraphQL */ `
   fragment AddressFragment on Address {
@@ -11,7 +15,10 @@ const AddressFragment = gql(/* GraphQL */ `
     title
     firstName
     lastName
+    companyName
     lineOne
+    lineTwo
+    lineThree
     city
     state
     postcode
@@ -46,12 +53,20 @@ const AddressStep = ({
     (addressFragment: FragmentType<typeof AddressFragmentFragmentDoc>) =>
       useFragment(AddressFragmentFragmentDoc, addressFragment),
   );
-  const [selectedAddress, setSelectedAddress] = useState<number>(
-    addresses.find((address) => address.shippingDefault)?.id ?? addresses[0].id,
-  );
+  const [selectedAddress, setSelectedAddress] =
+    useState<AddressFragmentFragment>(
+      addresses.find((address) => address.shippingDefault) ?? addresses[0],
+    );
+  const [editMode, setEditMode] = useState(true);
   const handleAddressChange = (addressId: number) => {
-    setSelectedAddress(addressId);
+    setSelectedAddress(
+      addresses.find((address) => address.id === addressId) ?? addresses[0],
+    );
   };
+
+  if (editMode) {
+    return <Form address={selectedAddress} />;
+  }
 
   return (
     <>
@@ -59,8 +74,8 @@ const AddressStep = ({
         <AddressCard
           key={address.id}
           address={address}
-          isSelected={address.id === selectedAddress}
-          setSelectedAddress={setSelectedAddress}
+          isSelected={address.id === selectedAddress.id}
+          handleAddressChange={handleAddressChange}
           setAddressStepFinished={setAddressStepFinished}
         />
       ))}
