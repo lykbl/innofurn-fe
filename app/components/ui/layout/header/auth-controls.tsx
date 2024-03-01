@@ -2,8 +2,8 @@
 
 import BaseLink from 'next/link';
 import ROUTES from '@/lib/routes';
-import { BiBell, BiShoppingBag } from 'react-icons/bi';
-import { FragmentType, gql, useFragment } from '@/gql';
+import { BiBell } from 'react-icons/bi';
+import { FragmentType, gql, useFragment } from '@/gql/generated';
 import { Button } from '@/components/ui/common/button';
 import { useMutation, useQuery } from '@apollo/client';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -16,6 +16,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import * as React from 'react';
+import { CartPopover } from '@/components/ui/layout/header/cart/cart-control';
 
 const LOGOUT_MUTATION = gql(/* GraphQL */ `
   mutation Logout {
@@ -24,14 +26,6 @@ const LOGOUT_MUTATION = gql(/* GraphQL */ `
     }
   }
 `);
-
-function CartControls() {
-  return (
-    <Button variant="outline">
-      <BiShoppingBag size={24} />
-    </Button>
-  );
-}
 
 function NotificationsControls() {
   return (
@@ -44,6 +38,7 @@ function NotificationsControls() {
 interface IUserControlsProps {
   user: FragmentType<typeof CHECK_ME_FRAGMENT> | null;
 }
+
 function UserControls({ user }: IUserControlsProps) {
   const [logoutAsync, { client }] = useMutation(LOGOUT_MUTATION);
   const userData = useFragment(CHECK_ME_FRAGMENT, user);
@@ -54,7 +49,7 @@ function UserControls({ user }: IUserControlsProps) {
   };
 
   return (
-    <div className="flex gap-4 items-center">
+    <div className="flex items-center gap-4">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="relative h-8 w-8 rounded-full">
@@ -90,7 +85,7 @@ function UserControls({ user }: IUserControlsProps) {
           <DropdownMenuSeparator />
           <DropdownMenuItem className="p-0">
             <Button
-              className="font-normal w-full justify-start px-2 py-1.5 h-8"
+              className="h-8 w-full justify-start px-2 py-1.5 font-normal"
               onClick={handleLogout}
               variant="ghost"
               size="sm"
@@ -111,19 +106,6 @@ function GuestControls() {
   );
 }
 
-export const ACTIVE_CART_FRAGMENT = gql(/* GraphQL */ `
-  fragment ActiveCartFragment on Cart {
-    id
-    lines {
-      id
-      quantity
-      purchasable {
-        id
-        name
-      }
-    }
-  }
-`);
 export const ACTIVE_CHAT_ROOM_FRAGMENT = gql(/* GraphQL */ `
   fragment ActiveChatRoomFragment on ChatRoom {
     id
@@ -142,13 +124,6 @@ export const CHECK_ME_FRAGMENT = gql(/* GraphQL */ `
       fullName
       firstName
       lastName
-      role
-      activeCart {
-        ...ActiveCartFragment
-      }
-      activeChatRoom {
-        id
-      }
     }
   }
 `);
@@ -159,6 +134,7 @@ export const CHECK_ME = gql(/* GraphQL */ `
     }
   }
 `);
+
 function AuthControls() {
   const { data, loading } = useQuery(CHECK_ME);
   const user = data?.checkMe ?? null;
@@ -168,9 +144,9 @@ function AuthControls() {
   }
 
   return (
-    <div className="flex gap-2 items-center">
+    <div className="flex items-center gap-2">
       <NotificationsControls />
-      <CartControls />
+      <CartPopover />
       {user ? <UserControls user={user} /> : <GuestControls />}
     </div>
   );

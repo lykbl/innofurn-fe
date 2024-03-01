@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/common/form';
 import { Input } from '@/components/ui/common/input';
 import { Button } from '@/components/ui/common/button';
-import { gql } from '@/gql';
+import { gql } from '@/gql/generated';
 import { useMutation } from '@apollo/client';
 import { Icons } from '@/components/icons';
 import { useToast } from '@/components/ui/use-toast';
@@ -24,7 +24,7 @@ const formSchema = z.object({
 });
 
 const SIGNUP_MUTATION = gql(/* GraphQL */ `
-  mutation SignUp($input: SignupInput!) {
+  mutation SignUp($input: SignUpInput!) {
     signUp(input: $input) {
       id
     }

@@ -22,7 +22,7 @@ export default function RootLayout({
 
   return (
     <div className="h-screen w-full">
-      <header className="flex fixed bg-transparent p-2 justify-between">
+      <header className="fixed flex justify-between bg-transparent p-2">
         <div>
           {/* TODO add logo */}
           <Button variant="ghost">Logo goes here...</Button>
@@ -32,8 +32,8 @@ export default function RootLayout({
         </div>
       </header>
       <main className="flex flex-col xl:flex-row">
-        <div className="w-full bg-primary xl:h-full h-1/2"></div>
-        <div className="w-full flex items-center justify-center bg-gray-100">
+        <div className="h-1/2 w-full bg-primary xl:h-full"></div>
+        <div className="flex w-full items-center justify-center bg-gray-100">
           {children}
         </div>
       </main>

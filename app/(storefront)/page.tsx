@@ -1,6 +1,6 @@
 'use client';
 
-import { gql } from '@/gql';
+import { gql } from '@/gql/generated';
 import { useQuery } from '@apollo/client';
 import BaseLink from 'next/link';
 
@@ -29,7 +29,7 @@ export default function Page() {
     <>
       Main page
       {/*{user && <p>Hello there {user.name}!</p>}*/}
-      <BaseLink href="/product/test">Product page</BaseLink>
+      <BaseLink href="/product/adde">Product page</BaseLink>
       <div>
         Reviews:
         <div className="flex flex-col">

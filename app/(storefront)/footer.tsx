@@ -24,11 +24,11 @@ const IntegratedPaymentsIcons = [
 ];
 
 const Footer = () => (
-  <div className="max-w-screen-2xl flex flex-col w-full mx-auto font-medium text-neutral-700 text-sm gap-16">
-    <div className="flex justify-between w-full">
-      <div className="flex flex-col gap-8 w-1/5 mr-6">
+  <div className="mx-auto flex w-full max-w-screen-2xl flex-col gap-16 text-sm font-medium text-neutral-700">
+    <div className="flex w-full justify-between">
+      <div className="mr-6 flex w-1/5 flex-col gap-8">
         <div className="flex flex-col gap-2">
-          <p className="font-semibold text-base text-black mb-4">
+          <p className="mb-4 text-base font-semibold text-black">
             Join InnoFurn Family
           </p>
           <p>
@@ -38,7 +38,7 @@ const Footer = () => (
           <Button className="w-max px-4">Join or log in</Button>
         </div>
         <div className="flex flex-col gap-2">
-          <p className="font-semibold text-base text-black mb-4">
+          <p className="mb-4 text-base font-semibold text-black">
             We support you
           </p>
           <p>
@@ -48,9 +48,9 @@ const Footer = () => (
           <Button className="w-max px-4">Go to customer service</Button>
         </div>
       </div>
-      <div className="flex flex-col gap-4 w-1/5">
+      <div className="flex w-1/5 flex-col gap-4">
         <p className="font-semibold text-black">Shop & plan</p>
-        <div className="flex flex-col gap-4 mt-2">
+        <div className="mt-2 flex flex-col gap-4">
           <p>Locations</p>
           <p>All InnoFurn products</p>
           <p>Offers</p>
@@ -60,9 +60,9 @@ const Footer = () => (
           <p>Give us your feedback</p>
         </div>
       </div>
-      <div className="flex flex-col gap-4 w-1/5">
+      <div className="flex w-1/5 flex-col gap-4">
         <p className="font-semibold text-black">Services</p>
-        <div className="flex flex-col gap-4 mt-2">
+        <div className="mt-2 flex flex-col gap-4">
           <p>Delivery</p>
           <p>Click & collect</p>
           <p>Rental</p>
@@ -73,9 +73,9 @@ const Footer = () => (
           <p>Guarantee (German)</p>
         </div>
       </div>
-      <div className="flex flex-col gap-4 w-1/5">
+      <div className="flex w-1/5 flex-col gap-4">
         <p className="font-semibold text-black">Help & support</p>
-        <div className="flex flex-col gap-4 mt-2">
+        <div className="mt-2 flex flex-col gap-4">
           <p>Services</p>
           <p>Purchase history</p>
           <p>Track my order</p>
@@ -86,9 +86,9 @@ const Footer = () => (
           <p>Help & contact</p>
         </div>
       </div>
-      <div className="flex flex-col gap-4 w-1/5">
+      <div className="flex w-1/5 flex-col gap-4">
         <p className="font-semibold text-black">About InnoFurn</p>
-        <div className="flex flex-col gap-4 mt-2">
+        <div className="mt-2 flex flex-col gap-4">
           <p>InnoFurn Family</p>
           <p>InnoFurn for Business</p>
           <p>This is InnoFurn</p>
@@ -105,14 +105,14 @@ const Footer = () => (
         {[...MediaIcons, ...IntegratedPaymentsIcons].map((icon, i) => (
           <div
             key={i}
-            className="flex items-center rounded-full p-2 bg-white border border-neutral-300 hover:border-neutral-500"
+            className="flex items-center rounded-full border border-neutral-300 bg-white p-2 hover:border-neutral-500"
           >
             {icon}
           </div>
         ))}
       </div>
       <div className="flex">
-        <Button className="flex gap-2 items-center">
+        <Button className="flex items-center gap-2">
           <span>English</span>
           <IoIosArrowDown size={24} />
         </Button>

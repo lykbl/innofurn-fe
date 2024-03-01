@@ -103,7 +103,29 @@ function createClient() {
               // any of this field's arguments.
               keyArgs: false,
             },
+            productDetails: {
+              keyArgs: false,
+            },
           },
+        },
+        ProductVariant: {
+          fields: {
+            images: {
+              keyArgs: false,
+              merge: (existing, incoming, { args }) => {
+                if (!existing) return incoming;
+
+                return {
+                  __typename: existing.__typename,
+                  data: [...existing.data, ...incoming.data],
+                  paginatorInfo: incoming.paginatorInfo,
+                };
+              },
+            },
+          },
+        },
+        MediaPaginator: {
+          keyFields: false,
         },
       },
     }),

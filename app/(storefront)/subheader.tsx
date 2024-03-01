@@ -23,12 +23,12 @@ const promotions = [
 export default function Subheader(): ReactNode {
   return (
     <div className="border-b-2">
-      <div className="flex gap-2 py-2 px-2 max-w-screen-2xl mx-auto justify-between">
+      <div className="mx-auto flex max-w-screen-2xl justify-between gap-2 px-2 py-2">
         <div className="flex items-center">
           <CategoriesMenu />
           {promotions.map((promotion) => (
             <div key={promotion.id}>
-              <Button className="font-medium mx-2">{promotion.name}</Button>
+              <Button className="mx-2 font-medium">{promotion.name}</Button>
             </div>
           ))}
         </div>

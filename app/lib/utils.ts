@@ -1,8 +1,16 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
-export function formatCurrency(value: number) {
-  return value;
+export function formatToCurrency(
+  value: number,
+  currency: 'usd' | 'eur' = 'usd',
+) {
+  const formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency,
+  });
+
+  return formatter.format(value / 100);
 }
 
 export function cn(...inputs: ClassValue[]) {
@@ -36,23 +44,6 @@ export function cookieSet(name: string) {
   return cookies.some((cookie) => cookie.trim().startsWith(`${name}=`));
 }
 
-//TODO add smarter typing
-export const createAction = (type: string, payload: any): Action => {
-  return { type, payload };
+export const calculatePercentage = (amount: number, total: number) => {
+  return Math.round((amount / total) * 100);
 };
-
-//TODO replace with proxy
-// export const modifyClassMethods = (classProto) => {
-//   Object.getOwnPropertyNames(Object.getPrototypeOf(classProto)).forEach((methodName) => {
-//     const originalMethod = classProto[methodName];
-//     // Check if the property is a function (method)
-//     if (typeof originalMethod === 'function') {
-//       // Create a new function that logs before calling the original method
-//       classProto[methodName] = function(...args) {
-//         console.log(`Calling method: ${methodName}`);
-//         return originalMethod.apply(this, args);
-//         // console.log(`Method ${methodName} called successfully`);
-//       };
-//     }
-//   });
-// }

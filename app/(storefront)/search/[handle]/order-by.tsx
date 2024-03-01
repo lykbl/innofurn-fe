@@ -1,5 +1,5 @@
 import { useSearchFilterQuery } from '@/(storefront)/search/[handle]/filters';
-import { ProductOrderBy } from '@/gql/graphql';
+import { ProductOrderBy } from '@/gql/generated/graphql';
 import {
   Select,
   SelectContent,

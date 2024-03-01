@@ -1,33 +1,36 @@
 'use client';
 
-import Link from '@/components/ui/common/link';
-import Carousel from '@/components/ui/animated/carousel/carousel';
 import Rating, { RATING_STYLES } from '@/(storefront)/product/rating';
-import { Button, BUTTON_STYLES } from '@/components/ui/common/button';
-import { formatCurrency } from '@/lib/utils';
+import { formatToCurrency } from '@/lib/utils';
 import Image from 'next/image';
+import Link from 'next/link';
+import { Button } from '@/components/ui/common/button';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '@/components/ui/carousel';
 
 const carouselItems = Array(10)
   .fill(null)
-  .map((el, index) => {
+  .map((_, index) => {
     return (
-      <div
-        key={index}
-        className="flex flex-col gap-1 rounded bg-blue-100 p-2 w-max"
-      >
+      <div key={index} className="flex w-max flex-col rounded bg-secondary p-2">
         <div className="pointer-events-none">
           <Image
             className="rounded"
             src="/sample-kitchen-image-2.jpg"
             alt="image"
-            width={275}
-            height={275}
+            width={200}
+            height={200}
           />
           <h3>Atley Throw Pillow</h3>
           <div className="flex items-center">
-            <span className="text-lg mr-2">{formatCurrency(3499)}</span>
-            <span className="text-zinc-500 line-through text-sm">
-              {formatCurrency(4799)}
+            <span className="mr-2 text-lg">{formatToCurrency(3499)}</span>
+            <span className="text-sm text-zinc-500 line-through">
+              {formatToCurrency(4799)}
             </span>
           </div>
         </div>
@@ -37,28 +40,34 @@ const carouselItems = Array(10)
           reviewsCount={299}
           style={RATING_STYLES.WITH_RATING}
         />
-        <Button style={BUTTON_STYLES.BLUE} className="w-full">
-          Select Options
-        </Button>
+        <Button className="w-full">Select Options</Button>
       </div>
     );
   });
 
 const MoreFromCreator = () => {
   return (
-    <div className="flex-col w-full gap-2 flex py-2 border-y border-black">
-      <div className="flex items-center justify-between">
-        <h2>
-          More from
-          <Link className="ml-2" href="/brand/test">
-            TestBrand
-          </Link>
-        </h2>
-        <Link href="/search?brand=test" className="text-lg">
-          See All
+    <div className="flex w-full flex-col gap-2 border-y border-black py-2">
+      <h2>
+        More from
+        <Link className="ml-2" href="/brand/test">
+          TestBrand
         </Link>
-      </div>
-      <Carousel className="flex justify-between" items={carouselItems} />
+      </h2>
+      <Link href="/search?brand=test" className="text-lg">
+        See All
+      </Link>
+      <Carousel>
+        <CarouselContent>
+          {carouselItems.map((item, index) => (
+            <CarouselItem key={index} className="basis-1/7">
+              {item}
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselNext />
+        <CarouselPrevious />
+      </Carousel>
     </div>
   );
 };

@@ -13,16 +13,16 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { Star } from '@/components/rating/rating-breakdown';
 import { Button } from '@/components/ui/common/button';
 import { Icons } from '@/components/icons';
 import { cn } from '@/lib/utils';
-import { FragmentType, useFragment } from '@/gql';
+import { FragmentType, useFragment } from '@/gql/generated';
 import { ColorAttributeData, PriceData } from '@/gql/scalars';
 import {
   DiscountFragmentFragmentDoc,
   ProductGridFragmentFragmentDoc,
-} from '@/gql/graphql';
+} from '@/gql/generated/graphql';
+import FiveStars from '@/components/ui/common/five-stars';
 
 export const Item = ({
   productFragment,
@@ -61,6 +61,7 @@ export const Item = ({
   const priceData = selectedProductVariant.prices?.[0].price;
 
   useEffect(() => {
+    //TODO is this needed?
     setSelectedProductVariant(product.variants[0]);
   }, [product.variants]);
 
@@ -75,25 +76,25 @@ export const Item = ({
 
   return (
     <Card className="max-h flex flex-col">
-      <CardHeader className="relative p-0 space-y-0">
+      <CardHeader className="relative space-y-0 p-0">
         {isFeatured && (
-          <Badge className="bg-pink-600 absolute top-0 left-0">New</Badge>
+          <Badge className="absolute left-0 top-0 bg-pink-600">New</Badge>
         )}
         {onSale && (
-          <Badge className="bg-emerald-600 absolute top-0 left-0">Sale</Badge>
+          <Badge className="absolute left-0 top-0 bg-emerald-600">Sale</Badge>
         )}
         <Image
-          className="rounded-t w-full"
+          className="w-full rounded-t"
           width={225}
           height={225}
-          alt={selectedProductVariant.images[0]?.name || 'Not found'}
+          alt={selectedProductVariant.images.data[0]?.name || 'Not found'}
           src={
-            selectedProductVariant.images[0]?.originalUrl ||
+            selectedProductVariant.images.data[0]?.originalUrl ||
             '/sample-kitchen-image-2.jpg'
           }
         />
       </CardHeader>
-      <CardContent className="flex flex-col justify-end p-2 bg-muted h-full">
+      <CardContent className="flex h-full flex-col justify-end bg-muted p-2">
         <ColorOptions
           values={colorOptions}
           previewVariantColor={previewVariantColor}
@@ -102,33 +103,23 @@ export const Item = ({
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger>
-              <div className="flex py-1 items-center gap-2">
-                <div className="flex">
-                  {Array.from({ length: 5 })
-                    .fill(null)
-                    .map((_, index) => (
-                      <Star
-                        key={index}
-                        isFilled={index + 1 < averageRating}
-                        withGradient={index + 1 === Math.ceil(averageRating)}
-                      />
-                    ))}
-                </div>
-                ({reviewsCount})
-              </div>
+              <FiveStars
+                averageRating={averageRating}
+                reviewsCount={reviewsCount}
+              />
             </TooltipTrigger>
             <TooltipContent></TooltipContent>
           </Tooltip>
         </TooltipProvider>
         <Price priceData={priceData} discounts={discounts} />
       </CardContent>
-      <CardFooter className="bg-muted p-2 flex items-stretch">
+      <CardFooter className="flex items-stretch bg-muted p-2">
         <ExtraBadge label={extraLabel} />
-        <div className="ml-auto flex gap-1 justify-end">
-          <Button className="p-2 h-7 w-7">
+        <div className="ml-auto flex justify-end gap-1">
+          <Button className="h-7 w-7 p-2">
             <Icons.heart className={cn(isFavorite ? 'fill-white' : '')} />
           </Button>
-          <Button className="p-2 h-7 w-7">
+          <Button className="h-7 w-7 p-2">
             <Icons.cart className="fill-primary" />
           </Button>
         </div>
@@ -161,7 +152,7 @@ const Price = ({
       {isOnSale && bestDiscountAmount ? (
         <div className="flex items-center gap-2">
           <span className="text-xl">{bestDiscountAmount.toFixed(2)}$</span>
-          <p className="text-xs line-through text-foreground/50">{format}</p>
+          <p className="text-xs text-foreground/50 line-through">{format}</p>
         </div>
       ) : (
         <p className="text-xl">{format}</p>
@@ -198,7 +189,7 @@ const ColorOptions = ({
   }
 
   return (
-    <div className="flex gap-2 justify-center py-2">
+    <div className="flex justify-center gap-2 py-2">
       {values
         .sort((a, b) => a.color.label.localeCompare(b.color.label))
         .map(({ variantId, color: { label, value } }, index) => (
@@ -210,7 +201,7 @@ const ColorOptions = ({
               >
                 <span
                   style={{ backgroundColor: value }}
-                  className="block rounded-full border border-solid border-black w-4 h-4"
+                  className="block h-4 w-4 rounded-full border border-solid border-black"
                 />
               </TooltipTrigger>
             </Tooltip>

@@ -20,7 +20,7 @@ export const PriceFilter = () => {
     <AccordionItem value="price">
       <AccordionTrigger className="px-1">Price</AccordionTrigger>
       <AccordionContent>
-        <div className="flex gap-2 text-xs p-2">
+        <div className="flex gap-2 p-2 text-xs">
           <NumberInput
             handle={MIN_PRICE_HANDLE}
             error={error}
@@ -32,7 +32,7 @@ export const PriceFilter = () => {
             setError={setError}
           />
         </div>
-        {error && <span className="px-2 text-red-500 text-xs">{error}</span>}
+        {error && <span className="px-2 text-xs text-red-500">{error}</span>}
       </AccordionContent>
     </AccordionItem>
   );

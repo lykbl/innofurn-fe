@@ -4,9 +4,9 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import { FiveStars } from '@/components/rating/rating-breakdown';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import FiveStars from '@/components/ui/common/five-stars';
 
 const DEFAULT_FILTER = 3;
 
@@ -42,12 +42,7 @@ export const RatingFilter = () => {
       <AccordionTrigger className="px-1">Rating</AccordionTrigger>
       <AccordionContent className="flex flex-col gap-2">
         <div className="flex gap-2 text-xs">
-          <FiveStars
-            filledStars={previewRating}
-            onMouseOver={handleStarHover}
-            onMouseLeave={resetFilter}
-            onClick={handleStarClick}
-          />
+          <FiveStars averageRating={0} reviewsCount={0} />
           {previewRating === 5 ? '' : <span>& Up</span>}
         </div>
         <Button

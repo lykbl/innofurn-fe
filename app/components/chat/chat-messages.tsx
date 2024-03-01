@@ -1,4 +1,4 @@
-import { gql, useFragment } from '@/gql';
+import { gql, useFragment } from '@/gql/generated';
 import ChatMessage from '@/components/chat/chat-message';
 import * as React from 'react';
 import { ChatMessageFragment } from '@/components/chat/chat-content';
@@ -13,7 +13,7 @@ import {
   CreateChatMessageInput,
   Exact,
   SendMessageToChatRoomMutation,
-} from '@/gql/graphql';
+} from '@/gql/generated/graphql';
 import { Icons } from '@/components/icons';
 import { cn } from '@/lib/utils';
 import {
@@ -162,11 +162,11 @@ const ChatMessages = ({ sendMessage, scrollRef }: IChatMessagesProps) => {
       {/*/!*TODO fix scrollbar flicker fetchMore result is rendered??*!/*/}
       {hasMorePages && (
         <div ref={fetchMoreTriggerRef}>
-          <Icons.spinner className="animate-spin mx-auto" />
+          <Icons.spinner className="mx-auto animate-spin" />
         </div>
       )}
       {messagesError && (
-        <span className="text-red-500 text-xs mx-auto py-2">
+        <span className="mx-auto py-2 text-xs text-red-500">
           Uh-oh messages could not be loaded!
         </span>
       )}
