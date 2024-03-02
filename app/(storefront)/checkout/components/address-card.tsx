@@ -2,17 +2,23 @@ import { AddressFragmentFragment } from '@/gql/generated/graphql';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/common/button';
 import { Icons } from '@/components/icons';
-import React from 'react';
+import React, { useTransition } from 'react';
 import { useMutation } from '@apollo/client';
 import { gql } from '@/gql/generated';
 
 type AddressCardProps = {
   address: AddressFragmentFragment;
   isSelected: boolean;
-  handleAddressChange: (addressId: number) => void;
+  handleAddressChange: (address?: AddressFragmentFragment) => void; //TODO infer from parent somehow?
   setAddressStepFinished: (v: boolean) => void;
   toggleAddressFormView: () => void;
 };
+
+const REMOVE_ADDRESS_MUTATION = gql(/* GraphQL */ `
+  mutation removeAddress($id: IntID!) {
+    removeAddress(id: $id)
+  }
+`);
 
 const AddressCard = ({
   address,
@@ -21,14 +27,43 @@ const AddressCard = ({
   setAddressStepFinished,
   toggleAddressFormView,
 }: AddressCardProps) => {
+  const [deleteAddress] = useMutation(REMOVE_ADDRESS_MUTATION);
+  const [isPending, startTransition] = useTransition();
+
+  const handleDeleteAddress = () => {
+    startTransition(async () => {
+      const response = await deleteAddress({
+        variables: {
+          id: address.id,
+        },
+        updateQueries: {
+          addresses: (prev, { mutationResult }) => {
+            if (mutationResult.errors) {
+              return prev;
+            }
+
+            return {
+              addresses: prev.addresses.filter(
+                (cachedAddress: AddressFragmentFragment) =>
+                  cachedAddress.id !== address.id,
+              ),
+            };
+          },
+        },
+      });
+      handleAddressChange();
+    });
+  };
+
   return (
     <div
       //TODO add button arias
       className={cn(
-        'flex h-full w-full cursor-pointer justify-between rounded border border-input p-4 transition-all duration-500 ease-in-out',
+        'flex h-full w-full cursor-pointer justify-between rounded border border-input p-4 transition-all ease-in-out',
         isSelected && 'border-primary',
+        isPending && 'animate-pulse',
       )}
-      onClick={() => handleAddressChange(address.id)}
+      onClick={() => handleAddressChange(address)}
     >
       <AddressCardContent
         address={address}
@@ -36,6 +71,7 @@ const AddressCard = ({
         handleAddressChange={handleAddressChange}
         setAddressStepFinished={setAddressStepFinished}
         toggleAddressFormView={toggleAddressFormView}
+        handleDeleteAddress={handleDeleteAddress}
       />
     </div>
   );
@@ -46,7 +82,8 @@ const AddressCardContent = ({
   isSelected,
   setAddressStepFinished,
   toggleAddressFormView,
-}: AddressCardProps) => {
+  handleDeleteAddress,
+}: AddressCardProps & { handleDeleteAddress: () => void }) => {
   return (
     <>
       <div className="flex h-full flex-col gap-12 text-start text-sm font-medium">
@@ -83,7 +120,7 @@ const AddressCardContent = ({
       </div>
       {
         <AddressControls
-          addressId={address.id}
+          handleDeleteAddress={handleDeleteAddress}
           isSelected={isSelected}
           setAddressStepFinished={setAddressStepFinished}
           toggleAddressFormView={toggleAddressFormView}
@@ -93,43 +130,15 @@ const AddressCardContent = ({
   );
 };
 
-const REMOVE_ADDRESS_MUTATION = gql(/* GraphQL */ `
-  mutation removeAddress($id: IntID!) {
-    removeAddress(id: $id)
-  }
-`);
-
 const AddressControls = ({
   isSelected,
   setAddressStepFinished,
   toggleAddressFormView,
-  addressId,
+  handleDeleteAddress,
 }: Pick<
   AddressCardProps,
   'isSelected' | 'setAddressStepFinished' | 'toggleAddressFormView'
-> & { addressId: number }) => {
-  const [deleteAddress] = useMutation(REMOVE_ADDRESS_MUTATION);
-  const handleDeleteAddress = async () => {
-    const response = await deleteAddress({
-      variables: {
-        id: addressId,
-      },
-      updateQueries: {
-        addresses: (prev, { mutationResult }) => {
-          if (mutationResult.errors) {
-            return prev;
-          }
-
-          return {
-            addresses: prev.addresses.filter(
-              (address: AddressFragmentFragment) => address.id !== addressId,
-            ),
-          };
-        },
-      },
-    });
-  };
-
+> & { handleDeleteAddress: () => void }) => {
   return (
     <div
       className={cn(

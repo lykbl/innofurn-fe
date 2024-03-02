@@ -54,7 +54,7 @@ const AddressLines = () => {
     <div className="flex justify-between gap-2">
       <div className="flex w-full flex-col gap-2">
         {Array.from({ length: linesCount }, (_, i) => i + 1).map((i) => (
-          <div className="flex items-end gap-2">
+          <div key={i} className="flex items-end gap-2">
             <TextInput {...countToProps(i)} />
             <LineButton
               lineNumber={i}

@@ -15,15 +15,17 @@ import {
 import { useClickAway, useKey } from 'react-use';
 
 const TitleInput = () => {
-  const [titleEditMode, setTitleEditMode] = useState(false);
-  const { control, getValues, formState } = useFormContext();
+  const { control, getValues } = useFormContext();
   const { title } = getValues();
+  const [titleEditMode, setTitleEditMode] = useState(title === '');
   const inputRef = useCallback((input: HTMLInputElement) => {
     input?.focus();
   }, []);
 
   const toggleTitleEditMode = () => {
-    setTitleEditMode((prev) => !prev);
+    if (title !== '') {
+      setTitleEditMode((prev) => !prev);
+    }
   };
 
   return (
@@ -33,7 +35,7 @@ const TitleInput = () => {
       render={({ field }) => (
         <FormItem className="w-full">
           <FormControl>
-            {titleEditMode || !title ? (
+            {titleEditMode ? (
               <EditMode
                 inputRef={inputRef}
                 field={field}

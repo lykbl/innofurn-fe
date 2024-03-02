@@ -53,15 +53,13 @@ const AddressStep = ({
     (addressFragment: FragmentType<typeof AddressFragmentFragmentDoc>) =>
       useFragment(AddressFragmentFragmentDoc, addressFragment),
   );
+  const defaultAddress =
+    addresses.find((address) => address.shippingDefault) ?? addresses[0];
   const [selectedAddress, setSelectedAddress] =
-    useState<AddressFragmentFragment | null>(
-      addresses.find((address) => address.shippingDefault) ?? addresses[0],
-    );
+    useState<AddressFragmentFragment | null>(defaultAddress);
   const [editMode, setEditMode] = useState(false);
-  const handleAddressChange = (addressId: number) => {
-    setSelectedAddress(
-      addresses.find((address) => address.id === addressId) ?? addresses[0],
-    );
+  const handleAddressChange = (address?: AddressFragmentFragment) => {
+    setSelectedAddress(address ?? defaultAddress);
   };
   const toggleAddressFormView = () => {
     setEditMode((p) => !p);
@@ -77,6 +75,7 @@ const AddressStep = ({
       <AddressForm
         address={selectedAddress}
         toggleAddressFormView={toggleAddressFormView}
+        handleAddressChange={handleAddressChange}
       />
     );
   }
