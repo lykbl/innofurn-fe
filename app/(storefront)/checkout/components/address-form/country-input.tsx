@@ -1,5 +1,3 @@
-import { useQuery } from '@apollo/client';
-import { FragmentType, gql, useFragment } from '@/gql/generated';
 import {
   Select,
   SelectContent,
@@ -9,7 +7,6 @@ import {
 } from '@/components/ui/select';
 import {
   CountryFragmentFragment,
-  CountryFragmentFragmentDoc,
 } from '@/gql/generated/graphql';
 import {
   FormControl,

@@ -8,6 +8,7 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/common/button';
 import AddressCard from '@/(storefront)/checkout/components/address-card';
 import AddressForm from '@/(storefront)/checkout/components/address-form/form';
+import { STEPS } from '@/(storefront)/checkout/page';
 
 const AddressFragment = gql(/* GraphQL */ `
   fragment AddressFragment on Address {
@@ -43,9 +44,9 @@ const ADDRESSES_QUERY = gql(/* GraphQL */ `
 `);
 
 const AddressStep = ({
-  setAddressStepFinished,
+  setCurrentStep,
 }: {
-  setAddressStepFinished: (v: boolean) => void;
+  setCurrentStep: (v: STEPS) => void;
 }) => {
   const { data: addressesQuery } = useSuspenseQuery(ADDRESSES_QUERY);
   const addressFragments = addressesQuery?.addresses ?? [];
@@ -88,7 +89,7 @@ const AddressStep = ({
           address={address}
           isSelected={address.id === selectedAddress?.id}
           handleAddressChange={handleAddressChange}
-          setAddressStepFinished={setAddressStepFinished}
+          setCurrentStep={setCurrentStep}
           toggleAddressFormView={toggleAddressFormView}
         />
       ))}

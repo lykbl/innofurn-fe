@@ -15,10 +15,10 @@ import {
   ProductDetailsVariantFragmentFragmentDoc,
 } from '@/gql/generated/graphql';
 import ProductOptionsSelector from '@/(storefront)/product/[slug]/details/product-options-selector';
-import { Star } from '@/components/rating/rating-breakdown';
 import { QueryResult } from '@apollo/client';
 import BrandLink from '@/(storefront)/product/[slug]/details/brand-link';
 import Images from '@/(storefront)/product/[slug]/details/images';
+import FiveStars from '@/components/ui/common/five-stars';
 
 const getAvailableProductOptionValues = (
   variants: Array<ProductDetailsVariantFragmentFragment>,
@@ -116,21 +116,7 @@ const Details = ({
       <div className="sticky top-0 flex h-max w-1/2 flex-col gap-2 pt-2">
         <h1 className="text-4xl">{selectedVariant.name}</h1>
         <BrandLink brandFragment={productDetails.brand} />
-        <div className="flex items-center gap-1">
-          <div className="flex">
-            {Array.from({ length: 5 })
-              .fill(null)
-              .map((_, index) => (
-                <Star
-                  key={index}
-                  isFilled={index + 1 < averageRating}
-                  withGradient={index + 1 === Math.ceil(averageRating)}
-                  className="h-[24px] w-[24px]"
-                />
-              ))}
-          </div>
-          ({reviewsCount})
-        </div>
+        <FiveStars averageRating={averageRating} reviewsCount={reviewsCount} />
         <h2>{selectedVariant.description}</h2>
         <ProductOptionsSelector
           availableProductOptionValues={availableProductOptionValues}

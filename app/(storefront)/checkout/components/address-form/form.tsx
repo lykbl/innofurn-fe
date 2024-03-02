@@ -8,13 +8,10 @@ import {
 } from '@/components/ui/common/form';
 import { useForm } from 'react-hook-form';
 import {
-  AddAddressMutation,
   AddressFragmentFragment,
   AddressFragmentFragmentDoc,
   AddressInput,
   CountryFragmentFragmentDoc,
-  EditAddressMutation,
-  Exact,
 } from '@/gql/generated/graphql';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -26,9 +23,6 @@ import PersonalDetails from '@/(storefront)/checkout/components/address-form/per
 import { Button } from '@/components/ui/common/button';
 import { gql, useFragment } from '@/gql/generated';
 import {
-  ApolloCache,
-  DefaultContext,
-  MutationFunctionOptions,
   useMutation,
   useQuery,
 } from '@apollo/client';

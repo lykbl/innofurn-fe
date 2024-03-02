@@ -5,12 +5,13 @@ import { Icons } from '@/components/icons';
 import React, { useTransition } from 'react';
 import { useMutation } from '@apollo/client';
 import { gql } from '@/gql/generated';
+import { STEPS } from '@/(storefront)/checkout/page';
 
 type AddressCardProps = {
   address: AddressFragmentFragment;
   isSelected: boolean;
   handleAddressChange: (address?: AddressFragmentFragment) => void; //TODO infer from parent somehow?
-  setAddressStepFinished: (v: boolean) => void;
+  setCurrentStep: (v: STEPS) => void;
   toggleAddressFormView: () => void;
 };
 
@@ -24,7 +25,7 @@ const AddressCard = ({
   address,
   isSelected,
   handleAddressChange,
-  setAddressStepFinished,
+  setCurrentStep,
   toggleAddressFormView,
 }: AddressCardProps) => {
   const [deleteAddress] = useMutation(REMOVE_ADDRESS_MUTATION);
@@ -69,7 +70,7 @@ const AddressCard = ({
         address={address}
         isSelected={isSelected}
         handleAddressChange={handleAddressChange}
-        setAddressStepFinished={setAddressStepFinished}
+        setCurrentStep={setCurrentStep}
         toggleAddressFormView={toggleAddressFormView}
         handleDeleteAddress={handleDeleteAddress}
       />
@@ -80,7 +81,7 @@ const AddressCard = ({
 const AddressCardContent = ({
   address,
   isSelected,
-  setAddressStepFinished,
+  setCurrentStep,
   toggleAddressFormView,
   handleDeleteAddress,
 }: AddressCardProps & { handleDeleteAddress: () => void }) => {
@@ -122,7 +123,7 @@ const AddressCardContent = ({
         <AddressControls
           handleDeleteAddress={handleDeleteAddress}
           isSelected={isSelected}
-          setAddressStepFinished={setAddressStepFinished}
+          setCurrentStep={setCurrentStep}
           toggleAddressFormView={toggleAddressFormView}
         />
       }
@@ -132,12 +133,12 @@ const AddressCardContent = ({
 
 const AddressControls = ({
   isSelected,
-  setAddressStepFinished,
+  setCurrentStep,
   toggleAddressFormView,
   handleDeleteAddress,
 }: Pick<
   AddressCardProps,
-  'isSelected' | 'setAddressStepFinished' | 'toggleAddressFormView'
+  'isSelected' | 'setCurrentStep' | 'toggleAddressFormView'
 > & { handleDeleteAddress: () => void }) => {
   return (
     <div
@@ -162,7 +163,7 @@ const AddressControls = ({
           <Icons.trash />
         </Button>
       </div>
-      <Button variant="default" onClick={() => setAddressStepFinished(true)}>
+      <Button variant="default" onClick={() => setCurrentStep(STEPS.PAYMENT)}>
         Continue
       </Button>
     </div>

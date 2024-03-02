@@ -21,7 +21,7 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={cn(
-          'flex flex-col items-center text-base antialiased',
+          'flex flex-col items-center bg-secondary text-base antialiased',
           inter.variable,
         )}
       >
