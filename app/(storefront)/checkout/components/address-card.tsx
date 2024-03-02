@@ -3,12 +3,15 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/common/button';
 import { Icons } from '@/components/icons';
 import React from 'react';
+import { useMutation } from '@apollo/client';
+import { gql } from '@/gql/generated';
 
 type AddressCardProps = {
   address: AddressFragmentFragment;
   isSelected: boolean;
   handleAddressChange: (addressId: number) => void;
   setAddressStepFinished: (v: boolean) => void;
+  toggleAddressFormView: () => void;
 };
 
 const AddressCard = ({
@@ -16,12 +19,13 @@ const AddressCard = ({
   isSelected,
   handleAddressChange,
   setAddressStepFinished,
+  toggleAddressFormView,
 }: AddressCardProps) => {
   return (
     <div
       //TODO add button arias
       className={cn(
-        'flex h-full w-full justify-between rounded border border-input p-4 transition-all duration-500 ease-in-out',
+        'flex h-full w-full cursor-pointer justify-between rounded border border-input p-4 transition-all duration-500 ease-in-out',
         isSelected && 'border-primary',
       )}
       onClick={() => handleAddressChange(address.id)}
@@ -31,6 +35,7 @@ const AddressCard = ({
         isSelected={isSelected}
         handleAddressChange={handleAddressChange}
         setAddressStepFinished={setAddressStepFinished}
+        toggleAddressFormView={toggleAddressFormView}
       />
     </div>
   );
@@ -40,6 +45,7 @@ const AddressCardContent = ({
   address,
   isSelected,
   setAddressStepFinished,
+  toggleAddressFormView,
 }: AddressCardProps) => {
   return (
     <>
@@ -77,18 +83,53 @@ const AddressCardContent = ({
       </div>
       {
         <AddressControls
+          addressId={address.id}
           isSelected={isSelected}
           setAddressStepFinished={setAddressStepFinished}
+          toggleAddressFormView={toggleAddressFormView}
         />
       }
     </>
   );
 };
 
+const REMOVE_ADDRESS_MUTATION = gql(/* GraphQL */ `
+  mutation removeAddress($id: IntID!) {
+    removeAddress(id: $id)
+  }
+`);
+
 const AddressControls = ({
   isSelected,
   setAddressStepFinished,
-}: Pick<AddressCardProps, 'isSelected' | 'setAddressStepFinished'>) => {
+  toggleAddressFormView,
+  addressId,
+}: Pick<
+  AddressCardProps,
+  'isSelected' | 'setAddressStepFinished' | 'toggleAddressFormView'
+> & { addressId: number }) => {
+  const [deleteAddress] = useMutation(REMOVE_ADDRESS_MUTATION);
+  const handleDeleteAddress = async () => {
+    const response = await deleteAddress({
+      variables: {
+        id: addressId,
+      },
+      updateQueries: {
+        addresses: (prev, { mutationResult }) => {
+          if (mutationResult.errors) {
+            return prev;
+          }
+
+          return {
+            addresses: prev.addresses.filter(
+              (address: AddressFragmentFragment) => address.id !== addressId,
+            ),
+          };
+        },
+      },
+    });
+  };
+
   return (
     <div
       className={cn(
@@ -97,10 +138,18 @@ const AddressControls = ({
       )}
     >
       <div className="flex justify-between gap-2">
-        <Button variant="outline">
+        <Button
+          variant="outline"
+          disabled={!isSelected}
+          onClick={toggleAddressFormView}
+        >
           <Icons.edit />
         </Button>
-        <Button variant="outline">
+        <Button
+          variant="outline"
+          disabled={!isSelected}
+          onClick={handleDeleteAddress}
+        >
           <Icons.trash />
         </Button>
       </div>

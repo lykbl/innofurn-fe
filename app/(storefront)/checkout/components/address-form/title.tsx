@@ -6,22 +6,23 @@ import {
 } from '@/components/ui/common/form';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/common/input';
-import { MouseEventHandler, useCallback, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import {
   ControllerRenderProps,
   FieldValues,
   useFormContext,
 } from 'react-hook-form';
+import { useClickAway, useKey } from 'react-use';
 
 const TitleInput = () => {
   const [titleEditMode, setTitleEditMode] = useState(false);
-  const { control } = useFormContext();
+  const { control, getValues, formState } = useFormContext();
+  const { title } = getValues();
   const inputRef = useCallback((input: HTMLInputElement) => {
     input?.focus();
   }, []);
 
-  const toggleTitleEditMode: MouseEventHandler = (e) => {
-    e.preventDefault();
+  const toggleTitleEditMode = () => {
     setTitleEditMode((prev) => !prev);
   };
 
@@ -32,7 +33,7 @@ const TitleInput = () => {
       render={({ field }) => (
         <FormItem className="w-full">
           <FormControl>
-            {titleEditMode ? (
+            {titleEditMode || !title ? (
               <EditMode
                 inputRef={inputRef}
                 field={field}
@@ -52,7 +53,7 @@ const TitleInput = () => {
 const PreviewMode = ({
   toggleTitleEditMode,
 }: {
-  toggleTitleEditMode: MouseEventHandler;
+  toggleTitleEditMode: () => void;
 }) => {
   const { title } = useFormContext().getValues();
 
@@ -60,6 +61,7 @@ const PreviewMode = ({
     <h1>
       <Button
         variant="ghost"
+        type="button"
         className="border-none px-0 text-2xl font-normal"
         onClick={toggleTitleEditMode}
       >
@@ -74,14 +76,21 @@ const EditMode = ({
   field,
   inputRef,
 }: {
-  toggleTitleEditMode: MouseEventHandler;
+  toggleTitleEditMode: () => void;
   field: ControllerRenderProps<FieldValues, 'title'>;
   inputRef: (input: HTMLInputElement) => void;
 }) => {
+  const editInputRef = useRef<HTMLDivElement>(null);
+
+  useClickAway(editInputRef, () => {
+    toggleTitleEditMode();
+  });
+  useKey('Escape', toggleTitleEditMode);
+
   return (
-    <div className="flex gap-2">
+    <div ref={editInputRef} className="flex gap-2">
       <Input {...field} ref={inputRef} className="border-none px-0 text-2xl" />
-      <Button variant="default" onClick={toggleTitleEditMode}>
+      <Button variant="default" type="button" onClick={toggleTitleEditMode}>
         Save
       </Button>
     </div>

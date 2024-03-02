@@ -11,6 +11,7 @@ import { useFragment } from '@/gql/generated';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/common/button';
+import { PopoverClose } from '@radix-ui/react-popover';
 
 type CartItemsProps = {
   myCart: CartFragmentFragment;
@@ -65,9 +66,14 @@ const Totals = ({
       <p>Tax Total: {taxTotal.format}</p>
       <p>Discount Total: {discountTotal.format}</p>
       <p className="text-base font-bold">Items Total: {total.format}</p>
-      <Link className={cn(buttonVariants({ variant: 'default' }))} href="/cart">
-        Checkout
-      </Link>
+      <PopoverClose asChild>
+        <Link
+          className={cn(buttonVariants({ variant: 'default' }))}
+          href="/cart"
+        >
+          Checkout
+        </Link>
+      </PopoverClose>
     </div>
   );
 };

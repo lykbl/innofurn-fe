@@ -1,4 +1,3 @@
-
 // const ADDRESSES_QUERY = gql(/* GraphQL */ `
 //   query addresses {
 //     addresses {

@@ -6,7 +6,6 @@ const PersonalDetails = () => {
   const [companyMode, setCompanyMode] = useState(false);
 
   const toggleCompanyMode: MouseEventHandler = (e) => {
-    e.preventDefault();
     setCompanyMode((prev) => !prev);
   };
 
@@ -18,7 +17,7 @@ const PersonalDetails = () => {
           handle="companyName"
           className="w-1/3"
         />
-        <Button variant="ghost" onClick={toggleCompanyMode}>
+        <Button variant="ghost" type="button" onClick={toggleCompanyMode}>
           Ordering for yourself?
         </Button>
       </div>
@@ -31,7 +30,7 @@ const PersonalDetails = () => {
         <TextInput label="First Name" handle="firstName" />
         <TextInput label="Last Name" handle="lastName" />
       </div>
-      <Button variant="ghost" onClick={toggleCompanyMode}>
+      <Button variant="ghost" type="button" onClick={toggleCompanyMode}>
         Ordering for a company?
       </Button>
     </div>

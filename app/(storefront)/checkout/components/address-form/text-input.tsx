@@ -8,11 +8,11 @@ import {
   FormMessage,
 } from '@/components/ui/common/form';
 import { Input } from '@/components/ui/common/input';
-import { formSchema } from '@/(storefront)/checkout/components/address-form/form';
+import { AddressFormSchema } from '@/(storefront)/checkout/components/address-form/form';
 import { cn } from '@/lib/utils';
 
 type TextInputFields = Omit<
-  z.infer<typeof formSchema>,
+  z.infer<typeof AddressFormSchema>,
   'billingDefault' | 'shippingDefault'
 >;
 const TextInput = ({
