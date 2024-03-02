@@ -142,7 +142,7 @@ const AddressControls = ({
   return (
     <div
       className={cn(
-        'flex h-full flex-col justify-between',
+        'flex h-full flex-col justify-between duration-300',
         !isSelected && 'opacity-0',
       )}
     >
