@@ -195,12 +195,13 @@ export default function Page() {
                   <span className="font-me">Total:</span>
                   <span>{myCart?.total.format}</span>
                 </div>
-                {myCart?.discountTotal.value > 0 && (
-                  <div className="flex justify-between">
-                    <span>You save: </span>
-                    <span>{myCart?.discountTotal.format}</span>
-                  </div>
-                )}
+                <div className={cn(
+                  "flex justify-between opacity-0",
+                  myCart?.discountTotal.value > 0 && "opacity-100",
+                )}>
+                  <span>You save: </span>
+                  <span>{myCart?.discountTotal.format}</span>
+                </div>
               </div>
               <Link
                 className={cn(buttonVariants({ variant: 'default' }))}
