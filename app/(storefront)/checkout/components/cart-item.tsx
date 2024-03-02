@@ -1,5 +1,6 @@
-import { FragmentType, useFragment } from '@/gql/generated';
-import { CartLineFragmentFragmentDoc } from '@/gql/generated/graphql';
+import {
+  CartLineFragmentFragment,
+} from '@/gql/generated/graphql';
 import { Card } from '@/components/ui/common/card';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -7,20 +8,19 @@ import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/common/button';
 import React from 'react';
-import { QuantityInput } from '@/(storefront)/cart/quantity-input';
+import { QuantityInput } from '@/(storefront)/checkout/components/quantity-input';
 import { PriceData } from '@/gql/scalars';
 import FiveStars from '@/components/ui/common/five-stars';
 
 const CartItem = ({
-  lineFragment,
+  line,
   handleQuantityUpdate,
   isUpdating,
 }: {
-  lineFragment: FragmentType<typeof CartLineFragmentFragmentDoc>;
+  line: CartLineFragmentFragment;
   handleQuantityUpdate: (sku: string, quantity: number) => void;
   isUpdating: boolean;
 }) => {
-  const line = useFragment(CartLineFragmentFragmentDoc, lineFragment);
   const { purchasable, subTotal, subTotalDiscounted, quantity } = line;
   const { name, prices, primaryImage, sku } = purchasable;
   const { price } = prices[0];
@@ -73,7 +73,7 @@ const CartItem = ({
             <p className="text-2xl">{price.format}</p>
             <QuantityInput
               quantity={quantity}
-              updateQuantity={handleQuantityUpdate.bind(null, sku)}
+              updateQuantity={() => handleQuantityUpdate(sku, quantity)}
             />
           </div>
           <div className="text-xl">

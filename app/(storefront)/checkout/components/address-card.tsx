@@ -6,6 +6,7 @@ import React, { useTransition } from 'react';
 import { useMutation } from '@apollo/client';
 import { gql } from '@/gql/generated';
 import { STEPS } from '@/(storefront)/checkout/page';
+import { Card } from '@/components/ui/common/card';
 
 type AddressCardProps = {
   address: AddressFragmentFragment;
@@ -57,7 +58,7 @@ const AddressCard = ({
   };
 
   return (
-    <div
+    <Card
       //TODO add button arias
       className={cn(
         'flex h-full w-full cursor-pointer justify-between rounded border border-input p-4 transition-all ease-in-out',
@@ -74,7 +75,7 @@ const AddressCard = ({
         toggleAddressFormView={toggleAddressFormView}
         handleDeleteAddress={handleDeleteAddress}
       />
-    </div>
+    </Card>
   );
 };
 

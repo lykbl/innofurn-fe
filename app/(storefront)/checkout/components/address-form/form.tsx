@@ -22,10 +22,7 @@ import TitleInput from '@/(storefront)/checkout/components/address-form/title';
 import PersonalDetails from '@/(storefront)/checkout/components/address-form/personal-details';
 import { Button } from '@/components/ui/common/button';
 import { gql, useFragment } from '@/gql/generated';
-import {
-  useMutation,
-  useQuery,
-} from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { useTransition } from 'react';
 import { cn } from '@/lib/utils';
 import CountryInput from '@/(storefront)/checkout/components/address-form/country-input';

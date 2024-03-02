@@ -5,9 +5,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import {
-  CountryFragmentFragment,
-} from '@/gql/generated/graphql';
+import { CountryFragmentFragment } from '@/gql/generated/graphql';
 import {
   FormControl,
   FormField,

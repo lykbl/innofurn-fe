@@ -22,7 +22,7 @@ export const QuantityInput = ({
   const customQuantityRef = useCallback((quantityInput: HTMLInputElement) => {
     quantityInput?.focus();
   }, []);
-  const [customQuantity, setCustomQuantity] = useState(0);
+  const [customQuantity, setCustomQuantity] = useState(quantity);
 
   useDebounce(
     () => {
