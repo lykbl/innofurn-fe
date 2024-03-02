@@ -69,7 +69,7 @@ const Totals = ({
       <PopoverClose asChild>
         <Link
           className={cn(buttonVariants({ variant: 'default' }))}
-          href="/cart"
+          href="/checkout"
         >
           Checkout
         </Link>

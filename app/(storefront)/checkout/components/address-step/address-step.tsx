@@ -6,7 +6,7 @@ import { useSuspenseQuery } from '@apollo/client';
 import { FragmentType, gql, useFragment } from '@/gql/generated';
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/common/button';
-import AddressCard from '@/(storefront)/checkout/components/address-card';
+import AddressCard from '@/(storefront)/checkout/components/address-step/address-card';
 import AddressForm from '@/(storefront)/checkout/components/address-form/form';
 import { STEPS } from '@/(storefront)/checkout/page';
 

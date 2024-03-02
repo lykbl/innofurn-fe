@@ -12,9 +12,9 @@ import { cn } from '@/lib/utils';
 import { Separator } from '@/components/ui/common/separator';
 import { Button } from '@/components/ui/common/button';
 import { CART_QUERY } from '@/gql/queries/cart';
-import AddressStep from '@/(storefront)/checkout/components/address-step';
+import AddressStep from '@/(storefront)/checkout/components/address-step/address-step';
 import PaymentStep from '@/(storefront)/checkout/components/payment-step';
-import CartStep from '@/(storefront)/checkout/components/cart-step';
+import CartStep from '@/(storefront)/checkout/components/cart-step/cart-step';
 
 export enum STEPS {
   CART,
@@ -60,7 +60,6 @@ export default function Page() {
             <CartStep
               cartItemLineFragments={cartItemLineFragments}
               startTransition={startTransition}
-              setCurrentStep={setCurrentStep}
               isPending={isPending}
             />
           )}
