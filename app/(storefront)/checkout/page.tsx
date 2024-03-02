@@ -13,7 +13,7 @@ import { Separator } from '@/components/ui/common/separator';
 import { Button } from '@/components/ui/common/button';
 import { CART_QUERY } from '@/gql/queries/cart';
 import AddressStep from '@/(storefront)/checkout/components/address-step/address-step';
-import PaymentStep from '@/(storefront)/checkout/components/payment-step';
+import PaymentStep from '@/(storefront)/checkout/components/payment-step/payment-step';
 import CartStep from '@/(storefront)/checkout/components/cart-step/cart-step';
 
 export enum STEPS {
@@ -63,15 +63,12 @@ export default function Page() {
               isPending={isPending}
             />
           )}
-          {currentStep === STEPS.ADDRESS && (
-            <AddressStep setCurrentStep={setCurrentStep} />
-          )}
+          {currentStep === STEPS.ADDRESS && <AddressStep />}
           {currentStep === STEPS.PAYMENT && (
             <PaymentStep
               shippingAddressId={31}
               billingAddressId={31}
               shippingMethodId={ShippingMethods.BASDEL}
-              setCurrentStep={setCurrentStep}
             />
           )}
         </div>
@@ -79,7 +76,7 @@ export default function Page() {
           <Card className={cn(false && 'animate-pulse')}>
             <CardContent className="flex min-h-80 flex-col justify-between gap-6 p-4">
               <div className="flex flex-col gap-4">
-                <div className="flex flex-col gap-2 rounded-lg border bg-white p-2">
+                <div className="flex flex-col gap-2 rounded-lg p-2">
                   <p className="flex justify-between">
                     <span>Items subtotal:</span>
                     <span>{myCart?.total.format}</span>

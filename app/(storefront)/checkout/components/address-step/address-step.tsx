@@ -3,51 +3,14 @@ import {
   AddressFragmentFragmentDoc,
 } from '@/gql/generated/graphql';
 import { useSuspenseQuery } from '@apollo/client';
-import { FragmentType, gql, useFragment } from '@/gql/generated';
+import { FragmentType, useFragment } from '@/gql/generated';
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/common/button';
 import AddressCard from '@/(storefront)/checkout/components/address-step/address-card';
 import AddressForm from '@/(storefront)/checkout/components/address-form/form';
-import { STEPS } from '@/(storefront)/checkout/page';
+import { ADDRESSES_QUERY } from '@/gql/queries/address';
 
-const AddressFragment = gql(/* GraphQL */ `
-  fragment AddressFragment on Address {
-    id
-    title
-    firstName
-    lastName
-    companyName
-    lineOne
-    lineTwo
-    lineThree
-    city
-    state
-    postcode
-    country {
-      id
-      name
-    }
-    deliveryInstructions
-    contactEmail
-    contactPhone
-    billingDefault
-    shippingDefault
-  }
-`);
-
-const ADDRESSES_QUERY = gql(/* GraphQL */ `
-  query addresses {
-    addresses {
-      ...AddressFragment
-    }
-  }
-`);
-
-const AddressStep = ({
-  setCurrentStep,
-}: {
-  setCurrentStep: (v: STEPS) => void;
-}) => {
+const AddressStep = () => {
   const { data: addressesQuery } = useSuspenseQuery(ADDRESSES_QUERY);
   const addressFragments = addressesQuery?.addresses ?? [];
   const addresses = addressFragments.map(
@@ -89,7 +52,6 @@ const AddressStep = ({
           address={address}
           isSelected={address.id === selectedAddress?.id}
           handleAddressChange={handleAddressChange}
-          setCurrentStep={setCurrentStep}
           toggleAddressFormView={toggleAddressFormView}
         />
       ))}
