@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/common/button';
 import { useKey, useToggle } from 'react-use';
 import { BiMenu } from 'react-icons/bi';
 import { IoIosArrowForward } from 'react-icons/io';
-import Accordion from '@/components/ui/animated/accordion';
 import { AnimatePresence, motion } from 'framer-motion';
 
 const categories = [
@@ -73,24 +72,24 @@ export default function CategoriesMenu() {
                         />
                       ),
                   )}
-                  {subcategories.length > 3 && (
-                    <Accordion>
-                      <Accordion.Toggle
-                        className="bg-gray-50 px-4 py-2 hover:outline"
-                        openClassName="outline sticky top-0 z-[1]"
-                      >
-                        <h4 className="mr-2">See All</h4>
-                      </Accordion.Toggle>
-                      <Accordion.Content>
-                        {subcategories.slice(3).map((subheader) => (
-                          <SubcategoryButton
-                            key={subheader}
-                            subheader={subheader}
-                          />
-                        ))}
-                      </Accordion.Content>
-                    </Accordion>
-                  )}
+                  {/*{subcategories.length > 3 && (*/}
+                  {/*  // <Accordion>*/}
+                  {/*  //   <Accordion.Toggle*/}
+                  {/*  //     className="bg-gray-50 px-4 py-2 hover:outline"*/}
+                  {/*  //     openClassName="outline sticky top-0 z-[1]"*/}
+                  {/*  //   >*/}
+                  {/*  //     <h4 className="mr-2">See All</h4>*/}
+                  {/*  //   </Accordion.Toggle>*/}
+                  {/*  //   <Accordion.Content>*/}
+                  {/*  //     {subcategories.slice(3).map((subheader) => (*/}
+                  {/*  //       <SubcategoryButton*/}
+                  {/*  //         key={subheader}*/}
+                  {/*  //         subheader={subheader}*/}
+                  {/*  //       />*/}
+                  {/*  //     ))}*/}
+                  {/*  //   </Accordion.Content>*/}
+                  {/*  // </Accordion>*/}
+                  {/*)}*/}
                 </div>
               ))}
             </motion.div>

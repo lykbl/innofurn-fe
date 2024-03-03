@@ -6,7 +6,7 @@ import { Search } from '@/components/ui/common/search';
 
 export default async function Header() {
   return (
-    <div className="w-full border-b-2">
+    <div className="w-full border-b bg-background">
       <div className="mx-auto flex max-w-screen-2xl items-center justify-between px-2 py-2">
         <div className="flex w-1/5 items-center">
           <BaseLink

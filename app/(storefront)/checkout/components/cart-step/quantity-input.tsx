@@ -1,8 +1,4 @@
-import React, {
-  ChangeEventHandler,
-  useCallback,
-  useState,
-} from 'react';
+import React, { ChangeEventHandler, useCallback, useState } from 'react';
 import { useDebounce } from 'react-use';
 import { Input } from '@/components/ui/common/input';
 import {
@@ -17,21 +13,23 @@ import { Icons } from '@/components/icons';
 
 export const QuantityInput = ({
   quantity,
-  updateQuantity,
+  sku,
+  handleQuantityUpdate,
 }: {
   quantity: number;
-  updateQuantity: (newQuantity: number) => void;
+  sku: string;
+  handleQuantityUpdate: (sku: string, quantity: number) => void;
 }) => {
   const [isCustomQuantityMode, setIsCustomQuantityMode] = useState(false);
   const customQuantityRef = useCallback((quantityInput: HTMLInputElement) => {
     quantityInput?.focus();
   }, []);
-  const [customQuantity, setCustomQuantity] = useState(0);
+  const [customQuantity, setCustomQuantity] = useState(quantity);
 
   useDebounce(
     () => {
       if (customQuantity !== quantity) {
-        updateQuantity(customQuantity);
+        handleQuantityUpdate(sku, customQuantity);
         setIsCustomQuantityMode(false);
       }
     },
@@ -39,8 +37,8 @@ export const QuantityInput = ({
     [customQuantity],
   );
 
-  const handleFixedQuantityChange = (newQuantity: number) => {
-    updateQuantity(newQuantity);
+  const handleFixedQuantityChange = (sku: string, newQuantity: number) => {
+    handleQuantityUpdate(sku, newQuantity);
   };
 
   const handleCustomQuantityChange: ChangeEventHandler<HTMLInputElement> = (
@@ -62,7 +60,7 @@ export const QuantityInput = ({
         ref={customQuantityRef}
         type="number"
         className="w-16 rounded border border-secondary text-end"
-        value={customQuantity || quantity}
+        value={customQuantity}
         onChange={handleCustomQuantityChange}
       />
     );
@@ -84,7 +82,7 @@ export const QuantityInput = ({
                 className: 'justify-between',
               }),
             )}
-            onClick={() => handleFixedQuantityChange(i)}
+            onClick={() => handleFixedQuantityChange(sku, i)}
           >
             {i}
             <Icons.check

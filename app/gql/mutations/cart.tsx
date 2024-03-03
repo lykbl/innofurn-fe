@@ -7,3 +7,11 @@ export const ADD_OR_UPDATE_PURCHASABLE = gql(/* GraphQL */ `
     }
   }
 `);
+
+export const CLEAR_CART_LINE_MUTATION = gql(/* GraphQL */ `
+  mutation ClearCartItem($sku: String!) {
+    clearCartItem(sku: $sku) {
+      ...CartFragment
+    }
+  }
+`);

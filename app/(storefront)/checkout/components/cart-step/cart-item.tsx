@@ -1,26 +1,27 @@
-import { FragmentType, useFragment } from '@/gql/generated';
-import { CartLineFragmentFragmentDoc } from '@/gql/generated/graphql';
+import { CartLineFragmentFragment } from '@/gql/generated/graphql';
 import { Card } from '@/components/ui/common/card';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
-import { buttonVariants } from '@/components/ui/common/button';
+import { Button, buttonVariants } from '@/components/ui/common/button';
 import React from 'react';
-import { QuantityInput } from '@/(storefront)/cart/quantity-input';
-import { PriceData } from '@/gql/scalars';
+import { QuantityInput } from '@/(storefront)/checkout/components/cart-step/quantity-input';
 import FiveStars from '@/components/ui/common/five-stars';
+import ItemSubtotal from '@/(storefront)/checkout/components/cart-step/item-subtotal';
+import { Icons } from '@/components/icons';
 
 const CartItem = ({
-  lineFragment,
+  line,
   handleQuantityUpdate,
+  handleClearCartItem,
   isUpdating,
 }: {
-  lineFragment: FragmentType<typeof CartLineFragmentFragmentDoc>;
+  line: CartLineFragmentFragment;
   handleQuantityUpdate: (sku: string, quantity: number) => void;
+  handleClearCartItem: (sku: string) => void;
   isUpdating: boolean;
 }) => {
-  const line = useFragment(CartLineFragmentFragmentDoc, lineFragment);
   const { purchasable, subTotal, subTotalDiscounted, quantity } = line;
   const { name, prices, primaryImage, sku } = purchasable;
   const { price } = prices[0];
@@ -68,12 +69,13 @@ const CartItem = ({
             ))}
           </div>
         </div>
-        <div className="flex flex-col justify-between">
+        <div className="flex flex-col justify-between gap-6">
           <div className="flex flex-col items-end gap-1">
             <p className="text-2xl">{price.format}</p>
             <QuantityInput
               quantity={quantity}
-              updateQuantity={handleQuantityUpdate.bind(null, sku)}
+              sku={sku}
+              handleQuantityUpdate={handleQuantityUpdate}
             />
           </div>
           <div className="text-xl">
@@ -82,29 +84,18 @@ const CartItem = ({
               subTotalDiscounted={subTotalDiscounted}
             />
           </div>
+          <div className="flex justify-end gap-2">
+            <Button size="icon">
+              <Icons.heart className="h-4 w-4" />
+            </Button>
+            <Button size="icon" onClick={() => handleClearCartItem(sku)}>
+              <Icons.trash className="h-6 w-6" />
+            </Button>
+          </div>
         </div>
       </div>
     </Card>
   );
-};
-
-const ItemSubtotal = ({
-  subTotal,
-  subTotalDiscounted,
-}: {
-  subTotal: PriceData;
-  subTotalDiscounted: PriceData;
-}) => {
-  if (subTotalDiscounted.value !== subTotal.value) {
-    return (
-      <div className="flex flex-col items-end">
-        <p className="text-primary/50 line-through">{subTotal.format}</p>
-        <p className="text-2xl">Subtotal: {subTotalDiscounted.format}</p>
-      </div>
-    );
-  }
-
-  return <p className="text-2xl">Subtotal: {subTotal.format}</p>;
 };
 
 export default CartItem;
