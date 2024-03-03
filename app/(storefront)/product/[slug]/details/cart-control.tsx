@@ -26,7 +26,19 @@ const CartControl = ({
   const totalPrice = count > 1 ? value * count : value;
   const [addItem] = useMutation(ADD_OR_UPDATE_PURCHASABLE);
   const handleAddToCart = (sku: string, quantity: number) => {
-    addItem({ variables: { sku, quantity } });
+    addItem({
+      variables: { sku, quantity },
+      updateQueries: {
+        myCart: (prev, { mutationResult }) => {
+          const newCartItem = mutationResult.data?.addOrUpdatePurchasable;
+          if (!newCartItem) return prev;
+          return {
+            ...prev,
+            lines: [...prev.lines, newCartItem],
+          };
+        },
+      },
+    });
   };
 
   return (

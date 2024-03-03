@@ -20,7 +20,6 @@ export enum STEPS {
   CART,
   ADDRESS,
   PAYMENT,
-  REVIEW,
 }
 
 export default function Page() {
@@ -44,7 +43,7 @@ export default function Page() {
 
   const handleNextStep = () => {
     setCurrentStep((prevStep) => {
-      if (prevStep === STEPS.REVIEW) {
+      if (prevStep === STEPS.PAYMENT) {
         return prevStep;
       }
 
@@ -120,7 +119,7 @@ export default function Page() {
                   Back
                 </Button>
                 <Button variant="default" onClick={handleNextStep}>
-                  Continue
+                  {currentStep === STEPS.PAYMENT ? 'Place Order' : 'Next'}
                 </Button>
               </div>
             </CardContent>
