@@ -1,6 +1,6 @@
 'use client';
 
-import Rating, { RATING_STYLES } from '@/(storefront)/product/rating';
+import Rating, { RATING_STYLES } from '@/(storefront)/product/[slug]/rating';
 import { formatToCurrency } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';

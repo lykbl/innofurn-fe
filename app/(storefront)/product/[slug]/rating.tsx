@@ -48,14 +48,14 @@ const Rating = ({
       </div>
       {style === RATING_STYLES.WITH_REVIEWS && (
         <Link
-          href="/app/(storefront)/product/reviews"
+          href="/app/(storefront)/product/[slug]/reviews"
           className="hover:text-blue-600 hover:underline"
         >
           ({reviewsCount} reviews)
         </Link>
       )}
       {style === RATING_STYLES.WITH_RATING && (
-        <Link href="/app/(storefront)/product/reviews">({totalRating})</Link>
+        <Link href="/app/(storefront)/product/[slug]/reviews">({totalRating})</Link>
       )}
     </div>
   );

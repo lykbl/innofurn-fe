@@ -1,6 +1,6 @@
 'use client';
 
-import { Stars } from '@/(storefront)/product/rating';
+import { Stars } from '@/(storefront)/product/[slug]/rating';
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import clsx from 'clsx';

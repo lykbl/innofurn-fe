@@ -42,7 +42,7 @@ export const CartItem = ({
             </p>
           </div>
           <Button
-            variant="ghost"
+            variant="outline"
             size="iconSm"
             onClick={() => handleClearItem(line.purchasable.sku)}
           >

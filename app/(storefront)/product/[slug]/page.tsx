@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useQuery } from '@apollo/client';
-import Details from '@/(storefront)/product/[slug]/details';
+import Details from '@/(storefront)/product/[slug]/details/details';
 import { ProductDetailsQuery } from '@/gql/queries/product';
 
 export default function Page({
