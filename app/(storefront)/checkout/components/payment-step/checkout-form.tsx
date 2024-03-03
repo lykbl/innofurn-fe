@@ -7,11 +7,10 @@ import React, { useEffect, useState } from 'react';
 import process from 'process';
 import { Button } from '@/components/ui/common/button';
 
-const CheckoutForm = ({}: {}) => {
+const CheckoutForm = () => {
   const stripe = useStripe();
   const elements = useElements();
   const [message, setMessage] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (!stripe) {

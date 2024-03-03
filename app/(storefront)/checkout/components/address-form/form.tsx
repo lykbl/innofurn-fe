@@ -21,13 +21,18 @@ import TextInput from '@/(storefront)/checkout/components/address-form/text-inpu
 import TitleInput from '@/(storefront)/checkout/components/address-form/title';
 import PersonalDetails from '@/(storefront)/checkout/components/address-form/personal-details';
 import { Button } from '@/components/ui/common/button';
-import { gql, useFragment } from '@/gql/generated';
+import { useFragment } from '@/gql/generated';
 import { useMutation, useQuery } from '@apollo/client';
 import { useTransition } from 'react';
 import { cn } from '@/lib/utils';
 import CountryInput from '@/(storefront)/checkout/components/address-form/country-input';
 import PhoneInput from '@/(storefront)/checkout/components/address-form/phone-input';
 import { Card, CardContent } from '@/components/ui/common/card';
+import {
+  ADD_ADDRESS_MUTATION,
+  EDIT_ADDRESS_MUTATION,
+} from '@/gql/mutations/address';
+import { COUNTRIES_QUERY } from '@/gql/queries/country';
 
 export const AddressFormSchema = z.object({
   title: z.string().min(1).max(255),
@@ -47,40 +52,6 @@ export const AddressFormSchema = z.object({
   shippingDefault: z.boolean().optional(),
   billingDefault: z.boolean().optional(),
 });
-
-const EDIT_ADDRESS_MUTATION = gql(/* GraphQL */ `
-  mutation editAddress($input: AddressInput!) {
-    editAddress(input: $input) {
-      ...AddressFragment
-    }
-  }
-`);
-
-const ADD_ADDRESS_MUTATION = gql(/* GraphQL */ `
-  mutation addAddress($input: AddressInput!) {
-    addAddress(input: $input) {
-      ...AddressFragment
-    }
-  }
-`);
-
-const CountryFragment = gql(/* GraphQL */ `
-  fragment CountryFragment on Country {
-    id
-    name
-    iso3
-    iso2
-    phoneCode
-  }
-`);
-
-const COUNTRIES_QUERY = gql(/* GraphQL */ `
-  query countries {
-    countries {
-      ...CountryFragment
-    }
-  }
-`);
 
 const AddressForm = ({
   address,
