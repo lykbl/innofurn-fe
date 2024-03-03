@@ -13,10 +13,10 @@ import { Button } from '@/components/ui/common/button';
 import { BiShoppingBag } from 'react-icons/bi';
 import * as React from 'react';
 import { CartItems } from '@/components/ui/layout/header/cart/cart-items';
-import { CART_QUERY } from '@/gql/queries/cart';
+import { MyCartQuery } from '@/gql/queries/cart';
 
 export const CartPopover = () => {
-  const { data: myCartQuery, loading } = useQuery(CART_QUERY);
+  const { data: myCartQuery, loading } = useQuery(MyCartQuery);
   const myCart = useFragment(CartFragmentFragmentDoc, myCartQuery?.myCart);
 
   return (

@@ -2,7 +2,7 @@ import { PriceData } from '@/gql/scalars';
 import { forwardRef } from 'react';
 import * as React from 'react';
 import { Card, CardContent } from '@/components/ui/common/card';
-import { CartItemLine } from '@/components/ui/layout/header/cart/cart-item-line';
+import { CartItem } from '@/components/ui/layout/header/cart/cart-item';
 import {
   CartFragmentFragment,
   CartLineFragmentFragmentDoc,
@@ -29,7 +29,7 @@ export const CartItems = forwardRef<
         <h3 className="text-lg font-medium">Your cart</h3>
         <ul>
           {lines.map((line) => (
-            <CartItemLine
+            <CartItem
               key={useFragment(CartLineFragmentFragmentDoc, line).id}
               lineFragment={line}
             />
@@ -38,8 +38,6 @@ export const CartItems = forwardRef<
         <Totals
           linesCount={lines.length}
           total={total}
-          taxTotal={taxTotal}
-          discountTotal={discountTotal}
         />
       </CardContent>
     </Card>
@@ -49,22 +47,16 @@ export const CartItems = forwardRef<
 const Totals = ({
   linesCount,
   total,
-  taxTotal,
-  discountTotal,
 }: {
   linesCount: number;
   total: PriceData;
-  taxTotal: PriceData;
-  discountTotal: PriceData;
 }) => {
   if (linesCount === 0) {
     return <p className="pt-1">There is nothing here, yet...</p>;
   }
 
   return (
-    <div className="flex flex-col gap-1 text-xs">
-      <p>Tax Total: {taxTotal.format}</p>
-      <p>Discount Total: {discountTotal.format}</p>
+    <div className="flex flex-col gap-2 text-xs">
       <p className="text-base font-bold">Items Total: {total.format}</p>
       <PopoverClose asChild>
         <Link

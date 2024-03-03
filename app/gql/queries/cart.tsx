@@ -1,6 +1,6 @@
 import { gql } from '@/gql/generated';
 
-export const CART_QUERY = gql(/* GraphQL */ `
+export const MyCartQuery = gql(/* GraphQL */ `
   query MyCart {
     myCart {
       ...CartFragment
@@ -8,7 +8,7 @@ export const CART_QUERY = gql(/* GraphQL */ `
   }
 `);
 
-export const CLEAR_CART_MUTATION = gql(/* GraphQL */ `
+export const ClearCartMutation = gql(/* GraphQL */ `
   mutation ClearItem($sku: String!) {
     clearCartItem(sku: $sku) {
       ...CartFragment
