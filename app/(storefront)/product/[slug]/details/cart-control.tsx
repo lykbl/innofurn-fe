@@ -59,9 +59,7 @@ const CartControl = ({
           {formatToCurrency(totalPrice)}
         </span>
         <div className="flex w-1/3 justify-end gap-2">
-          <Button
-            variant="default"
-          >
+          <Button variant="default">
             <Icons.heart />
           </Button>
           {/*TODO add logic*/}

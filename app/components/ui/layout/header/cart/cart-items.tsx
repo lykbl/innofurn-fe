@@ -35,10 +35,7 @@ export const CartItems = forwardRef<
             />
           ))}
         </ul>
-        <Totals
-          linesCount={lines.length}
-          total={total}
-        />
+        <Totals linesCount={lines.length} total={total} />
       </CardContent>
     </Card>
   );
