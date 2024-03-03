@@ -120,7 +120,7 @@ export const Item = ({
             <Icons.heart className={cn(isFavorite ? 'fill-white' : '')} />
           </Button>
           <Button className="h-7 w-7 p-2">
-            <Icons.cart className="fill-primary" />
+            <Icons.cart />
           </Button>
         </div>
       </CardFooter>

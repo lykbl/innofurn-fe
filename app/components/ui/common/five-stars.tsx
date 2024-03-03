@@ -10,7 +10,7 @@ const FiveStars = ({
   reviewsCount: number;
 }) => {
   return (
-    <div className="flex items-center gap-2 py-1">
+    <div className="flex items-center gap-1 py-1">
       <div className="flex">
         {Array.from({ length: 5 })
           .fill(null)

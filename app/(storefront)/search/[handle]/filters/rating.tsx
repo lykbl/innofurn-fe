@@ -41,13 +41,13 @@ export const RatingFilter = () => {
     <AccordionItem value="rating">
       <AccordionTrigger className="px-1">Rating</AccordionTrigger>
       <AccordionContent className="flex flex-col gap-2">
-        <div className="flex gap-2 text-xs">
+        <div className="flex items-center gap-2 text-xs">
           <FiveStars averageRating={0} reviewsCount={0} />
           {previewRating === 5 ? '' : <span>& Up</span>}
         </div>
         <Button
           className="text-xs"
-          variant="ghost"
+          variant="outline"
           onClick={deleteReviewFilter}
         >
           Any rating

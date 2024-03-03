@@ -8,6 +8,7 @@ import { RatingFilter } from '@/(storefront)/search/[handle]/filters/rating';
 import { PriceFilter } from '@/(storefront)/search/[handle]/filters/prices';
 import { useDebounce } from 'react-use';
 import { FragmentType } from '@/gql/generated';
+import { Card } from '@/components/ui/common/card';
 
 export const Filters = ({
   productOptions,
@@ -15,14 +16,14 @@ export const Filters = ({
   productOptions: Array<FragmentType<typeof ProductOptionFragmentFragmentDoc>>;
 }) => {
   return (
-    <div className="flex w-1/5 flex-col gap-4 pr-4">
+    <Card className="flex w-1/5 flex-col gap-4 p-4">
       <Accordion type="multiple">
         <AttributeFilters productOptions={productOptions} />
         <RatingFilter />
         <PriceFilter />
       </Accordion>
       <OnSaleFilter />
-    </div>
+    </Card>
   );
 };
 

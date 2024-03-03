@@ -11,6 +11,7 @@ import React from 'react';
 import { useSearchFilterQuery } from '@/(storefront)/search/[handle]/filters';
 import { PaginatorInfoFragmentFragmentDoc } from '@/gql/generated/graphql';
 import { FragmentType, useFragment } from '@/gql/generated';
+import { buttonVariants } from '@/components/ui/common/button';
 
 export const Paginator = ({
   paginatorInfo,
@@ -33,9 +34,12 @@ export const Paginator = ({
 
   return (
     <Pagination>
-      <PaginationContent>
+      <PaginationContent className="flex gap-2">
         <PaginationItem>
-          <PaginationPrevious href="#" />
+          <PaginationPrevious
+            href="#"
+            className={buttonVariants({ variant: 'outline' })}
+          />
         </PaginationItem>
         {pagesRange.map((page) => (
           <PaginationItem key={page}>
@@ -59,7 +63,10 @@ export const Paginator = ({
           </>
         )}
         <PaginationItem>
-          <PaginationNext href="#" />
+          <PaginationNext
+            href="#"
+            className={buttonVariants({ variant: 'outline' })}
+          />
         </PaginationItem>
       </PaginationContent>
     </Pagination>

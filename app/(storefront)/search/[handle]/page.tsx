@@ -11,17 +11,14 @@ import { Paginator } from '@/(storefront)/search/[handle]/paginator';
 import { ProductsGrid } from '@/(storefront)/search/[handle]/products-grid';
 import { ProductFilterInput, ProductOrderBy } from '@/gql/generated/graphql';
 import { FiltersQuery, SearchProductsQuery } from '@/gql/queries/product';
+import { Card } from '@/components/ui/common/card';
 
 const PAGE_SIZE = 20;
 
 //TODO improve
 const SUPPORTED_ATTRIBUTE_FILTERS = ['color', 'material'];
 
-export default function Page({
-  params: { handle },
-}: {
-  params: { handle: string };
-}) {
+const Page = ({ params: { handle } }: { params: { handle: string } }) => {
   const { data: availableOptionsQuery, error: optionsFilterError } =
     useSuspenseQuery(FiltersQuery, {
       variables: {
@@ -46,13 +43,13 @@ export default function Page({
   const paginatorInfo = data?.findProducts.paginatorInfo;
 
   return (
-    <div className="flex w-full gap-2 pb-10">
+    <div className="flex w-full gap-4 pb-10">
       <Suspense fallback={<div>Loading...</div>}>
         <Filters
           productOptions={availableOptionsQuery?.optionFiltersForCollection}
         />
       </Suspense>
-      <div className="flex w-4/5 flex-col gap-8 border-l pl-4">
+      <Card className="flex w-4/5 flex-col gap-8 border-l p-4">
         <div className="flex items-end justify-between">
           <h1 className="text-3xl">Results for: {'Search query'}</h1>
           <OrderBySelect />
@@ -63,10 +60,10 @@ export default function Page({
           </Suspense>
         </div>
         <Paginator paginatorInfo={paginatorInfo} />
-      </div>
+      </Card>
     </div>
   );
-}
+};
 
 const buildFilterInput = (
   urlSearchParams: URLSearchParams,
@@ -95,3 +92,5 @@ const buildFilterInput = (
     onSaleOnly: urlSearchParams.has('onSaleOnly'),
   };
 };
+
+export default Page;
