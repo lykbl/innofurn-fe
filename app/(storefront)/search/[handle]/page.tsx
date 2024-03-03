@@ -2,7 +2,6 @@
 
 import React, { Suspense } from 'react';
 import { useSuspenseQuery } from '@apollo/client';
-import { gql } from '@/gql/generated';
 import {
   Filters,
   useSearchFilterQuery,
@@ -11,104 +10,7 @@ import { OrderBySelect } from '@/(storefront)/search/[handle]/order-by';
 import { Paginator } from '@/(storefront)/search/[handle]/paginator';
 import { ProductsGrid } from '@/(storefront)/search/[handle]/products-grid';
 import { ProductFilterInput, ProductOrderBy } from '@/gql/generated/graphql';
-
-const ProductOptionValueFragment = gql(/* GraphQL */ `
-  fragment ProductOptionValueFragment on ProductOptionValue {
-    name
-  }
-`);
-
-const ProductOptionFragment = gql(/* GraphQL */ `
-  fragment ProductOptionFragment on ProductOption {
-    values {
-      ...ProductOptionValueFragment
-    }
-    handle
-    label
-  }
-`);
-
-const FILTERS_QUERY = gql(/* GraphQL */ `
-  query optionFiltersForCollection($productTypeId: IntID!) {
-    optionFiltersForCollection(productTypeId: $productTypeId) {
-      ...ProductOptionFragment
-    }
-  }
-`);
-
-const DiscountFragment = gql(/* GraphQL */ `
-  fragment DiscountFragment on Discount {
-    id
-    data
-    name
-    type
-  }
-`);
-
-const ProductGridFragment = gql(/* GraphQL */ `
-  fragment ProductGridFragment on Product {
-    id
-    name
-    discounts {
-      ...DiscountFragment
-    }
-    variants {
-      id
-      name
-      attributes
-      images {
-        data {
-          name
-          originalUrl
-        }
-      }
-      isFeatured
-      isFavorite
-      prices {
-        id
-        price
-      }
-      averageRating
-      reviewsCount
-      discounts {
-        ...DiscountFragment
-      }
-    }
-  }
-`);
-
-const PaginatorInfoFragment = gql(/* GraphQL */ `
-  fragment PaginatorInfoFragment on PaginatorInfo {
-    perPage
-    total
-    lastPage
-    hasMorePages
-    currentPage
-  }
-`);
-
-const SearchProductsQuery = gql(/* GraphQL */ `
-  query FindProducts(
-    $filters: ProductFilterInput!
-    $first: Int!
-    $page: Int!
-    $orderBy: ProductOrderBy!
-  ) {
-    findProducts(
-      filters: $filters
-      first: $first
-      page: $page
-      orderBy: $orderBy
-    ) {
-      data {
-        ...ProductGridFragment
-      }
-      paginatorInfo {
-        ...PaginatorInfoFragment
-      }
-    }
-  }
-`);
+import { FiltersQuery, SearchProductsQuery } from '@/gql/queries/product';
 
 const PAGE_SIZE = 20;
 
@@ -121,7 +23,7 @@ export default function Page({
   params: { handle: string };
 }) {
   const { data: availableOptionsQuery, error: optionsFilterError } =
-    useSuspenseQuery(FILTERS_QUERY, {
+    useSuspenseQuery(FiltersQuery, {
       variables: {
         productTypeId: Number(handle),
       },

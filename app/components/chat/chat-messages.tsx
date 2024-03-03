@@ -1,7 +1,6 @@
-import { gql, useFragment } from '@/gql/generated';
+import { useFragment } from '@/gql/generated';
 import ChatMessage from '@/components/chat/chat-message';
 import * as React from 'react';
-import { ChatMessageFragment } from '@/components/chat/chat-content';
 import {
   MutationFunctionOptions,
   useQuery,
@@ -10,41 +9,20 @@ import {
 import { useEffect, useRef, useState, useTransition } from 'react';
 import { useIntersection } from 'react-use';
 import {
+  CheckMeFragmentFragmentDoc,
   CreateChatMessageInput,
   Exact,
   SendMessageToChatRoomMutation,
 } from '@/gql/generated/graphql';
 import { Icons } from '@/components/icons';
 import { cn } from '@/lib/utils';
-import {
-  CHECK_ME,
-  CHECK_ME_FRAGMENT,
-} from '@/components/ui/layout/header/auth-controls';
+import { UpdateChatRoomSubscription } from '@/gql/subscriptions/chat';
+import { FetchMessages } from '@/gql/queries/chat';
+import { ChatMessageFragment } from '@/gql/fragments/chat';
+import { CheckMeQuery } from '@/gql/queries/user';
 
 const PAGE_SIZE = 3;
 const STARTING_PAGE = 1;
-
-const FETCH_MESSAGES = gql(/* GraphQL */ `
-  query FetchMessagesInside($chatRoomId: IntID!, $page: Int!, $first: Int!) {
-    chatRoomMessages(chatRoomId: $chatRoomId, page: $page, first: $first) {
-      data {
-        ...ChatMessageFragment
-      }
-      paginatorInfo {
-        hasMorePages
-        currentPage
-      }
-    }
-  }
-`);
-
-const SUBSCRIBE_TO_CHAT_ROOM = gql(/* GraphQL */ `
-  subscription SubscribeToChatRoom($chatRoomId: IntID!) {
-    updateChatRoom(chatRoomId: $chatRoomId) {
-      ...ChatMessageFragment
-    }
-  }
-`);
 
 interface IChatMessagesProps {
   sendMessage: (
@@ -59,15 +37,19 @@ interface IChatMessagesProps {
 }
 
 const ChatMessages = ({ sendMessage, scrollRef }: IChatMessagesProps) => {
-  const { data: checkMeQuery } = useQuery(CHECK_ME);
-  const userData = useFragment(CHECK_ME_FRAGMENT, checkMeQuery?.checkMe);
-  const chatRoomId = Number(userData?.customer.activeChatRoom.id);
+  const { data: checkMeQuery } = useQuery(CheckMeQuery);
+  const userData = useFragment(
+    CheckMeFragmentFragmentDoc,
+    checkMeQuery?.checkMe,
+  );
+  // const chatRoomId = Number(userData?.customer.activeChatRoom.id); TODO fix
+  const chatRoomId = 0;
   const {
     data: queryData,
     error: messagesError,
     fetchMore: fetchMoreMessages,
     subscribeToMore: subscribeToMoreMessages,
-  } = useSuspenseQuery(FETCH_MESSAGES, {
+  } = useSuspenseQuery(FetchMessages, {
     variables: {
       chatRoomId,
       page: STARTING_PAGE,
@@ -81,7 +63,7 @@ const ChatMessages = ({ sendMessage, scrollRef }: IChatMessagesProps) => {
 
   useEffect(() => {
     const terminateSubscription = subscribeToMoreMessages({
-      document: SUBSCRIBE_TO_CHAT_ROOM,
+      document: UpdateChatRoomSubscription,
       variables: {
         chatRoomId,
       },

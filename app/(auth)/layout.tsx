@@ -8,14 +8,13 @@ import { AuthControls } from '@/(auth)/header';
 import { Button } from '@/components/ui/common/button';
 import { redirect } from 'next/navigation';
 import { useQuery } from '@apollo/client';
-import { CHECK_ME } from '@/components/ui/layout/header/auth-controls';
-
+import { CheckMeQuery } from '@/gql/queries/user';
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const { data: checkMeQuery } = useQuery(CHECK_ME);
+  const { data: checkMeQuery } = useQuery(CheckMeQuery);
   if (checkMeQuery?.checkMe) {
     redirect('/');
   }

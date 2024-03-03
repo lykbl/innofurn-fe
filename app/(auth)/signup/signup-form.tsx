@@ -12,24 +12,16 @@ import {
 } from '@/components/ui/common/form';
 import { Input } from '@/components/ui/common/input';
 import { Button } from '@/components/ui/common/button';
-import { gql } from '@/gql/generated';
 import { useMutation } from '@apollo/client';
 import { Icons } from '@/components/icons';
 import { useToast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
 import ROUTES from '@/lib/routes';
+import { SignupMutation } from '@/gql/mutations/user';
 
 const formSchema = z.object({
   email: z.string().email(),
 });
-
-const SIGNUP_MUTATION = gql(/* GraphQL */ `
-  mutation SignUp($input: SignUpInput!) {
-    signUp(input: $input) {
-      id
-    }
-  }
-`);
 
 export function SignupForm() {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -39,7 +31,7 @@ export function SignupForm() {
     },
     mode: 'onSubmit',
   });
-  const [mutateAsync, { loading }] = useMutation(SIGNUP_MUTATION);
+  const [mutateAsync, { loading }] = useMutation(SignupMutation);
   const { toast } = useToast();
   const router = useRouter();
 

@@ -19,19 +19,17 @@ import {
 import { Icons } from '@/components/icons';
 import { Button } from '@/components/ui/common/button';
 import { MutationFunctionOptions, useQuery } from '@apollo/client';
-import { ChatMessageFragment } from '@/components/chat/chat-content';
 import {
   ChatMessageFragmentFragment,
   ChatMessageStatus,
+  CheckMeFragmentFragmentDoc,
   CreateChatMessageInput,
   Exact,
   SendMessageToChatRoomMutation,
 } from '@/gql/generated/graphql';
 import { makeFragmentData, useFragment } from '@/gql/generated';
-import {
-  CHECK_ME,
-  CHECK_ME_FRAGMENT,
-} from '@/components/ui/layout/header/auth-controls';
+import { ChatMessageFragment } from '@/gql/fragments/chat';
+import { CheckMeQuery } from '@/gql/queries/user';
 
 interface IChatMessageProps {
   message: ChatMessageFragmentFragment;
@@ -60,11 +58,15 @@ const ChatMessage =
       ref,
     ) => {
       const date = new Date(createdAt);
-      const { data: checkMeQuery } = useQuery(CHECK_ME);
-      const userData = useFragment(CHECK_ME_FRAGMENT, checkMeQuery?.checkMe);
+      const { data: checkMeQuery } = useQuery(CheckMeQuery);
+      const userData = useFragment(
+        CheckMeFragmentFragmentDoc,
+        checkMeQuery?.checkMe,
+      );
       const customer = userData?.customer;
       const role = customer?.role;
-      const chatRoomId = Number(customer?.activeChatRoom.id);
+      // const chatRoomId = Number(customer?.activeChatRoom.id); TODO fix
+      const chatRoomId = 0;
 
       let statusIndicator;
       if (status.toLowerCase() === 'error') {

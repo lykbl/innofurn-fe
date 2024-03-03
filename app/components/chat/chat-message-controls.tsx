@@ -19,7 +19,7 @@ import {
   SendMessageToChatRoomMutation,
 } from '@/gql/generated/graphql';
 import { FragmentType, makeFragmentData, useFragment } from '@/gql/generated';
-import { ChatMessageFragment } from '@/components/chat/chat-content';
+import { ChatMessageFragment } from '@/gql/fragments/chat';
 
 const FormSchema = z.object({
   message: z

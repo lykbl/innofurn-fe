@@ -1,27 +1,17 @@
 'use client';
 
-import { gql } from '@/gql/generated';
 import { useQuery } from '@apollo/client';
 import BaseLink from 'next/link';
-
-const REVIEWS_QUERY = gql(/* GraphQL */ `
-  query UserReviews {
-    getUserReviews {
-      id
-      title
-      body
-    }
-  }
-`);
+import { UserReviewsQuery } from '@/gql/queries/product';
 
 export default function Page() {
-  const { loading: isLoading, data } = useQuery(REVIEWS_QUERY);
+  const { loading: isLoading, data } = useQuery(UserReviewsQuery);
 
   if (isLoading) {
     return <p>Loading...</p>;
   }
 
-  if (!data || !data.getUserReviews) {
+  if (!data || !data.userReviews) {
     return <p>No data!!</p>;
   }
 
@@ -33,7 +23,7 @@ export default function Page() {
       <div>
         Reviews:
         <div className="flex flex-col">
-          {data.getUserReviews.map((review: any) => (
+          {data.userReviews.map((review: any) => (
             <div key={review.id}>
               <h2>Title: {review.title}</h2>
               <p>Body: {review.body}</p>

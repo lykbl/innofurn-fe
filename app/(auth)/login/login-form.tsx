@@ -13,22 +13,15 @@ import {
 import { Input } from '@/components/ui/common/input';
 import { Button } from '@/components/ui/common/button';
 import { useMutation } from '@apollo/client';
-import { gql } from '@/gql/generated';
 import { useRouter } from 'next/navigation';
 import { Icons } from '@/components/icons';
 import { useToast } from '@/components/ui/use-toast';
 import ROUTES from '@/lib/routes';
+import { LoginMutation } from '@/gql/mutations/user';
 
 const formSchema = z.object({
   email: z.string().email(),
 });
-const LOGIN_MUTATION = gql(/* GraphQL */ `
-  mutation LoginTest($input: LoginInput!) {
-    login(input: $input) {
-      id
-    }
-  }
-`);
 
 export function LoginForm() {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -38,7 +31,7 @@ export function LoginForm() {
     },
     mode: 'onSubmit',
   });
-  const [mutateAsync, { loading }] = useMutation(LOGIN_MUTATION);
+  const [mutateAsync, { loading }] = useMutation(LoginMutation);
   const router = useRouter();
   const { toast } = useToast();
 

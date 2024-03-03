@@ -9,36 +9,10 @@ import { ScrollArea, ScrollAreaViewport } from '@/components/ui/scroll-area';
 import ChatMessageControls from '@/components/chat/chat-message-controls';
 import { forwardRef, Suspense, useRef, useState } from 'react';
 import { useMutation } from '@apollo/client';
-import { gql } from '@/gql/generated';
 import * as React from 'react';
 import { Icons } from '@/components/icons';
 import ChatMessages from '@/components/chat/chat-messages';
-
-const SEND_MESSAGE = gql(/* GraphQL */ `
-  mutation SendMessageToChatRoom($input: CreateChatMessageInput!) {
-    sendMessageToChatRoom(input: $input) {
-      ...ChatMessageFragment
-    }
-  }
-`);
-export const ChatMessageFragment = gql(/* GraphQL */ `
-  fragment ChatMessageFragment on ChatMessage {
-    id
-    body
-    createdAt
-    status
-    author {
-      ... on Customer {
-        role
-        name
-      }
-      ... on Staff {
-        role
-        name
-      }
-    }
-  }
-`);
+import { SendMessageMutation } from '@/gql/mutations/chat';
 
 //TODO a way to return Card directly :??
 const ChatContent = forwardRef<
@@ -48,7 +22,7 @@ const ChatContent = forwardRef<
   //TODO add more agressive caching :???
   const [tempMessageId, setTempMessageId] = useState(1);
   const [sendMessage, { loading: isMessageSending }] =
-    useMutation(SEND_MESSAGE);
+    useMutation(SendMessageMutation);
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
   return (
