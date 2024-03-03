@@ -9,6 +9,7 @@ import {
   ProductDetailsQuery,
 } from '@/gql/generated/graphql';
 import { QueryResult } from '@apollo/client';
+import { Card } from '@/components/ui/common/card';
 
 const Images = ({
   variantImagesFragment,
@@ -28,17 +29,17 @@ const Images = ({
     });
 
   return (
-    <div className="flex flex-wrap justify-between gap-y-2">
+    <div className="flex flex-wrap justify-between gap-2">
       {variantImages.data.map(({ originalUrl, name }, index) => (
-        <div key={index}>
+        <Card key={index}>
           <Image
-            width={364}
-            height={364}
+            width={365}
+            height={365}
             src={originalUrl}
             alt={name}
             className="rounded"
           />
-        </div>
+        </Card>
       ))}
       {variantImages.paginatorInfo.hasMorePages && (
         <Button className="w-full" onClick={handleLoadMoreImages}>

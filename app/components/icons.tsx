@@ -250,4 +250,22 @@ export const Icons = {
       <path d="M6 6l12 12" />
     </svg>
   ),
+  minus: (props: IconProps) => (
+    <svg
+      className="with-icon_icon__MHUeb"
+      data-testid="geist-icon"
+      fill="none"
+      height="24"
+      shapeRendering="geometricPrecision"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="1.5"
+      viewBox="0 0 24 24"
+      width="24"
+      {...props}
+    >
+      <path d="M5 12h14" />
+    </svg>
+  ),
 };

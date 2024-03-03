@@ -1,7 +1,5 @@
 'use client';
 
-import { IoIosHeart } from 'react-icons/io';
-import { BiMinus, BiPlus, BiSearchAlt } from 'react-icons/bi';
 import { useState } from 'react';
 import { formatToCurrency } from '@/lib/utils';
 import { Button } from '@/components/ui/common/button';
@@ -9,6 +7,7 @@ import { PriceFragmentFragmentDoc } from '@/gql/generated/graphql';
 import { FragmentType, useFragment } from '@/gql/generated';
 import { useMutation } from '@apollo/client';
 import { ADD_OR_UPDATE_PURCHASABLE } from '@/gql/mutations/cart';
+import { Icons } from '@/components/icons';
 
 const CartControl = ({
   priceFragment,
@@ -46,14 +45,14 @@ const CartControl = ({
       <Button onClick={() => handleAddToCart(sku, count)}>Add to cart</Button>
       <div className="flex gap-4">
         <div className="flex w-1/3 items-center justify-center gap-6 rounded bg-white outline outline-1 outline-black">
-          <Button className="h-min p-0" onClick={decrement}>
-            <BiMinus size={24} />
+          <Button size="iconSm" onClick={decrement}>
+            <Icons.minus />
           </Button>
           <span>
             {formatToCurrency(value)} x {count}
           </span>
-          <Button className="h-min p-0" onClick={increment}>
-            <BiPlus size={24} />
+          <Button size="iconSm" onClick={increment}>
+            <Icons.plus />
           </Button>
         </div>
         <span className="w-1/3 text-center text-3xl">
@@ -61,17 +60,17 @@ const CartControl = ({
         </span>
         <div className="flex w-1/3 justify-end gap-2">
           <Button
-            variant="outline"
-            className="border-pink-500 text-pink-500 hover:border-pink-700 hover:text-pink-700"
+            variant="default"
           >
-            <IoIosHeart size={24} />
+            <Icons.heart />
           </Button>
-          <Button
-            variant="outline"
-            className="border-blue-600 text-blue-600 hover:border-blue-700 hover:text-blue-700"
-          >
-            <BiSearchAlt size={24} />
-          </Button>
+          {/*TODO add logic*/}
+          {/*<Button*/}
+          {/*  variant="outline"*/}
+          {/*  className="border-blue-600 text-blue-600 hover:border-blue-700 hover:text-blue-700"*/}
+          {/*>*/}
+          {/*  <BiSearchAlt size={24} />*/}
+          {/*</Button>*/}
         </div>
       </div>
     </div>

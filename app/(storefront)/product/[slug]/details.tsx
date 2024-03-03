@@ -19,6 +19,7 @@ import { QueryResult } from '@apollo/client';
 import BrandLink from '@/(storefront)/product/[slug]/details/brand-link';
 import Images from '@/(storefront)/product/[slug]/details/images';
 import FiveStars from '@/components/ui/common/five-stars';
+import { Card } from '@/components/ui/common/card';
 
 const getAvailableProductOptionValues = (
   variants: Array<ProductDetailsVariantFragmentFragment>,
@@ -107,13 +108,13 @@ const Details = ({
 
   return (
     <div className="flex gap-4">
-      <div className="w-1/2 pt-2">
+      <Card className="w-1/2 p-2">
         <Images
           variantImagesFragment={selectedVariant.images}
           fetchMoreImages={fetchMoreImages}
         />
-      </div>
-      <div className="sticky top-0 flex h-max w-1/2 flex-col gap-2 pt-2">
+      </Card>
+      <Card className="sticky top-0 flex h-max w-1/2 flex-col gap-2 p-2">
         <h1 className="text-4xl">{selectedVariant.name}</h1>
         <BrandLink brandFragment={productDetails.brand} />
         <FiveStars averageRating={averageRating} reviewsCount={reviewsCount} />
@@ -125,7 +126,7 @@ const Details = ({
         />
         {/*TODO add functionality*/}
         {/*<ExtraOffers />*/}
-        <div className="flex items-center justify-between rounded border border-solid border-secondary p-2">
+        <div className="flex items-center justify-between">
           <div className="flex-col text-lg">
             <p className="font-semibold">Have a question?</p>
             <p className="font-normal">We're here to help.</p>
@@ -142,7 +143,7 @@ const Details = ({
           </div>
         </div>
         <CartControl priceFragment={priceFragment} sku={selectedVariant.sku} />
-      </div>
+      </Card>
     </div>
   );
 };
