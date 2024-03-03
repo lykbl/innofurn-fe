@@ -252,8 +252,6 @@ export const Icons = {
   ),
   minus: (props: IconProps) => (
     <svg
-      className="with-icon_icon__MHUeb"
-      data-testid="geist-icon"
       fill="none"
       height="24"
       shapeRendering="geometricPrecision"
@@ -266,6 +264,25 @@ export const Icons = {
       {...props}
     >
       <path d="M5 12h14" />
+    </svg>
+  ),
+  shoppingBag: ({ className, ...props }: IconProps) => (
+    <svg
+      fill="none"
+      height="24"
+      shapeRendering="geometricPrecision"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="1.5"
+      viewBox="0 0 24 24"
+      width="24"
+      className={className}
+      {...props}
+    >
+      <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+      <path d="M3 6h18" />
+      <path d="M16 10a4 4 0 01-8 0" />
     </svg>
   ),
 };

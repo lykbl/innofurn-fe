@@ -23,26 +23,18 @@ const CartControl = ({
   const increment = () => setCount((prev) => prev + 1);
   const decrement = () => setCount((prev) => prev - 1 || prev);
   const totalPrice = count > 1 ? value * count : value;
-  const [addItem] = useMutation(ADD_OR_UPDATE_PURCHASABLE);
-  const handleAddToCart = (sku: string, quantity: number) => {
-    addItem({
+  const [addItem, { loading }] = useMutation(ADD_OR_UPDATE_PURCHASABLE);
+  const handleAddToCart = async (sku: string, quantity: number) => {
+    await addItem({
       variables: { sku, quantity },
-      updateQueries: {
-        myCart: (prev, { mutationResult }) => {
-          const newCartItem = mutationResult.data?.addOrUpdatePurchasable;
-          if (!newCartItem) return prev;
-          return {
-            ...prev,
-            lines: [...prev.lines, newCartItem],
-          };
-        },
-      },
     });
   };
 
   return (
     <div className="flex w-full flex-col gap-2 rounded bg-secondary p-2">
-      <Button onClick={() => handleAddToCart(sku, count)}>Add to cart</Button>
+      <Button onClick={() => handleAddToCart(sku, count)} disabled={loading}>
+        Add to cart
+      </Button>
       <div className="flex gap-4">
         <div className="flex w-1/3 items-center justify-center gap-6 rounded bg-white outline outline-1 outline-black">
           <Button size="iconSm" onClick={decrement}>

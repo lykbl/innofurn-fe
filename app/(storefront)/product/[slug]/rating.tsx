@@ -55,7 +55,9 @@ const Rating = ({
         </Link>
       )}
       {style === RATING_STYLES.WITH_RATING && (
-        <Link href="/app/(storefront)/product/[slug]/reviews">({totalRating})</Link>
+        <Link href="/app/(storefront)/product/[slug]/reviews">
+          ({totalRating})
+        </Link>
       )}
     </div>
   );
