@@ -5,7 +5,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/common/button';
 import FiveStars from '@/components/ui/common/five-stars';
 
 const DEFAULT_FILTER = 3;
