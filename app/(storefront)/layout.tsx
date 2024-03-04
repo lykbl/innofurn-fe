@@ -2,6 +2,7 @@ import '@/styles/global.css';
 import React from 'react';
 import Header from '@/components/ui/layout/header/header';
 import Chat from '@/components/chat/chat';
+import Footer from '@/components/ui/layout/footer';
 
 export default function RootLayout({
   children,
@@ -15,9 +16,9 @@ export default function RootLayout({
         {children}
         <Chat />
       </main>
-      {/*<footer className="py-16 bg-neutral-100 w-full">*/}
-      {/*  <Footer />*/}
-      {/*</footer>*/}
+      <footer className="py-16 bg-neutral-100 w-full">
+        <Footer />
+      </footer>
     </>
   );
 }
