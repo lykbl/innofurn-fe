@@ -9,6 +9,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useQuery } from '@apollo/client';
 import {
+  ConversionTypes,
   PromotionBannerStyles,
   PromotionBannerTypeFragmentFragmentDoc,
 } from '@/gql/generated/graphql';
@@ -21,6 +22,7 @@ const FeaturedCarousel = () => {
       handle: PromotionBannerStyles.CAROUSEL_ITEM,
       first: 10,
       page: 1,
+      conversionType: ConversionTypes.PROMOTION_BANNER_CAROUSEL_ITEM,
     },
   });
 
@@ -43,7 +45,7 @@ const FeaturedCarousel = () => {
               <Link href="/product/adde">
                 <Image
                   src={
-                    carouselItem.bannerImage?.originalUrl ||
+                    carouselItem.bannerImage?.conversions[0] ||
                     'https://via.placeholder.com/250x150.png/004466?text=fallback'
                   }
                   alt="alt"

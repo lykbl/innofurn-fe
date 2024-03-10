@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { useQuery } from '@apollo/client';
 import {
+  ConversionTypes,
   PromotionBannerStyles,
   PromotionBannerTypeFragmentFragmentDoc,
 } from '@/gql/generated/graphql';
@@ -16,6 +17,7 @@ const FeaturedPanel = () => {
       handle: PromotionBannerStyles.PANEL,
       first: 1,
       page: 1,
+      conversionType: ConversionTypes.PROMOTION_BANNER_PANEL,
     },
   });
 
@@ -33,7 +35,7 @@ const FeaturedPanel = () => {
     <OutlinedLink href="/product/adde" className="flex">
       <Image
         src={
-          panel.bannerImage?.originalUrl ||
+          panel.bannerImage?.conversions[0] ||
           'https://via.placeholder.com/1600x300.png/004466?text=fallback'
         }
         alt="test"

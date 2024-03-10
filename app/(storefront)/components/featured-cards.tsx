@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { useQuery } from '@apollo/client';
 import {
+  ConversionTypes,
   PromotionBannerStyles,
   PromotionBannerTypeFragmentFragmentDoc,
 } from '@/gql/generated/graphql';
@@ -16,6 +17,7 @@ const FeaturedCards = () => {
       handle: PromotionBannerStyles.CARD,
       first: 4,
       page: 1,
+      conversionType: ConversionTypes.PROMOTION_BANNER_CARD,
     },
   });
 
@@ -35,7 +37,7 @@ const FeaturedCards = () => {
         <OutlinedLink href="/product/adde" key={card.id}>
           <Image
             src={
-              card.bannerImage?.originalUrl ||
+              card.bannerImage?.conversions[0] ||
               'https://via.placeholder.com/400x400.png/004466?text=fallback'
             }
             alt="alt"

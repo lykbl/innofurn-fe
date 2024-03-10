@@ -5,29 +5,15 @@ export const PromotionBannerTypeQuery = gql(/* GraphQL */ `
     $handle: PromotionBannerStyles!
     $first: Int!
     $page: Int!
+    $conversionType: ConversionTypes!
   ) {
-    promotionBannerType(handle: $handle, first: $first, page: $page) {
+    promotionBannerType(
+      handle: $handle
+      first: $first
+      page: $page
+      conversionType: $conversionType
+    ) {
       ...PromotionBannerTypeFragment
-    }
-  }
-`);
-
-const PromotionBannerTypeFragment = gql(/* GraphQL */ `
-  fragment PromotionBannerTypeFragment on PromotionBannerType {
-    id
-    promotionBanners(first: $first, page: $page) {
-      data {
-        id
-        primaryImage {
-          originalUrl
-          conversions
-          id
-        }
-        bannerImage {
-          originalUrl
-          id
-        }
-      }
     }
   }
 `);
