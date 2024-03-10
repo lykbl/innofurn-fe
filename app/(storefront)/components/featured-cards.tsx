@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useQuery } from '@apollo/client';
+import { useSuspenseQuery } from '@apollo/client';
 import {
   ConversionTypes,
   PromotionBannerStyles,
@@ -12,17 +12,20 @@ import { useFragment } from '@/gql/generated';
 import OutlinedLink from '@/(storefront)/components/outlined-link';
 
 const FeaturedCards = () => {
-  const { data: cardBannersQuery } = useQuery(PromotionBannerTypeQuery, {
-    variables: {
-      handle: PromotionBannerStyles.CARD,
-      first: 4,
-      page: 1,
-      conversionType: ConversionTypes.PROMOTION_BANNER_CARD,
+  const { data: cardBannersQuery } = useSuspenseQuery(
+    PromotionBannerTypeQuery,
+    {
+      variables: {
+        handle: PromotionBannerStyles.CARD,
+        first: 4,
+        page: 1,
+        conversionType: ConversionTypes.PROMOTION_BANNER_CARD,
+      },
     },
-  });
+  );
 
   if (!cardBannersQuery?.promotionBannerType) {
-    return 'loading';
+    return;
   }
 
   const promotionBannerType = useFragment(

@@ -7,7 +7,7 @@ import {
 } from '@/components/ui/carousel';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useQuery } from '@apollo/client';
+import { useQuery, useSuspenseQuery } from '@apollo/client';
 import {
   ConversionTypes,
   PromotionBannerStyles,
@@ -17,17 +17,20 @@ import { PromotionBannerTypeQuery } from '@/gql/queries/promotion-banner';
 import { useFragment } from '@/gql/generated';
 
 const FeaturedCarousel = () => {
-  const { data: carouselBannersQuery } = useQuery(PromotionBannerTypeQuery, {
-    variables: {
-      handle: PromotionBannerStyles.CAROUSEL_ITEM,
-      first: 10,
-      page: 1,
-      conversionType: ConversionTypes.PROMOTION_BANNER_CAROUSEL_ITEM,
+  const { data: carouselBannersQuery } = useSuspenseQuery(
+    PromotionBannerTypeQuery,
+    {
+      variables: {
+        handle: PromotionBannerStyles.CAROUSEL_ITEM,
+        first: 10,
+        page: 1,
+        conversionType: ConversionTypes.PROMOTION_BANNER_CAROUSEL_ITEM,
+      },
     },
-  });
+  );
 
   if (!carouselBannersQuery?.promotionBannerType) {
-    return 'loading';
+    return;
   }
 
   const promotionBannerType = useFragment(

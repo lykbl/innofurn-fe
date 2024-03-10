@@ -1,5 +1,3 @@
-'use client';
-
 import { Card } from '@/components/ui/common/card';
 import Image from 'next/image';
 import { Button } from '@/components/ui/common/button';
@@ -8,16 +6,45 @@ import FeaturedCarousel from '@/(storefront)/components/featured-carousel';
 import FeaturedCards from '@/(storefront)/components/featured-cards';
 import OutlinedLink from '@/(storefront)/components/outlined-link';
 import FeaturedPanel from '@/(storefront)/components/featured-panel';
+import FeaturedCardsSkeleton from '@/(storefront)/skeletons/featured-cards-skeleton';
+import React, { Suspense } from 'react';
+import FeaturedCarouselSkeleton from '@/(storefront)/skeletons/featured-carousel-skeleton';
+import FeaturedPanelSkeleton from '@/(storefront)/skeletons/featured-panel-skeleton';
+import dynamic from 'next/dynamic';
+
+const DynamicFeaturedCards = dynamic(
+  () => import('@/(storefront)/components/featured-cards'),
+  {
+    loading: () => <FeaturedCardsSkeleton />,
+    ssr: false,
+  },
+);
+
+const DynamicFeaturedCarousel = dynamic(
+  () => import('@/(storefront)/components/featured-carousel'),
+  {
+    loading: () => <FeaturedCarouselSkeleton />,
+    ssr: false,
+  },
+);
+
+const DynamicFeaturedPanel = dynamic(
+  () => import('@/(storefront)/components/featured-panel'),
+  {
+    loading: () => <FeaturedPanelSkeleton />,
+    ssr: false,
+  },
+);
 
 export default function Page() {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex w-full flex-col">
-        <FeaturedCards />
-        <FeaturedCarousel />
+        <DynamicFeaturedCards />
+        <DynamicFeaturedCarousel />
       </div>
       <div>
-        <FeaturedPanel />
+        <DynamicFeaturedPanel />
       </div>
       <div className="flex flex-wrap justify-between">
         {Array.from({ length: 14 }).map((_, i) => (
