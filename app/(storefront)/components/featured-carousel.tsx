@@ -1,5 +1,3 @@
-'use client';
-
 import {
   Carousel,
   CarouselContent,
@@ -15,19 +13,18 @@ import {
 } from '@/gql/generated/graphql';
 import { PromotionBannerTypeQuery } from '@/gql/queries/promotion-banner';
 import { useFragment } from '@/gql/generated';
+import apolloClient from '@/lib/apollo/apollo-client';
 
-const FeaturedCarousel = () => {
-  const { data: carouselBannersQuery } = useSuspenseQuery(
-    PromotionBannerTypeQuery,
-    {
-      variables: {
-        handle: PromotionBannerStyles.CAROUSEL_ITEM,
-        first: 10,
-        page: 1,
-        conversionType: ConversionTypes.PROMOTION_BANNER_CAROUSEL_ITEM,
-      },
+const FeaturedCarousel = async () => {
+  const { data: carouselBannersQuery } = await apolloClient.getClient().query({
+    query: PromotionBannerTypeQuery,
+    variables: {
+      handle: PromotionBannerStyles.CAROUSEL_ITEM,
+      first: 10,
+      page: 1,
+      conversionType: ConversionTypes.PROMOTION_BANNER_CAROUSEL_ITEM,
     },
-  );
+  });
 
   if (!carouselBannersQuery?.promotionBannerType) {
     return;
