@@ -1,16 +1,10 @@
 import { Card } from '@/components/ui/common/card';
-import Image from 'next/image';
 import { Button } from '@/components/ui/common/button';
 import { Input } from '@/components/ui/common/input';
 import FeaturedCarousel from '@/(storefront)/components/featured-carousel';
 import FeaturedCards from '@/(storefront)/components/featured-cards';
-import OutlinedLink from '@/(storefront)/components/outlined-link';
 import FeaturedPanel from '@/(storefront)/components/featured-panel';
-import FeaturedCardsSkeleton from '@/(storefront)/skeletons/featured-cards-skeleton';
-import React, { Suspense } from 'react';
-import FeaturedCarouselSkeleton from '@/(storefront)/skeletons/featured-carousel-skeleton';
-import FeaturedPanelSkeleton from '@/(storefront)/skeletons/featured-panel-skeleton';
-import dynamic from 'next/dynamic';
+import React from 'react';
 import Collections from '@/(storefront)/components/collections';
 
 export default function Page() {

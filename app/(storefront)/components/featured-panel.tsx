@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import { useQuery, useSuspenseQuery } from '@apollo/client';
 import {
   ConversionTypes,
   PromotionBannerStyles,
@@ -9,7 +8,6 @@ import { PromotionBannerTypeQuery } from '@/gql/queries/promotion-banner';
 import { useFragment } from '@/gql/generated';
 import OutlinedLink from '@/(storefront)/components/outlined-link';
 import apolloClient from '@/lib/apollo/apollo-client';
-import { RootCollectionsQuery } from '@/gql/queries/collection';
 
 const CACHE_MINUTES = 60 * 5;
 const FeaturedPanel = async () => {

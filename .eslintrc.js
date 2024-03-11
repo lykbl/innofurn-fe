@@ -16,6 +16,7 @@ module.exports = {
     'no-unused-vars': 'error',
     'unused-imports/no-unused-imports': 'error',
     'prefer-arrow-callback': 'error',
+    'func-style': ['error', 'declaration'], //TODO verify this
   },
   ignorePatterns: ['gql/**/*', 'lib/**/*'],
 };

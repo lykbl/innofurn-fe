@@ -1,12 +1,8 @@
-'use client';
-
-import BaseLink from 'next/link';
-import ROUTES from '@/lib/routes';
-import { BiBell } from 'react-icons/bi';
 import { FragmentType, useFragment } from '@/gql/generated';
+import { CheckMeFragmentFragmentDoc } from '@/gql/generated/graphql';
+import { useMutation } from '@apollo/client';
+import { LogoutMutation } from '@/gql/mutations/user';
 import { Button } from '@/components/ui/common/button';
-import { useMutation, useQuery } from '@apollo/client';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,25 +12,17 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import BaseLink from 'next/link';
+import ROUTES from '@/lib/routes';
 import * as React from 'react';
-import { CartPopover } from '@/components/ui/layout/header/cart/cart-control';
-import { CheckMeFragmentFragmentDoc } from '@/gql/generated/graphql';
-import { CheckMeQuery } from '@/gql/queries/user';
-import { LogoutMutation } from '@/gql/mutations/user';
+import { cn } from '@/lib/utils';
 
-function NotificationsControls() {
-  return (
-    <Button variant="outline">
-      <BiBell size={24} />
-    </Button>
-  );
-}
-
-interface IUserControlsProps {
-  user: FragmentType<typeof CheckMeFragmentFragmentDoc> | null;
-}
-
-function UserControls({ user }: IUserControlsProps) {
+const UserPopover = ({
+  user,
+}: {
+  user?: FragmentType<typeof CheckMeFragmentFragmentDoc> | null;
+}) => {
   const [logoutAsync, { client }] = useMutation(LogoutMutation);
   const userData = useFragment(CheckMeFragmentFragmentDoc, user);
 
@@ -58,9 +46,14 @@ function UserControls({ user }: IUserControlsProps) {
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
               <p className="text-sm font-medium leading-none">
-                {userData?.name}
+                {userData?.name || 'Guest'}
               </p>
-              <p className="text-xs leading-none text-muted-foreground">
+              <p
+                className={cn(
+                  'text-xs leading-none text-muted-foreground',
+                  !userData?.email && 'hidden',
+                )}
+              >
                 {userData?.email}
               </p>
             </div>
@@ -92,30 +85,6 @@ function UserControls({ user }: IUserControlsProps) {
       </DropdownMenu>
     </div>
   );
-}
-function GuestControls() {
-  return (
-    <Button variant="outline">
-      <BaseLink href={ROUTES.LOGIN}>Login</BaseLink>
-    </Button>
-  );
-}
+};
 
-function AuthControls() {
-  const { data, loading } = useQuery(CheckMeQuery);
-  const user = data?.checkMe ?? null;
-
-  if (loading) {
-    return <>Controls skeleton</>;
-  }
-
-  return (
-    <div className="flex items-center gap-2">
-      <NotificationsControls />
-      <CartPopover />
-      {user ? <UserControls user={user} /> : <GuestControls />}
-    </div>
-  );
-}
-
-export default AuthControls;
+export default UserPopover;

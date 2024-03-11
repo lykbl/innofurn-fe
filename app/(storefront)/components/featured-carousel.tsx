@@ -5,7 +5,6 @@ import {
 } from '@/components/ui/carousel';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useQuery, useSuspenseQuery } from '@apollo/client';
 import {
   ConversionTypes,
   PromotionBannerStyles,

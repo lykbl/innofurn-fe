@@ -1,11 +1,10 @@
-import { from, gql, HttpLink } from '@apollo/client';
+import { from, HttpLink } from '@apollo/client';
 import {
   NextSSRInMemoryCache,
   NextSSRApolloClient,
 } from '@apollo/experimental-nextjs-app-support/ssr';
 import { registerApolloClient } from '@apollo/experimental-nextjs-app-support/rsc';
 import { onError } from '@apollo/client/link/error';
-import { createFragmentRegistry } from '@apollo/client/cache';
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
@@ -24,19 +23,7 @@ const linkCombinator = from([httpLink]); //TODO add error hadling link
 
 const apolloClient = registerApolloClient(() => {
   return new NextSSRApolloClient({
-    cache: new NextSSRInMemoryCache({
-      // fragments: createFragmentRegistry(gql`
-      //     fragment RootCollectionFragment on Collection {
-      //         id
-      //         thumbnail {
-      //             conversions(types: [PROMOTION_BANNER_CARD])
-      //         }
-      //         defaultUrl {
-      //             slug
-      //         }
-      //     }
-      // `),
-    }),
+    cache: new NextSSRInMemoryCache(),
     link: linkCombinator,
     defaultOptions: {
       query: {
