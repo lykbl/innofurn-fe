@@ -1,5 +1,3 @@
-'use client';
-
 import Image from 'next/image';
 import { useSuspenseQuery } from '@apollo/client';
 import {
@@ -10,19 +8,18 @@ import {
 import { PromotionBannerTypeQuery } from '@/gql/queries/promotion-banner';
 import { useFragment } from '@/gql/generated';
 import OutlinedLink from '@/(storefront)/components/outlined-link';
+import apolloClient from '@/lib/apollo/apollo-client';
 
-const FeaturedCards = () => {
-  const { data: cardBannersQuery } = useSuspenseQuery(
-    PromotionBannerTypeQuery,
-    {
-      variables: {
-        handle: PromotionBannerStyles.CARD,
-        first: 4,
-        page: 1,
-        conversionType: ConversionTypes.PROMOTION_BANNER_CARD,
-      },
+const FeaturedCards = async () => {
+  const { data: cardBannersQuery } = await apolloClient.getClient().query({
+    query: PromotionBannerTypeQuery,
+    variables: {
+      handle: PromotionBannerStyles.CARD,
+      first: 4,
+      page: 1,
+      conversionType: ConversionTypes.PROMOTION_BANNER_CARD,
     },
-  );
+  });
 
   if (!cardBannersQuery?.promotionBannerType) {
     return;

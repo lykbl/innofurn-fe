@@ -11,54 +11,19 @@ import React, { Suspense } from 'react';
 import FeaturedCarouselSkeleton from '@/(storefront)/skeletons/featured-carousel-skeleton';
 import FeaturedPanelSkeleton from '@/(storefront)/skeletons/featured-panel-skeleton';
 import dynamic from 'next/dynamic';
-
-const DynamicFeaturedCards = dynamic(
-  () => import('@/(storefront)/components/featured-cards'),
-  {
-    loading: () => <FeaturedCardsSkeleton />,
-    ssr: false,
-  },
-);
-
-const DynamicFeaturedCarousel = dynamic(
-  () => import('@/(storefront)/components/featured-carousel'),
-  {
-    loading: () => <FeaturedCarouselSkeleton />,
-    ssr: false,
-  },
-);
-
-const DynamicFeaturedPanel = dynamic(
-  () => import('@/(storefront)/components/featured-panel'),
-  {
-    loading: () => <FeaturedPanelSkeleton />,
-    ssr: false,
-  },
-);
+import Collections from '@/(storefront)/components/collections';
 
 export default function Page() {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex w-full flex-col">
-        <DynamicFeaturedCards />
-        <DynamicFeaturedCarousel />
+        <FeaturedCards />
+        <FeaturedCarousel />
       </div>
       <div>
-        <DynamicFeaturedPanel />
+        <FeaturedPanel />
       </div>
-      <div className="flex flex-wrap justify-between">
-        {Array.from({ length: 14 }).map((_, i) => (
-          <OutlinedLink href="/product/adde" key={i}>
-            <Image
-              src="https://via.placeholder.com/205x205.png/004466?text=featured-promo"
-              alt="alt"
-              width={205}
-              height={205}
-              className={i === 0 ? 'rounded-full' : 'rounded'}
-            />
-          </OutlinedLink>
-        ))}
-      </div>
+      <Collections />
       <Card className="flex w-full flex-col items-center">
         <div className="flex w-2/5 items-center justify-between py-10">
           <span>Be the first to know about our best deals!</span>
