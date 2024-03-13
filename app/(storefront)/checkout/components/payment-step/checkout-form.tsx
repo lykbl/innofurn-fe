@@ -25,24 +25,24 @@ const CheckoutForm = () => {
       return;
     }
 
-    stripe
-      .retrievePaymentIntent(clientSecret)
-      .then(({ paymentIntent }: any) => {
-        switch (paymentIntent.status) {
-          case 'succeeded':
-            setMessage('Payment succeeded!');
-            break;
-          case 'processing':
-            setMessage('Your payment is processing.');
-            break;
-          case 'requires_payment_method':
-            setMessage('Your payment was not successful, please try again.');
-            break;
-          default:
-            setMessage('Something went wrong.');
-            break;
-        }
-      });
+    (async () => {
+      const response = await stripe.retrievePaymentIntent(clientSecret);
+      const paymentIntent = response.paymentIntent;
+      switch (paymentIntent?.status) {
+        case 'succeeded':
+          setMessage('Payment succeeded!');
+          break;
+        case 'processing':
+          setMessage('Your payment is processing.');
+          break;
+        case 'requires_payment_method':
+          setMessage('Your payment was not successful, please try again.');
+          break;
+        default:
+          setMessage('Something went wrong.');
+          break;
+      }
+    })();
   }, [stripe]);
 
   const handleSubmit = async (e: any) => {

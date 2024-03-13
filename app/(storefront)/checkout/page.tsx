@@ -11,7 +11,7 @@ import {
 import { cn } from '@/lib/utils';
 import { Separator } from '@/components/ui/common/separator';
 import { Button } from '@/components/ui/common/button';
-import { CART_QUERY } from '@/gql/queries/cart';
+import { MyCartQuery } from '@/gql/queries/cart';
 import AddressStep from '@/(storefront)/checkout/components/address-step/address-step';
 import PaymentStep from '@/(storefront)/checkout/components/payment-step/payment-step';
 import CartStep from '@/(storefront)/checkout/components/cart-step/cart-step';
@@ -23,7 +23,7 @@ export enum STEPS {
 }
 
 export default function Page() {
-  const { data: myCartQuery, loading: cartLoading } = useQuery(CART_QUERY, {
+  const { data: myCartQuery, loading: cartLoading } = useQuery(MyCartQuery, {
     fetchPolicy: 'cache-and-network',
   });
   const myCart = useFragment(CartFragmentFragmentDoc, myCartQuery?.myCart);
