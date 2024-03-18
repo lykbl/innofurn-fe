@@ -1,52 +1,19 @@
-import {
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
+import { FragmentType, useFragment } from '@/gql/generated';
+import { ProductOptionValueFragmentFragmentDoc } from '@/gql/generated/graphql';
+import { useSearchFilterQuery } from '@/(storefront)/search/[collectionSlug]/components/filters/filters';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { useSearchFilterQuery } from '@/(storefront)/search/[handle]/filters';
 import { cn } from '@/lib/utils';
-import { FragmentType, useFragment } from '@/gql/generated';
-import { ProductOptionValueFragmentFragmentDoc } from '@/gql/generated/graphql';
 
-export const ColorFilter = ({
-  handle,
-  label,
-  values,
-}: {
-  handle: string;
-  label: string;
-  values: Array<FragmentType<typeof ProductOptionValueFragmentFragmentDoc>>;
-}) => {
-  return (
-    <AccordionItem value={handle}>
-      <AccordionTrigger className="px-1">{label}</AccordionTrigger>
-      <AccordionContent className="flex gap-2 px-1 pt-2">
-        {values.map((valueFragment) => (
-          <ColorFilterOption key={handle} valueFragment={valueFragment} />
-        ))}
-      </AccordionContent>
-    </AccordionItem>
-  );
-};
-
-const labelToColor = (label: string) => {
-  if (label === 'White') return '#ffffff';
-  if (label === 'Black') return '#000000';
-  if (label === 'Mahogany') return '#c04000';
-
-  return '#ffffff';
-};
-const ColorFilterOption = ({
+export default function ColorFilterOption({
   valueFragment,
 }: {
   valueFragment: FragmentType<typeof ProductOptionValueFragmentFragmentDoc>;
-}) => {
+}) {
   const { urlSearchParams, updateSearchFilter } = useSearchFilterQuery();
   const { name } = useFragment(
     ProductOptionValueFragmentFragmentDoc,
@@ -77,4 +44,12 @@ const ColorFilterOption = ({
       </Tooltip>
     </TooltipProvider>
   );
+}
+
+const labelToColor = (label: string) => {
+  if (label === 'White') return '#ffffff';
+  if (label === 'Black') return '#000000';
+  if (label === 'Mahogany') return '#c04000';
+
+  return '#ffffff';
 };

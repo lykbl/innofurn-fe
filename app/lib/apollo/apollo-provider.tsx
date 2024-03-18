@@ -18,6 +18,7 @@ import { removeTypenameFromVariables } from '@apollo/client/link/remove-typename
 const errorLink = onError(
   ({ graphQLErrors, networkError, operation, forward }) => {
     if (graphQLErrors) {
+      console.log(graphQLErrors);
       for (let err of graphQLErrors) {
         switch (err.extensions.code) {
           case 'UNAUTHENTICATED':

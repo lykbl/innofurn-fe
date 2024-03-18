@@ -25,34 +25,31 @@ const DiscountFragment = gql(/* GraphQL */ `
   }
 `);
 
-const ProductGridFragment = gql(/* GraphQL */ `
-  fragment ProductGridFragment on Product {
+const ProductVariantGridFragment = gql(/* GraphQL */ `
+  fragment ProductVariantGridFragment on ProductVariant {
     id
     name
-    discounts {
-      ...DiscountFragment
+    attributes
+    product {
+      colorOptions {
+        ...ColorOptionFragment
+      }
     }
-    variants {
+    primaryImage {
       id
       name
-      attributes
-      images {
-        data {
-          name
-          originalUrl
-        }
-      }
-      isFeatured
-      isFavorite
-      prices {
-        id
-        price
-      }
-      averageRating
-      reviewsCount
-      discounts {
-        ...DiscountFragment
-      }
+      conversions(types: [MEDIUM])
+    }
+    isFeatured
+    isFavorite
+    prices {
+      id
+      price
+    }
+    averageRating
+    reviewsCount
+    discounts {
+      ...DiscountFragment
     }
   }
 `);
@@ -132,6 +129,22 @@ const ProductDetailsFragment = gql(/* GraphQL */ `
     }
     variants {
       ...ProductDetailsVariantFragment
+    }
+  }
+`);
+
+const ColorOptionFragment = gql(/* GraphQL */ `
+  fragment ColorOptionFragment on ProductOptionValue {
+    id
+    name
+    variants(first: 1) {
+      data {
+        id
+        primaryImage {
+          id
+          conversions(types: [MEDIUM])
+        }
+      }
     }
   }
 `);

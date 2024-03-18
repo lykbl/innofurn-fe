@@ -1,4 +1,4 @@
-import { useSearchFilterQuery } from '@/(storefront)/search/[handle]/filters';
+import { useSearchFilterQuery } from '@/(storefront)/search/[collectionSlug]/components/filters/filters';
 import {
   AccordionContent,
   AccordionItem,
@@ -10,7 +10,7 @@ import FiveStars from '@/components/ui/common/five-stars';
 
 const DEFAULT_FILTER = 3;
 
-export const RatingFilter = () => {
+export default function RatingFilter() {
   const { urlSearchParams, updateSearchFilter } = useSearchFilterQuery();
   const selectedRatingFilter =
     Number(urlSearchParams.get('rating')) || DEFAULT_FILTER;
@@ -55,4 +55,4 @@ export const RatingFilter = () => {
       </AccordionContent>
     </AccordionItem>
   );
-};
+}

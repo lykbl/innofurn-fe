@@ -5,7 +5,7 @@ import {
 } from '@/components/ui/accordion';
 import { Input } from '@/components/ui/common/input';
 import { Dispatch, SetStateAction, useState } from 'react';
-import { useSearchFilterQuery } from '@/(storefront)/search/[handle]/filters';
+import { useSearchFilterQuery } from '@/(storefront)/search/[collectionSlug]/components/filters/filters';
 import { useDebounce } from 'react-use';
 
 const MAX_PRICE = 999999;
@@ -13,7 +13,7 @@ const MIN_PRICE = 0;
 const MIN_PRICE_HANDLE = 'minPrice';
 const MAX_PRICE_HANDLE = 'maxPrice';
 
-export const PriceFilter = () => {
+export default function PriceFilter() {
   const [error, setError] = useState<string | null>(null);
 
   return (
@@ -36,7 +36,7 @@ export const PriceFilter = () => {
       </AccordionContent>
     </AccordionItem>
   );
-};
+}
 
 type NumberInputPropsType = {
   handle: typeof MIN_PRICE_HANDLE | typeof MAX_PRICE_HANDLE;

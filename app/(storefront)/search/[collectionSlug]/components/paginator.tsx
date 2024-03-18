@@ -8,7 +8,7 @@ import {
   PaginationPrevious,
 } from '@/components/ui/pagination';
 import React from 'react';
-import { useSearchFilterQuery } from '@/(storefront)/search/[handle]/filters';
+import { useSearchFilterQuery } from '@/(storefront)/search/[collectionSlug]/components/filters/filters';
 import { PaginatorInfoFragmentFragmentDoc } from '@/gql/generated/graphql';
 import { FragmentType, useFragment } from '@/gql/generated';
 import { buttonVariants } from '@/components/ui/common/button';

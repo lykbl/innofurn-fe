@@ -1,5 +1,7 @@
-import { useSearchFilterQuery } from '@/(storefront)/search/[handle]/filters';
-import { ProductOrderBy } from '@/gql/generated/graphql';
+'use client';
+
+import { useSearchFilterQuery } from '@/(storefront)/search/[collectionSlug]/components/filters/filters';
+import { ProductVariantOrderBy } from '@/gql/generated/graphql';
 import {
   Select,
   SelectContent,
@@ -12,7 +14,7 @@ import React from 'react';
 export const OrderBySelect = () => {
   const { urlSearchParams, updateSearchFilter } = useSearchFilterQuery();
 
-  const handleOrderByChange = (orderBy: ProductOrderBy) => {
+  const handleOrderByChange = (orderBy: ProductVariantOrderBy) => {
     urlSearchParams.set('orderBy', orderBy);
     updateSearchFilter(urlSearchParams);
   };
@@ -23,13 +25,16 @@ export const OrderBySelect = () => {
         <SelectValue placeholder="Sort By" />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value={ProductOrderBy.AVG_RATING}>
-          Average customer review
+        <SelectItem value={ProductVariantOrderBy.RATING_DESC}>
+          Rating: High to Low
         </SelectItem>
-        <SelectItem value={ProductOrderBy.PRICE_DESC}>
+        <SelectItem value={ProductVariantOrderBy.RATING_ASC}>
+          Rating: Low to High
+        </SelectItem>
+        <SelectItem value={ProductVariantOrderBy.PRICE_DESC}>
           Price: High to Low
         </SelectItem>
-        <SelectItem value={ProductOrderBy.PRICE_ASC}>
+        <SelectItem value={ProductVariantOrderBy.PRICE_ASC}>
           Price: Low to High
         </SelectItem>
       </SelectContent>

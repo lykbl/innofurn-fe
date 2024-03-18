@@ -1,28 +1,28 @@
 import { gql } from '@/gql/generated';
 
 export const FiltersQuery = gql(/* GraphQL */ `
-  query optionFiltersForCollection($productTypeId: IntID!) {
-    optionFiltersForCollection(productTypeId: $productTypeId) {
+  query optionFiltersForCollection($slug: String!) {
+    optionFiltersForCollection(slug: $slug) {
       ...ProductOptionFragment
     }
   }
 `);
 
 export const SearchProductsQuery = gql(/* GraphQL */ `
-  query FindProducts(
+  query FindProductVariants(
     $filters: ProductFilterInput!
     $first: Int!
     $page: Int!
-    $orderBy: ProductOrderBy!
+    $orderBy: ProductVariantOrderBy!
   ) {
-    findProducts(
+    findProductVariants(
       filters: $filters
       first: $first
       page: $page
       orderBy: $orderBy
     ) {
       data {
-        ...ProductGridFragment
+        ...ProductVariantGridFragment
       }
       paginatorInfo {
         ...PaginatorInfoFragment
