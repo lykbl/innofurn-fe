@@ -29,7 +29,6 @@ const ProductVariantGridFragment = gql(/* GraphQL */ `
   fragment ProductVariantGridFragment on ProductVariant {
     id
     name
-    attributes
     product {
       colorOptions {
         ...ColorOptionFragment
@@ -50,6 +49,22 @@ const ProductVariantGridFragment = gql(/* GraphQL */ `
     reviewsCount
     discounts {
       ...DiscountFragment
+    }
+  }
+`);
+
+const ProductVariantSearchPreviewFragment = gql(/* GraphQL */ `
+  fragment ProductVariantSearchPreviewFragment on ProductVariant {
+    id
+    name
+    primaryImage {
+      id
+      name
+      conversions(types: [SMALL])
+    }
+    prices {
+      id
+      price
     }
   }
 `);

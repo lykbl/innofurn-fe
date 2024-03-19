@@ -2,7 +2,6 @@
 
 import BaseLink from 'next/link';
 import ROUTES from '@/lib/routes';
-import { Search } from '@/components/ui/common/search';
 import { Suspense } from 'react';
 import NotificationsTriggerSkeleton from '@/components/ui/layout/header/notifications-popover/notifications-trigger-skeleton';
 import NotificationsPopover from '@/components/ui/layout/header/notifications-popover/notifications-popover';
@@ -14,6 +13,7 @@ import { useQuery } from '@apollo/client';
 import { CheckMeQuery } from '@/gql/queries/user';
 import { Icons } from '@/components/icons';
 import GuestMenu from '@/components/ui/layout/header/user-popover/guest-popover';
+import SearchBar from '@/components/ui/layout/header/search-bar';
 
 const Header = () => {
   const { data, loading } = useQuery(CheckMeQuery);
@@ -31,7 +31,7 @@ const Header = () => {
           </BaseLink>
         </div>
         <div className="flex h-min w-3/5 items-center justify-between rounded">
-          <Search />
+          <SearchBar />
         </div>
         <div className="flex w-1/5 items-center justify-end">
           <div className="flex items-center gap-3">
