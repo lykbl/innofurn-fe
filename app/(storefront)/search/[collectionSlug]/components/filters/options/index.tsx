@@ -1,9 +1,7 @@
-import {
-  ProductOptionFragmentFragment,
-} from '@/gql/generated/graphql';
+import { ProductOptionFragmentFragment } from '@/gql/generated/graphql';
 import React from 'react';
-import { ColorFilter } from '@/(storefront)/search/[collectionSlug]/components/filters/options/color';
-import { MultiSelectFilter } from '@/(storefront)/search/[collectionSlug]/components/filters/options/multi-select';
+import ColorFilter from '@/(storefront)/search/[collectionSlug]/components/filters/options/color-filter';
+import MultiSelectFilter from '@/(storefront)/search/[collectionSlug]/components/filters/options/multi-select-filter';
 
 export const AttributeFilters = ({
   productOptions,

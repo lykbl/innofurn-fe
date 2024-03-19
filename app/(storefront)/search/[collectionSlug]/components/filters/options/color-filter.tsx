@@ -4,7 +4,6 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 
-
 import { FragmentType } from '@/gql/generated';
 import { ProductOptionValueFragmentFragmentDoc } from '@/gql/generated/graphql';
 import ColorFilterOption from '@/(storefront)/search/[collectionSlug]/components/filters/options/color-filter-option';

@@ -1,16 +1,16 @@
 'use client';
 
 import {
-  ProductFilterInput,
   ProductVariantGridFragmentFragmentDoc,
   ProductVariantOrderBy,
+  ProductVariantsForCollectionFilterInput,
 } from '@/gql/generated/graphql';
 import React from 'react';
 import { useSuspenseQuery } from '@apollo/client';
 import { useSearchFilterQuery } from '@/(storefront)/search/[collectionSlug]/components/filters/filters';
-import { SearchProductsQuery } from '@/gql/queries/product';
 import { useFragment } from '@/gql/generated';
 import CardItem from '@/(storefront)/search/[collectionSlug]/components/card-item/card-item';
+import { FindProductVariantsForCollectionQuery } from '@/gql/queries/product-variant';
 
 const PAGE_SIZE = 20;
 
@@ -24,23 +24,29 @@ export default function ProductsGrid({
 }) {
   const { urlSearchParams } = useSearchFilterQuery();
   const filterInput = buildFilterInput(collectionSlug, urlSearchParams);
-  const { data, error } = useSuspenseQuery(SearchProductsQuery, {
-    variables: {
-      filters: filterInput,
-      page: urlSearchParams.get('page')
-        ? Number(urlSearchParams.get('page'))
-        : 1,
-      first: PAGE_SIZE,
-      orderBy:
-        (urlSearchParams
-          .get('orderBy')
-          ?.toUpperCase() as ProductVariantOrderBy) ||
-        ProductVariantOrderBy.PRICE_DESC,
+  const { data, error } = useSuspenseQuery(
+    FindProductVariantsForCollectionQuery,
+    {
+      variables: {
+        filters: filterInput,
+        page: urlSearchParams.get('page')
+          ? Number(urlSearchParams.get('page'))
+          : 1,
+        first: PAGE_SIZE,
+        orderBy:
+          (urlSearchParams
+            .get('orderBy')
+            ?.toUpperCase() as ProductVariantOrderBy) ||
+          ProductVariantOrderBy.PRICE_DESC,
+      },
+      fetchPolicy: 'no-cache',
     },
-    fetchPolicy: 'no-cache',
-  });
-  const paginatorInfo = data?.findProductVariants.paginatorInfo;
-  const gridItems = data?.findProductVariants.data.map(
+  );
+
+  console.log(data);
+
+  const paginatorInfo = data?.findProductVariantForCollection.paginatorInfo;
+  const gridItems = data?.findProductVariantForCollection.data.map(
     (productVariantFragment) =>
       useFragment(
         ProductVariantGridFragmentFragmentDoc,
@@ -60,7 +66,7 @@ export default function ProductsGrid({
 const buildFilterInput = (
   collectionSlug: string,
   urlSearchParams: URLSearchParams,
-): ProductFilterInput => {
+): ProductVariantsForCollectionFilterInput => {
   return {
     search: urlSearchParams.get('search') ?? '',
     collection: collectionSlug,

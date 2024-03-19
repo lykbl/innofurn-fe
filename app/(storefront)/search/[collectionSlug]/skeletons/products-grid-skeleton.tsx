@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-} from '@/components/ui/common/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/common/card';
 import Image from 'next/image';
 
 export default function ProductsGridSkeleton() {

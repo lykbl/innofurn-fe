@@ -6,13 +6,13 @@ import { ProductOptionFragmentFragmentDoc } from '@/gql/generated/graphql';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { AttributeFilters } from '@/(storefront)/search/[collectionSlug]/components/filters/options';
 import { OnSaleFilter } from '@/(storefront)/search/[collectionSlug]/components/filters/on-sale';
-import { RatingFilter } from '@/(storefront)/search/[collectionSlug]/components/filters/rating';
-import { PriceFilter } from '@/(storefront)/search/[collectionSlug]/components/filters/prices';
 import { useDebounce } from 'react-use';
 import { useFragment } from '@/gql/generated';
 import { Card } from '@/components/ui/common/card';
 import { useSuspenseQuery } from '@apollo/client';
-import { FiltersQuery } from '@/gql/queries/product';
+import { OptionFiltersForCollectionQuery } from '@/gql/queries/product-variant';
+import RatingFilter from '@/(storefront)/search/[collectionSlug]/components/filters/rating';
+import PriceFilter from '@/(storefront)/search/[collectionSlug]/components/filters/prices';
 
 export default function CollectionFilters({
   collectionSlug,
@@ -20,7 +20,7 @@ export default function CollectionFilters({
   collectionSlug: string;
 }) {
   const { data: availableOptionsQuery, error: optionsFilterError } =
-    useSuspenseQuery(FiltersQuery, {
+    useSuspenseQuery(OptionFiltersForCollectionQuery, {
       variables: {
         slug: collectionSlug,
       },

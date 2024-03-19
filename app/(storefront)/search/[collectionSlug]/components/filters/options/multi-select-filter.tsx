@@ -1,7 +1,4 @@
-import {
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
+import { AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { FragmentType } from '@/gql/generated';
 import { ProductOptionValueFragmentFragmentDoc } from '@/gql/generated/graphql';
 import MultiSelectFilterOption from '@/(storefront)/search/[collectionSlug]/components/filters/options/multi-select-filter-option';
