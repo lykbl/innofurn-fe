@@ -38,11 +38,13 @@ const Rating = ({
 }: RatingProps) => {
   return (
     <div className={clsx('flex items-center', className)}>
+      {/*//TODOhould be cn*/}
       <div className="mr-2 flex">
         {/*//TODO fix stars*/}
         {Array(5)
           .fill(null)
           .map((_, index) => (
+            //TODO replace with different icons
             <TiStarHalfOutline key={index} size={starSize} />
           ))}
       </div>

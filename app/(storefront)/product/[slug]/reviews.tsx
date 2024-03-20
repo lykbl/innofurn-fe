@@ -50,6 +50,7 @@ const RatingBar = ({
     <div
       ref={ref}
       className={clsx(
+        //TODO shoud lbe cn
         'rounded border border-primary bg-gray-100 drop-shadow-lg hover:border-primary/90',
         className,
       )}
