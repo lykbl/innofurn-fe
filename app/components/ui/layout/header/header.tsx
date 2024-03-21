@@ -13,7 +13,7 @@ import { useQuery } from '@apollo/client';
 import { CheckMeQuery } from '@/gql/queries/user';
 import { Icons } from '@/components/icons';
 import GuestMenu from '@/components/ui/layout/header/user-popover/guest-popover';
-import SearchBar from '@/components/ui/layout/header/search-bar';
+import SearchBar from '@/components/ui/layout/header/search-bar/search-bar';
 
 const Header = () => {
   const { data, loading } = useQuery(CheckMeQuery);
@@ -21,7 +21,7 @@ const Header = () => {
 
   return (
     <div className="w-full border-b bg-background">
-      <div className="mx-auto flex max-w-screen-2xl items-center justify-between px-2 py-3">
+      <div className="mx-auto flex max-w-screen-2xl items-center justify-between gap-4 px-2 py-3">
         <div className="flex w-1/5 items-center">
           <BaseLink
             href={ROUTES.HOME}

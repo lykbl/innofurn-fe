@@ -43,8 +43,6 @@ export default function ProductsGrid({
     },
   );
 
-  console.log(data);
-
   const paginatorInfo = data?.findProductVariantForCollection.paginatorInfo;
   const gridItems = data?.findProductVariantForCollection.data.map(
     (productVariantFragment) =>

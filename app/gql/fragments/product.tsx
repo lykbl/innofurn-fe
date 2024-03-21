@@ -30,6 +30,9 @@ const ProductVariantGridFragment = gql(/* GraphQL */ `
     id
     name
     product {
+      defaultUrl {
+        slug
+      }
       colorOptions {
         ...ColorOptionFragment
       }
@@ -57,6 +60,22 @@ const ProductVariantSearchPreviewFragment = gql(/* GraphQL */ `
   fragment ProductVariantSearchPreviewFragment on ProductVariant {
     id
     name
+    description
+    product {
+      id
+      brand {
+        id
+        name
+        defaultUrl {
+          slug
+        }
+      }
+      defaultUrl {
+        slug
+      }
+    }
+    averageRating
+    reviewsCount
     primaryImage {
       id
       name
