@@ -3,34 +3,18 @@
 import {
   ChangeEventHandler,
   Suspense,
-  useCallback,
-  useRef,
   useState,
   useTransition,
 } from 'react';
 import { Input } from '@/components/ui/common/input';
-import { skipToken, useLazyQuery, useSuspenseQuery } from '@apollo/client';
-import { ProductVariantSearchPreviewFragmentFragmentDoc } from '@/gql/generated/graphql';
 import { useDebounce } from 'react-use';
-import { useToast } from '@/components/ui/use-toast';
-import { useFragment } from '@/gql/generated';
-import Image from 'next/image';
 import {
   Dialog,
-  DialogContent,
   DialogOverlay,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { FindProductVariantsQuery } from '@/gql/queries/product-variant';
-import Link from 'next/link';
-import { Button, buttonVariants } from '@/components/ui/common/button';
-import {
-  ScrollArea,
-  ScrollAreaViewport,
-  ScrollBar,
-} from '@/components/ui/scroll-area';
-import FiveStars from '@/components/ui/common/five-stars';
-import { cn } from '@/lib/utils';
+
+
 import SearchBarDialogContent from '@/components/ui/layout/header/search-bar/dialog-content';
 
 export default function SearchBar() {
