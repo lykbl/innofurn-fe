@@ -1,19 +1,9 @@
 'use client';
 
-import {
-  ChangeEventHandler,
-  Suspense,
-  useState,
-  useTransition,
-} from 'react';
+import { ChangeEventHandler, Suspense, useState, useTransition } from 'react';
 import { Input } from '@/components/ui/common/input';
 import { useDebounce } from 'react-use';
-import {
-  Dialog,
-  DialogOverlay,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-
+import { Dialog, DialogOverlay, DialogTrigger } from '@/components/ui/dialog';
 
 import SearchBarDialogContent from '@/components/ui/layout/header/search-bar/dialog-content';
 
@@ -45,18 +35,23 @@ export default function SearchBar() {
     handleSearchChange(e);
   };
   const handleSearchChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    setSearch(e.target.value);
+    setSearch(e.target.value.trimStart());
   };
 
   return (
     <Dialog open={dialogOpen}>
       <DialogTrigger asChild>
-        <Input value={search} onChange={openSearchDialog} type="text" />
+        <Input
+          className=""
+          value={search}
+          onChange={openSearchDialog}
+          type="text"
+        />
       </DialogTrigger>
       <Suspense>
         <DialogOverlay className="overlay">
           <SearchBarDialogContent
-            setDialogOpen={setDialogOpen}
+            closeModal={() => setDialogOpen(false)}
             search={search}
             searchQuery={searchQuery}
             handleSearchChange={handleSearchChange}
