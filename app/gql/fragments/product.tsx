@@ -73,6 +73,7 @@ const ProductVariantSearchPreviewFragment = gql(/* GraphQL */ `
       defaultUrl {
         slug
       }
+      variantsCount
     }
     averageRating
     reviewsCount
