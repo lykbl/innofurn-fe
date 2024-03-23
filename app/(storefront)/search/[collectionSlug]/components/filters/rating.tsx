@@ -45,13 +45,15 @@ export default function RatingFilter() {
           <FiveStars averageRating={0} reviewsCount={0} />
           {previewRating === 5 ? '' : <span>& Up</span>}
         </div>
-        <Button
-          className="text-xs"
-          variant="outline"
-          onClick={deleteReviewFilter}
-        >
-          Any rating
-        </Button>
+        <div className="w-full px-0.5">
+          <Button
+            className="w-full text-xs"
+            variant="outline"
+            onClick={deleteReviewFilter}
+          >
+            Any rating
+          </Button>
+        </div>
       </AccordionContent>
     </AccordionItem>
   );

@@ -25,7 +25,7 @@ export default function MultiSelectFilterOption({
     updateSearchFilter(urlSearchParams);
   };
   return (
-    <AccordionContent key={index} className="flex items-center gap-2 px-1">
+    <AccordionContent key={index} className="flex items-center gap-2 px-1 py-2">
       <Checkbox
         id={name}
         defaultChecked={urlSearchParams.has(handle, name)}
