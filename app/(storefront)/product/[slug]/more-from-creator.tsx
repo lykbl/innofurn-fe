@@ -21,7 +21,7 @@ const carouselItems = Array(10)
         <div className="pointer-events-none">
           <Image
             className="rounded"
-            src="/sample-kitchen-image-2.jpg"
+            src="/fallback-image.jpg"
             alt="image"
             width={200}
             height={200}

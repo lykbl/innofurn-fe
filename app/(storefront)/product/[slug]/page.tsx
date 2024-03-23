@@ -1,9 +1,10 @@
 'use client';
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import { useQuery } from '@apollo/client';
 import Details from '@/(storefront)/product/[slug]/details/details';
 import { ProductDetailsQuery } from '@/gql/queries/product';
+import Reviews from '@/(storefront)/product/[slug]/reviews/reviews';
 
 export default function Page({
   params: { slug },
@@ -13,7 +14,9 @@ export default function Page({
   const { data: productDetailsQuery, fetchMore: fetchMoreImages } = useQuery(
     ProductDetailsQuery,
     {
-      variables: { slug, page: 1 },
+      variables: { slug,
+        imagesPage: 1
+      },
       nextFetchPolicy: 'cache-only',
     },
   );
@@ -28,6 +31,9 @@ export default function Page({
         productDetailsFragment={productDetailsFragment}
         fetchMoreImages={fetchMoreImages}
       />
+      <Suspense fallback='ladoing'>
+        <Reviews slug={slug} />
+      </Suspense>
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import { CodegenConfig } from '@graphql-codegen/cli';
+import { ReviewsBreakdown } from '@/gql/scalars';
 
 const config: CodegenConfig = {
   schema: process.env.GRAPHQL_ENDPOINT || 'http://localhost/graphql',
@@ -23,6 +24,7 @@ const config: CodegenConfig = {
           Map: 'Map',
           DiscountData: 'DiscountData',
           AggregatedValues: 'Array',
+          ReviewsBreakdown: 'ReviewsBreakdown',
         },
         enumsAsTypes: false,
         constEnums: true,

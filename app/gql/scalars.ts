@@ -23,3 +23,7 @@ export type AttributeData<T> = {
 export type MaterialAttributeData = { en: string };
 export type ColorAttributeData = { label: string; value: string };
 export type Rating = 1 | 2 | 3 | 4 | 5;
+export type ReviewsBreakdown = Array<{
+  rating: Rating;
+  count: number;
+}>;

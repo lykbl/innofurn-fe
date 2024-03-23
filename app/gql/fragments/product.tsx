@@ -138,7 +138,7 @@ const ProductDetailsVariantFragment = gql(/* GraphQL */ `
     averageRating
     reviewsCount
     sku
-    images(page: $page) {
+    images(page: $imagesPage) {
       ...MediaPaginatorFragment
     }
     prices {

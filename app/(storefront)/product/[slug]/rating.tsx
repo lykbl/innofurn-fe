@@ -39,6 +39,7 @@ const Rating = ({
   return (
     <div className={cn('flex items-center', className)}>
       <div className="mr-2 flex">
+
         {/*//TODO fix stars*/}
         {Array(5)
           .fill(null)
@@ -49,14 +50,14 @@ const Rating = ({
       </div>
       {style === RATING_STYLES.WITH_REVIEWS && (
         <Link
-          href="/app/(storefront)/product/[slug]/reviews"
+          href="/app/(storefront)/product/[slug]/reviews/reviews"
           className="hover:text-blue-600 hover:underline"
         >
           ({reviewsCount} reviews)
         </Link>
       )}
       {style === RATING_STYLES.WITH_RATING && (
-        <Link href="/app/(storefront)/product/[slug]/reviews">
+        <Link href="/app/(storefront)/product/[slug]/reviews/reviews">
           ({totalRating})
         </Link>
       )}

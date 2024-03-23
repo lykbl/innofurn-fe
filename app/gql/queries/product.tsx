@@ -1,7 +1,7 @@
 import { gql } from '@/gql/generated';
 
 export const ProductDetailsQuery = gql(/* GraphQL */ `
-  query ProductDetails($slug: String!, $page: Int!) {
+  query ProductDetails($slug: String!, $imagesPage: Int!) {
     productDetails(slug: $slug) {
       ...ProductDetailsFragment
     }
