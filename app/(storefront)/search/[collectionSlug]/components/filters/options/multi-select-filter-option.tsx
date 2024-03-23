@@ -1,39 +1,10 @@
-import {
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
-import { Checkbox } from '@/components/ui/common/checkbox';
-import { useSearchFilterQuery } from '@/(storefront)/search/[handle]/filters';
 import { FragmentType, useFragment } from '@/gql/generated';
 import { ProductOptionValueFragmentFragmentDoc } from '@/gql/generated/graphql';
+import { useSearchFilterQuery } from '@/(storefront)/search/[collectionSlug]/components/filters/filters';
+import { AccordionContent } from '@/components/ui/accordion';
+import { Checkbox } from '@/components/ui/common/checkbox';
 
-export const MultiSelectFilter = ({
-  handle,
-  label,
-  valuesFragments,
-}: {
-  handle: string;
-  label: string;
-  valuesFragments: Array<
-    FragmentType<typeof ProductOptionValueFragmentFragmentDoc>
-  >;
-}) => {
-  return (
-    <AccordionItem value={handle}>
-      <AccordionTrigger className="px-1">{label}</AccordionTrigger>
-      {valuesFragments.map((valueFragment, index) => (
-        <MultiSelectFilterOption
-          index={index}
-          valueFragment={valueFragment}
-          handle={handle}
-        />
-      ))}
-    </AccordionItem>
-  );
-};
-
-const MultiSelectFilterOption = ({
+export default function MultiSelectFilterOption({
   index,
   handle,
   valueFragment,
@@ -41,7 +12,7 @@ const MultiSelectFilterOption = ({
   index: number;
   handle: string;
   valueFragment: FragmentType<typeof ProductOptionValueFragmentFragmentDoc>;
-}) => {
+}) {
   const { urlSearchParams, updateSearchFilter } = useSearchFilterQuery();
   const { name } = useFragment(
     ProductOptionValueFragmentFragmentDoc,
@@ -54,7 +25,7 @@ const MultiSelectFilterOption = ({
     updateSearchFilter(urlSearchParams);
   };
   return (
-    <AccordionContent key={index} className="flex items-center gap-2 px-1">
+    <AccordionContent key={index} className="flex items-center gap-2 px-1 py-2">
       <Checkbox
         id={name}
         defaultChecked={urlSearchParams.has(handle, name)}
@@ -68,4 +39,4 @@ const MultiSelectFilterOption = ({
       </label>
     </AccordionContent>
   );
-};
+}

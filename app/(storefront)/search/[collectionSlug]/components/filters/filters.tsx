@@ -1,20 +1,37 @@
+'use client';
+
 import { Accordion } from '@/components/ui/accordion';
 import React from 'react';
 import { ProductOptionFragmentFragmentDoc } from '@/gql/generated/graphql';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { AttributeFilters } from '@/(storefront)/search/[handle]/filters/attributes';
-import { OnSaleFilter } from '@/(storefront)/search/[handle]/filters/on-sale';
-import { RatingFilter } from '@/(storefront)/search/[handle]/filters/rating';
-import { PriceFilter } from '@/(storefront)/search/[handle]/filters/prices';
+import { AttributeFilters } from '@/(storefront)/search/[collectionSlug]/components/filters/options';
+import { OnSaleFilter } from '@/(storefront)/search/[collectionSlug]/components/filters/on-sale';
 import { useDebounce } from 'react-use';
-import { FragmentType } from '@/gql/generated';
+import { useFragment } from '@/gql/generated';
 import { Card } from '@/components/ui/common/card';
+import { useSuspenseQuery } from '@apollo/client';
+import { OptionFiltersForCollectionQuery } from '@/gql/queries/product-variant';
+import RatingFilter from '@/(storefront)/search/[collectionSlug]/components/filters/rating';
+import PriceFilter from '@/(storefront)/search/[collectionSlug]/components/filters/prices';
 
-export const Filters = ({
-  productOptions,
+export default function CollectionFilters({
+  collectionSlug,
 }: {
-  productOptions: Array<FragmentType<typeof ProductOptionFragmentFragmentDoc>>;
-}) => {
+  collectionSlug: string;
+}) {
+  const { data: availableOptionsQuery, error: optionsFilterError } =
+    useSuspenseQuery(OptionFiltersForCollectionQuery, {
+      variables: {
+        slug: collectionSlug,
+      },
+    });
+  const productOptions = availableOptionsQuery?.optionFiltersForCollection.map(
+    (option) => useFragment(ProductOptionFragmentFragmentDoc, option),
+  );
+  if (optionsFilterError) {
+    return <div>Sorry! Filters could not be loaded.</div>;
+  }
+
   return (
     <Card className="flex w-1/5 flex-col gap-4 p-4">
       <Accordion type="multiple">
@@ -25,7 +42,7 @@ export const Filters = ({
       <OnSaleFilter />
     </Card>
   );
-};
+}
 
 export const useSearchFilterQuery = () => {
   const { replace } = useRouter();

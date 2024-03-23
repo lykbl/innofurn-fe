@@ -31,7 +31,7 @@ export function LoginForm() {
     },
     mode: 'onSubmit',
   });
-  const [mutateAsync, { loading }] = useMutation(LoginMutation);
+  const [mutateAsync, { loading, client }] = useMutation(LoginMutation);
   const router = useRouter();
   const { toast } = useToast();
 
@@ -54,6 +54,7 @@ export function LoginForm() {
       });
     }
     if (response.data) {
+      client.resetStore();
       router.push(ROUTES.HOME);
     }
   }

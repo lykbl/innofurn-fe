@@ -6,7 +6,6 @@ import { useFragment } from '@/gql/generated';
 import { RootCollectionFragmentFragmentDoc } from '@/gql/generated/graphql';
 
 const CACHE_MINUTES = 60 * 5;
-
 const Collections = async () => {
   const { data: rootCollectionsQuery } = await apolloClient.getClient().query({
     query: RootCollectionsQuery,
@@ -28,7 +27,7 @@ const Collections = async () => {
 
   return (
     <div className="flex flex-wrap justify-between">
-      <OutlinedLink href="/collections/promotion">
+      <OutlinedLink href="/collections/promotion" className="rounded-full">
         <Image
           src="https://via.placeholder.com/205x205.png/004466?text=featured-promo"
           alt="alt"

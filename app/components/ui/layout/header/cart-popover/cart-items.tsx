@@ -2,7 +2,7 @@ import { PriceData } from '@/gql/scalars';
 import { forwardRef } from 'react';
 import * as React from 'react';
 import { Card, CardContent } from '@/components/ui/common/card';
-import { CartItem } from '@/components/ui/layout/header/cart/cart-item';
+import { CartItem } from '@/components/ui/layout/header/cart-popover/cart-item';
 import {
   CartFragmentFragment,
   CartLineFragmentFragmentDoc,

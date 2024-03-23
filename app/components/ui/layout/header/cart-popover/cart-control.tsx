@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/client';
+import { useSuspenseQuery } from '@apollo/client';
 import { useFragment } from '@/gql/generated';
 import {
   CartFragmentFragment,
@@ -12,21 +12,17 @@ import {
 import { Button } from '@/components/ui/common/button';
 import * as React from 'react';
 import { useEffect, useRef, useState } from 'react';
-import { CartItems } from '@/components/ui/layout/header/cart/cart-items';
+import { CartItems } from '@/components/ui/layout/header/cart-popover/cart-items';
 import { MyCartQuery } from '@/gql/queries/cart';
 import { cn } from '@/lib/utils';
 import { Icons } from '@/components/icons';
 
 export const CartPopover = () => {
   const [cartUpdated, setCartUpdated] = useState(false);
-  const {
-    data: myCartQuery,
-    loading,
-    observable: queryObserver,
-  } = useQuery(MyCartQuery);
+  const { data: myCartQuery, client } = useSuspenseQuery(MyCartQuery);
   const myCart = useFragment(CartFragmentFragmentDoc, myCartQuery?.myCart);
   let timeoutId = useRef<NodeJS.Timeout | null>();
-
+  const queryObserver = client.watchQuery({ query: MyCartQuery });
   const startTimer = () => {
     setCartUpdated(true);
     if (timeoutId.current) {
@@ -41,7 +37,7 @@ export const CartPopover = () => {
 
   useEffect(() => {
     const subscriber = queryObserver.subscribe({
-      next: (data) => {
+      next: () => {
         startTimer();
       },
     });
@@ -51,11 +47,7 @@ export const CartPopover = () => {
 
   return (
     <Popover>
-      <Trigger
-        disabled={loading}
-        itemsCount={myCart?.lines.length}
-        cartUpdated={cartUpdated}
-      />
+      <Trigger itemsCount={myCart?.lines.length} cartUpdated={cartUpdated} />
       <Content myCart={myCart} />
     </Popover>
   );
@@ -63,16 +55,14 @@ export const CartPopover = () => {
 
 const Trigger = ({
   itemsCount,
-  disabled,
   cartUpdated,
 }: {
   itemsCount?: number;
-  disabled: boolean;
   cartUpdated: boolean;
 }) => {
   return (
     <PopoverTrigger asChild>
-      <Button disabled={disabled} variant="outline" className="relative">
+      <Button variant="outline" className="relative">
         <Icons.shoppingBag />
         <ItemsCounter itemsCount={itemsCount} cartUpdated={cartUpdated} />
       </Button>
@@ -90,7 +80,7 @@ const ItemsCounter = ({
   if (!itemsCount) return null;
 
   return (
-    <div className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-2xs font-medium text-white">
+    <div className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-2xs font-medium text-white">
       <span
         className={cn(
           'absolute h-full w-full rounded-full bg-primary',

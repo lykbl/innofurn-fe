@@ -22,7 +22,7 @@ const FiveStars = ({
             />
           ))}
       </div>
-      ({reviewsCount})
+      <span className="text-xs">({reviewsCount})</span>
     </div>
   );
 };

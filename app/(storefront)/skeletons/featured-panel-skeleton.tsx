@@ -1,12 +1,5 @@
 import Image from 'next/image';
-import { useQuery } from '@apollo/client';
-import {
-  ConversionTypes,
-  PromotionBannerStyles,
-  PromotionBannerTypeFragmentFragmentDoc,
-} from '@/gql/generated/graphql';
-import { PromotionBannerTypeQuery } from '@/gql/queries/promotion-banner';
-import { useFragment } from '@/gql/generated';
+
 import OutlinedLink from '@/(storefront)/components/outlined-link';
 
 const FeaturedPanelSkeleton = () => {

@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import { useSuspenseQuery } from '@apollo/client';
 import {
   ConversionTypes,
   PromotionBannerStyles,

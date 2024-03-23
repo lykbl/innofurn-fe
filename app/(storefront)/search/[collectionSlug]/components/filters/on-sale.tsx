@@ -1,10 +1,11 @@
 import { Checkbox } from '@/components/ui/common/checkbox';
 import React from 'react';
-import { useSearchFilterQuery } from '@/(storefront)/search/[handle]/filters';
+import { useSearchFilterQuery } from '@/(storefront)/search/[collectionSlug]/components/filters/filters';
+
+const filterKey = 'onSaleOnly';
 
 export const OnSaleFilter = () => {
   const { urlSearchParams, updateSearchFilter } = useSearchFilterQuery();
-  const filterKey = 'onSaleOnly'; //TS ?
 
   const handleCheckedChange = (checked: boolean) => {
     checked

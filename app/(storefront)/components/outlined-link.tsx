@@ -14,7 +14,7 @@ const OutlinedLink = ({
   return (
     <Link
       className={cn(
-        'flex rounded border border-transparent p-1 transition-all hover:border-primary',
+        'flex w-max rounded border border-primary p-1 transition-all  hover:ring-1 hover:ring-primary hover:ring-offset-0 hover:ring-offset-white focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-0',
         className,
       )}
       href={href}

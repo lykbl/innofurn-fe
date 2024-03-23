@@ -6,6 +6,7 @@ const ROUTES = {
   PROFILE: '/profile',
   SETTINGS: '/settings',
   BOOKMARKS: '/bookmarks',
+  RECENTLY_VIEWED: '/recently-viewed',
 };
 
 export default ROUTES;
