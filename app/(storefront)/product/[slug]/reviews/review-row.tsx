@@ -1,11 +1,15 @@
 import { Stars } from '@/(storefront)/product/[slug]/rating';
-import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from '@/components/ui/carousel';
 import Image from 'next/image';
 import { Button } from '@/components/ui/common/button';
 import { ProductReviewFragmentFragment } from '@/gql/generated/graphql';
 
 export default function ReviewRow({
-  review
+  review,
 }: {
   review: ProductReviewFragmentFragment;
 }) {
@@ -22,8 +26,8 @@ export default function ReviewRow({
       <p>
         <span>Color: Blue</span>
         <span className="ml-2 border-l border-black pl-2 text-green-500">
-        Verified purchase
-      </span>
+          Verified purchase
+        </span>
       </p>
       <p>{review.body}</p>
       <p className="flex gap-2 text-gray-500">

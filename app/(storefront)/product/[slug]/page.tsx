@@ -14,9 +14,7 @@ export default function Page({
   const { data: productDetailsQuery, fetchMore: fetchMoreImages } = useQuery(
     ProductDetailsQuery,
     {
-      variables: { slug,
-        imagesPage: 1
-      },
+      variables: { slug, imagesPage: 1 },
       nextFetchPolicy: 'cache-only',
     },
   );
@@ -31,7 +29,7 @@ export default function Page({
         productDetailsFragment={productDetailsFragment}
         fetchMoreImages={fetchMoreImages}
       />
-      <Suspense fallback='ladoing'>
+      <Suspense fallback="ladoing">
         <Reviews slug={slug} />
       </Suspense>
     </div>

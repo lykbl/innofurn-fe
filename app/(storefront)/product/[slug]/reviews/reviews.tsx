@@ -14,8 +14,10 @@ import { Input } from '@/components/ui/common/input';
 import { calculatePercentage, cn } from '@/lib/utils';
 import { useSuspenseQuery } from '@apollo/client';
 import { gql, useFragment } from '@/gql/generated';
-import { ProductReviewFragmentFragmentDoc, ProductReviewsFragmentFragmentDoc } from '@/gql/generated/graphql';
-import ReviewSample from '@/(storefront)/product/[slug]/reviews/review-row';
+import {
+  ProductReviewFragmentFragmentDoc,
+  ProductReviewsFragmentFragmentDoc,
+} from '@/gql/generated/graphql';
 import ReviewRow from '@/(storefront)/product/[slug]/reviews/review-row';
 import { Card } from '@/components/ui/common/card';
 
@@ -102,7 +104,7 @@ const ReviewsBreakdown = ({
           ))}
         </div>
       </div>
-   </Card>
+    </Card>
   );
 };
 
@@ -110,72 +112,71 @@ const LeaveReview = () => {
   return (
     <Card className="flex flex-col gap-2 bg-secondary p-2">
       <h5 className="font-semibold">Review this product</h5>
-      <span className="text-sm">
-          Share your thoughts with other customers
-        </span>
+      <span className="text-sm">Share your thoughts with other customers</span>
       <Button className="py-1">Leave a review</Button>
     </Card>
   );
-}
+};
 
 const ProductReviewFragment = gql(/* GraphQL */ `
-    fragment ProductReviewFragment on Review {
-        id
-        title
-        body
-        rating
-        createdAt
-        variant {
-            id
-        }
-        customer {
-            fullName
-        }
+  fragment ProductReviewFragment on Review {
+    id
+    title
+    body
+    rating
+    createdAt
+    variant {
+      id
     }
+    customer {
+      fullName
+    }
+  }
 `);
 
 const ProductReviewsFragment = gql(/* GraphQL */ `
   fragment ProductReviewsFragment on Product {
-    id 
+    id
     reviewsCount
     reviewsBreakdown
     averageRating
-     reviews(first: 5, page: $reviewsPage) {
-         data {
-             ...ProductReviewFragment
-         }
-         paginatorInfo {
-             hasMorePages
-         }
-     } 
+    reviews(first: 5, page: $reviewsPage) {
+      data {
+        ...ProductReviewFragment
+      }
+      paginatorInfo {
+        hasMorePages
+      }
     }
+  }
 `);
 
 export const ProductReviewsQuery = gql(/* GraphQL */ `
   query ProductReviewsQuery($slug: String!, $reviewsPage: Int!) {
-      productReviews(slug: $slug, reviewsPage: $reviewsPage) {
-          ...ProductReviewsFragment
-      }
+    productReviews(slug: $slug, reviewsPage: $reviewsPage) {
+      ...ProductReviewsFragment
+    }
   }
-`)
+`);
 
-export default function Reviews({
-  slug,
-}: {
-  slug: string;
-}) {
+export default function Reviews({ slug }: { slug: string }) {
   const { data, error } = useSuspenseQuery(ProductReviewsQuery, {
     variables: {
       slug,
       reviewsPage: 1,
     },
   });
-  const productReviewsDetails = useFragment(ProductReviewsFragmentFragmentDoc, data?.productReviews);
-  const productReviews = productReviewsDetails?.reviews.data.map(review => useFragment(ProductReviewFragmentFragmentDoc, review));
+  const productReviewsDetails = useFragment(
+    ProductReviewsFragmentFragmentDoc,
+    data?.productReviews,
+  );
+  const productReviews = productReviewsDetails?.reviews.data.map((review) =>
+    useFragment(ProductReviewFragmentFragmentDoc, review),
+  );
 
   return (
     <section className="flex justify-between gap-2">
-      <div className="flex w-1/5 flex-col rounded gap-2 h-max sticky top-2">
+      <div className="sticky top-2 flex h-max w-1/5 flex-col gap-2 rounded">
         <ReviewsBreakdown
           totalCount={productReviewsDetails.reviewsCount}
           reviewsBreakdown={productReviewsDetails.reviewsBreakdown}
@@ -184,49 +185,46 @@ export default function Reviews({
         <LeaveReview />
       </div>
       <Card className="flex w-4/5 flex-col rounded bg-secondary p-2">
-          <div className="flex flex-col gap-2 border-neutral-200">
-            <h3 className="font-medium">Looking for specific info?</h3>
-            <Input
-              type="text"
-              // className="rounded border border-solid border-black"
-              placeholder="Search in reviews, Q&A..."
-            />
-          </div>
-          {/*<div className='py-2'>*/}
-          {/*  <h4>Customers say</h4>*/}
-          {/*  <p>Customers like the quality, protection, and storage space of the display album. They mention that it has a*/}
-          {/*    sturdy build quality, clear pages, and holds cards well. Some say that the durable design helps protect*/}
-          {/*    their collection, and that each pocket can hold two swatches.</p>*/}
-          {/*  <span className='text-sm text-gray-500'>AI-generated from the text of customer reviews</span>*/}
-          {/*</div>*/}
-          <div className="flex flex-col">
-            <div className="border-b border-black py-2">
-              <h3>Reviews with images</h3>
-              <div className="py-2">
-                {/*<Carousel items={reviewImages} controlsSize={20} />*/}
-                <Carousel>
-                  <CarouselContent>
-                    {reviewImages.map((item, index) => (
-                      <CarouselItem key={index}>{item}</CarouselItem>
-                    ))}
-                  </CarouselContent>
-                </Carousel>
-              </div>
-            </div>
+        <div className="flex flex-col gap-2 border-neutral-200">
+          <h3 className="font-medium">Looking for specific info?</h3>
+          <Input
+            type="text"
+            // className="rounded border border-solid border-black"
+            placeholder="Search in reviews, Q&A..."
+          />
+        </div>
+        {/*<div className='py-2'>*/}
+        {/*  <h4>Customers say</h4>*/}
+        {/*  <p>Customers like the quality, protection, and storage space of the display album. They mention that it has a*/}
+        {/*    sturdy build quality, clear pages, and holds cards well. Some say that the durable design helps protect*/}
+        {/*    their collection, and that each pocket can hold two swatches.</p>*/}
+        {/*  <span className='text-sm text-gray-500'>AI-generated from the text of customer reviews</span>*/}
+        {/*</div>*/}
+        <div className="flex flex-col">
+          <div className="border-b border-black py-2">
+            <h3>Reviews with images</h3>
             <div className="py-2">
-              <h3 className="text-2xl">Top Reviews</h3>
-              <div className="flex flex-col gap-2">
-                {productReviews.map(review => (
-                    <ReviewRow
-                      key={review.id}
-                      review={review}
-                    />
-                ))}
-                <Button>Load more reviews</Button>
-              </div>
+              {/*<Carousel items={reviewImages} controlsSize={20} />*/}
+              <Carousel>
+                <CarouselContent>
+                  {reviewImages.map((item, index) => (
+                    <CarouselItem key={index}>{item}</CarouselItem>
+                  ))}
+                </CarouselContent>
+              </Carousel>
             </div>
           </div>
-        </Card>
+          <div className="py-2">
+            <h3 className="text-2xl">Top Reviews</h3>
+            <div className="flex flex-col gap-2">
+              {productReviews.map((review) => (
+                <ReviewRow key={review.id} review={review} />
+              ))}
+              <Button>Load more reviews</Button>
+            </div>
+          </div>
+        </div>
+      </Card>
     </section>
   );
-};
+}

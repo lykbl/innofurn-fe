@@ -1,5 +1,4 @@
 import { CodegenConfig } from '@graphql-codegen/cli';
-import { ReviewsBreakdown } from '@/gql/scalars';
 
 const config: CodegenConfig = {
   schema: process.env.GRAPHQL_ENDPOINT || 'http://localhost/graphql',

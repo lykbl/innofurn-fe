@@ -39,7 +39,6 @@ const Rating = ({
   return (
     <div className={cn('flex items-center', className)}>
       <div className="mr-2 flex">
-
         {/*//TODO fix stars*/}
         {Array(5)
           .fill(null)
