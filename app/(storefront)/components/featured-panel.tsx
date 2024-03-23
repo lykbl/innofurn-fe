@@ -37,7 +37,7 @@ const FeaturedPanel = async () => {
   const panel = promotionBannerType.promotionBanners.data[0];
 
   return (
-    <OutlinedLink href="/product/adde" className="flex">
+    <OutlinedLink href="/product/adde" className="flex w-full">
       <Image
         src={
           panel.bannerImage?.conversions[0] ||
@@ -46,7 +46,7 @@ const FeaturedPanel = async () => {
         alt="test"
         width={1600}
         height={300}
-        className="rounded"
+        className="w-full rounded"
       />
     </OutlinedLink>
   );

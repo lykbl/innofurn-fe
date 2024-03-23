@@ -3,7 +3,6 @@ import {
   CarouselContent,
   CarouselItem,
 } from '@/components/ui/carousel';
-import Link from 'next/link';
 import Image from 'next/image';
 import {
   ConversionTypes,
@@ -13,6 +12,7 @@ import {
 import { PromotionBannerTypeQuery } from '@/gql/queries/promotion-banner';
 import { useFragment } from '@/gql/generated';
 import apolloClient from '@/lib/apollo/apollo-client';
+import OutlinedLink from '@/(storefront)/components/outlined-link';
 
 const FeaturedCarousel = async () => {
   const { data: carouselBannersQuery } = await apolloClient.getClient().query({
@@ -37,23 +37,23 @@ const FeaturedCarousel = async () => {
 
   return (
     <Carousel>
-      <CarouselContent className="p-2">
+      <CarouselContent className="border border-secondary p-2">
         {carouselItems.map((carouselItem) => (
           <CarouselItem className="basis-1/6" key={carouselItem.id}>
-            <div className="rounded outline-1 outline-offset-4 outline-primary hover:outline">
-              <Link href="/product/adde">
-                <Image
-                  src={
-                    carouselItem.bannerImage?.conversions[0] ||
-                    'https://via.placeholder.com/250x150.png/004466?text=fallback'
-                  }
-                  alt="alt"
-                  width={250}
-                  height={150}
-                  className="rounded"
-                />
-              </Link>
-            </div>
+            {/*<div className="rounded outline-1 outline-offset-4 outline-primary hover:outline">*/}
+            <OutlinedLink href="/product/adde">
+              <Image
+                src={
+                  carouselItem.bannerImage?.conversions[0] ||
+                  'https://via.placeholder.com/250x150.png/004466?text=fallback'
+                }
+                alt="alt"
+                width={250}
+                height={150}
+                className="rounded"
+              />
+            </OutlinedLink>
+            {/*</div>*/}
           </CarouselItem>
         ))}
       </CarouselContent>
