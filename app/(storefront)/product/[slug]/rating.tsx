@@ -1,6 +1,6 @@
 import { TiStarHalfOutline } from 'react-icons/ti';
-import clsx from 'clsx';
 import Link from 'next/link';
+import { cn } from '@/lib/utils';
 
 export enum RATING_STYLES {
   WITH_RATING = 'RATING',
@@ -37,8 +37,7 @@ const Rating = ({
   totalRating,
 }: RatingProps) => {
   return (
-    <div className={clsx('flex items-center', className)}>
-      {/*//TODOhould be cn*/}
+    <div className={cn('flex items-center', className)}>
       <div className="mr-2 flex">
         {/*//TODO fix stars*/}
         {Array(5)

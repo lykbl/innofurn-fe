@@ -33,7 +33,7 @@ export default function ColorFilterOption({
         <TooltipContent>{name}</TooltipContent>
         <TooltipTrigger onClick={handleColorClick.bind(null, name)}>
           <span
-            style={{ backgroundColor: labelToColor(name) }}
+            style={{ backgroundColor: '#ff0000' }}
             className={cn(
               'block h-6 w-6 rounded-full border border-solid border-black',
               urlSearchParams.has('color', name) &&
@@ -45,11 +45,3 @@ export default function ColorFilterOption({
     </TooltipProvider>
   );
 }
-
-const labelToColor = (label: string) => {
-  if (label === 'White') return '#ffffff';
-  if (label === 'Black') return '#000000';
-  if (label === 'Mahogany') return '#c04000';
-
-  return '#ffffff';
-};

@@ -40,7 +40,7 @@ const FeaturedCarousel = async () => {
       <CarouselContent className="border border-secondary p-2">
         {carouselItems.map((carouselItem) => (
           <CarouselItem className="basis-1/6" key={carouselItem.id}>
-            {/*<div className="rounded outline-1 outline-offset-4 outline-primary hover:outline">*/}
+            {/*TODO Add promo banner page*/}
             <OutlinedLink href="/product/adde">
               <Image
                 src={
@@ -53,7 +53,6 @@ const FeaturedCarousel = async () => {
                 className="rounded"
               />
             </OutlinedLink>
-            {/*</div>*/}
           </CarouselItem>
         ))}
       </CarouselContent>

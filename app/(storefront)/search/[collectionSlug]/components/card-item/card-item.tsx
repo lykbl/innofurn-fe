@@ -18,7 +18,6 @@ import { Icons } from '@/components/icons';
 import { cn } from '@/lib/utils';
 import { useFragment } from '@/gql/generated';
 import {
-  ColorOptionFragmentFragmentDoc,
   DiscountFragmentFragmentDoc,
   ProductVariantGridFragmentFragment,
 } from '@/gql/generated/graphql';
@@ -30,17 +29,18 @@ export default function CardItem({
 }: {
   productVariant: ProductVariantGridFragmentFragment;
 }) {
-  const defaultVariant = productVariant;
-  const [selectedProductVariant, setSelectedProductVariant] =
-    React.useState(defaultVariant);
+  // const defaultVariant = productVariant;
+  // const [selectedProductVariant, setSelectedProductVariant] =
+  //   React.useState(defaultVariant);
+  const selectedProductVariant = productVariant;
   const averageRating = selectedProductVariant.averageRating || 0;
   const reviewsCount = selectedProductVariant.reviewsCount || 0;
   const isFavorite = selectedProductVariant.isFavorite;
   const isFeatured = selectedProductVariant.isFeatured;
   const onSale = false;
-  const colorOptions = productVariant.product.colorOptions?.map((colorOption) =>
-    useFragment(ColorOptionFragmentFragmentDoc, colorOption),
-  );
+  // const colorOptions = productVariant.product.colorOptions?.map((colorOption) =>
+  //   useFragment(ColorOptionFragmentFragmentDoc, colorOption),
+  // );
   const discounts = [
     // ...product.discounts,
     ...selectedProductVariant.discounts,

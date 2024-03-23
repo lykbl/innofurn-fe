@@ -5,9 +5,7 @@ import { RootCollectionsQuery } from '@/gql/queries/collection';
 import { useFragment } from '@/gql/generated';
 import { RootCollectionFragmentFragmentDoc } from '@/gql/generated/graphql';
 
-// const CACHE_MINUTES = 60 * 5;
-const CACHE_MINUTES = 1;
-
+const CACHE_MINUTES = 60 * 5;
 const Collections = async () => {
   const { data: rootCollectionsQuery } = await apolloClient.getClient().query({
     query: RootCollectionsQuery,

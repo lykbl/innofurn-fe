@@ -9,13 +9,13 @@ export const OptionFiltersForCollectionQuery = gql(/* GraphQL */ `
 `);
 
 export const FindProductVariantsForCollectionQuery = gql(/* GraphQL */ `
-  query FindProductVariants(
+  query FindProductVariantsForCollection(
     $filters: ProductVariantsForCollectionFilterInput!
     $first: Int!
     $page: Int!
     $orderBy: ProductVariantOrderBy!
   ) {
-    findProductVariantForCollection(
+    findProductVariantsForCollection(
       filters: $filters
       first: $first
       page: $page

@@ -11,7 +11,7 @@ import {
 import { Separator } from '@/components/ui/common/separator';
 import { cn } from '@/lib/utils';
 
-//TODO trigger link on space bar press
+//TODO replace with common link component
 const GhostLink = ({ href, children }: { href: string; children: string }) => (
   <BaseLink
     href={href}

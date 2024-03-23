@@ -3,7 +3,6 @@
 import { Stars } from '@/(storefront)/product/[slug]/rating';
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
-import clsx from 'clsx';
 import Image from 'next/image';
 import { Button } from '@/components/ui/common/button';
 import {
@@ -12,7 +11,7 @@ import {
   CarouselItem,
 } from '@/components/ui/carousel';
 import { Input } from '@/components/ui/common/input';
-import { calculatePercentage } from '@/lib/utils';
+import { calculatePercentage, cn } from '@/lib/utils';
 
 const reviewImages = Array(10)
   .fill(null)
@@ -49,8 +48,7 @@ const RatingBar = ({
   return (
     <div
       ref={ref}
-      className={clsx(
-        //TODO shoud lbe cn
+      className={cn(
         'rounded border border-primary bg-gray-100 drop-shadow-lg hover:border-primary/90',
         className,
       )}
