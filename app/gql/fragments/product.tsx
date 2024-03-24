@@ -204,11 +204,17 @@ const ProductReviewFragment = gql(/* GraphQL */ `
     rating
     createdAt
     variant {
-      id
-      name
+      ...ProductReviewVariantFragment
     }
     customer {
       fullName
     }
+  }
+`);
+
+const ProductReviewVariantFragment = gql(/* GraphQL */ `
+  fragment ProductReviewVariantFragment on ProductVariant {
+    id
+    name
   }
 `);

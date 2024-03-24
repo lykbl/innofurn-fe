@@ -4,15 +4,24 @@ import {
   CarouselItem,
 } from '@/components/ui/carousel';
 import Image from 'next/image';
-import { ProductReviewFragmentFragment } from '@/gql/generated/graphql';
+import {
+  ProductReviewFragmentFragment,
+  ProductReviewVariantFragmentFragmentDoc,
+} from '@/gql/generated/graphql';
 import FiveStars from '@/components/ui/common/five-stars';
 import React, { HTMLAttributes } from 'react';
 import { Card } from '@/components/ui/common/card';
+import { useFragment } from '@/gql/generated';
 
 const ReviewRow = React.forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement> & { review: ProductReviewFragmentFragment }
 >(({ review, ...props }, ref) => {
+  const variant = useFragment(
+    ProductReviewVariantFragmentFragmentDoc,
+    review.variant,
+  );
+
   return (
     <Card
       className="flex flex-col bg-secondary p-2 text-sm font-medium"
@@ -24,7 +33,7 @@ const ReviewRow = React.forwardRef<
       </div>
       <div className="flex items-center gap-1">
         <p className="text">
-          <span>{review.variant.name}</span>
+          <span>{variant.name}</span>
           {/*<span className="ml-2 border-l border-black pl-2 text-green-500">*/}
           {/*  Verified purchase*/}
           {/* TODO add logic */}
