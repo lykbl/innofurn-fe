@@ -17,6 +17,7 @@ export default function Reviews({ slug }: { slug: string }) {
           ratingFilter={ratingFilter}
           setRatingFilter={setRatingFilter}
           startLoadingMoreReviews={startLoadingMoreReviews}
+          isLoadingMoreReviews={isLoadingMoreReviews}
         />
       </Suspense>
       <Suspense>

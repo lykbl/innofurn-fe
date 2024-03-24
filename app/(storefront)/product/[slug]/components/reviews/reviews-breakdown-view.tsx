@@ -52,11 +52,13 @@ export default function ReviewsBreakdownView({
   ratingFilter,
   setRatingFilter,
   startLoadingMoreReviews,
+  isLoadingMoreReviews,
 }: {
   slug: string;
   ratingFilter: Rating | null;
   setRatingFilter: Dispatch<SetStateAction<Rating | null>>;
   startLoadingMoreReviews: TransitionStartFunction;
+  isLoadingMoreReviews: boolean;
 }) {
   const { data: productReviewsBreakdownQuery } = useSuspenseQuery(
     ProductReviewsBreakdownQuery,
@@ -96,6 +98,7 @@ export default function ReviewsBreakdownView({
                     ? 'bg-primary text-white hover:bg-primary/90 hover:text-white/90'
                     : '',
                 )}
+                disabled={isLoadingMoreReviews}
                 onClick={() => handleRatingFilterClick(review.rating)}
                 key={review.rating}
               >
