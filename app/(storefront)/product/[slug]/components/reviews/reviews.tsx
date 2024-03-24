@@ -14,6 +14,7 @@ export default function Reviews({ slug }: { slug: string }) {
       <Suspense>
         <ReviewsBreakdownView
           slug={slug}
+          ratingFilter={ratingFilter}
           setRatingFilter={setRatingFilter}
           startLoadingMoreReviews={startLoadingMoreReviews}
         />

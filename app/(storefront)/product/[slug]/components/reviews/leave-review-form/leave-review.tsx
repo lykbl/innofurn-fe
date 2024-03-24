@@ -97,13 +97,6 @@ export default function LeaveReview({
     useFragment(CheckMeFragmentFragmentDoc, checkMeQuery.checkMe);
   const router = useRouter();
   const handleOpenLeaveReviewForm: MouseEventHandler = (e) => {
-    toast({
-      duration: 2000,
-      type: 'foreground',
-      title: 'Error',
-      description: 'You must be logged in to leave a review',
-      variant: 'destructive',
-    });
     if (user == null) {
       e.preventDefault();
       router.push('/login');

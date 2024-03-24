@@ -19,9 +19,11 @@ import { ProductReviewsBreakdownQuery } from '@/gql/queries/product';
 const RatingBar = ({
   fillTo,
   className,
+  selected,
 }: {
   fillTo: number;
   className?: string;
+  selected?: boolean;
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
@@ -31,11 +33,14 @@ const RatingBar = ({
       ref={ref}
       className={cn(
         'rounded border border-primary bg-gray-100 drop-shadow-lg hover:border-primary/90',
+        selected && 'border-white hover:border-white/90',
         className,
       )}
     >
       <motion.div
-        className="h-full w-0 bg-primary duration-300 group-hover:bg-primary/90"
+        className={cn(
+          'h-full w-0 bg-primary duration-300 group-hover:bg-primary/90',
+        )}
         animate={isInView ? { width: `${fillTo}%` } : { width: 0 }}
       />
     </div>
@@ -44,10 +49,12 @@ const RatingBar = ({
 
 export default function ReviewsBreakdownView({
   slug,
+  ratingFilter,
   setRatingFilter,
   startLoadingMoreReviews,
 }: {
   slug: string;
+  ratingFilter: Rating | null;
   setRatingFilter: Dispatch<SetStateAction<Rating | null>>;
   startLoadingMoreReviews: TransitionStartFunction;
 }) {
@@ -66,7 +73,7 @@ export default function ReviewsBreakdownView({
     );
   const handleRatingFilterClick = (rating: Rating) => {
     startLoadingMoreReviews(() => {
-      setRatingFilter(rating);
+      setRatingFilter((prev) => (rating === prev ? null : rating));
     });
   };
 
@@ -83,7 +90,12 @@ export default function ReviewsBreakdownView({
             {reviewsBreakdown.map((review: ReviewsBreakdown) => (
               <Button
                 variant="outline"
-                className="group flex w-full border-primary bg-transparent text-black hover:bg-transparent hover:text-primary/90 hover:underline"
+                className={cn(
+                  'group flex w-full border-primary bg-transparent text-black hover:bg-transparent hover:text-primary/90 hover:underline',
+                  review.rating === ratingFilter
+                    ? 'bg-primary text-white hover:bg-primary/90 hover:text-white/90'
+                    : '',
+                )}
                 onClick={() => handleRatingFilterClick(review.rating)}
                 key={review.rating}
               >
@@ -91,6 +103,7 @@ export default function ReviewsBreakdownView({
                 <RatingBar
                   className="h-[24px] w-3/5"
                   fillTo={calculatePercentage(review.count, reviewsCount)}
+                  selected={review.rating === ratingFilter}
                 />
                 <span className="w-1/5 text-right">
                   {calculatePercentage(review.count, reviewsCount)}%
