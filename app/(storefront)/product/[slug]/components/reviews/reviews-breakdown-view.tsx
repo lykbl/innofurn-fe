@@ -1,10 +1,20 @@
-import { useRef } from 'react';
+import {
+  Dispatch,
+  SetStateAction,
+  TransitionStartFunction,
+  useRef,
+} from 'react';
 import { motion, useInView } from 'framer-motion';
 import { calculatePercentage, cn } from '@/lib/utils';
 import { Card } from '@/components/ui/common/card';
 import FiveStars from '@/components/ui/common/five-stars';
 import { Button } from '@/components/ui/common/button';
-import { ReviewsBreakdown } from '@/gql/scalars';
+import { Rating, ReviewsBreakdown } from '@/gql/scalars';
+import LeaveReview from '@/(storefront)/product/[slug]/components/reviews/leave-review-form/leave-review';
+import { useSuspenseQuery } from '@apollo/client';
+import { useFragment } from '@/gql/generated';
+import { ProductReviewsBreakdownFragmentFragmentDoc } from '@/gql/generated/graphql';
+import { ProductReviewsBreakdownQuery } from '@/gql/queries/product';
 
 const RatingBar = ({
   fillTo,
@@ -33,41 +43,64 @@ const RatingBar = ({
 };
 
 export default function ReviewsBreakdownView({
-  totalCount,
-  reviewsBreakdown,
-  averageRating,
+  slug,
+  setRatingFilter,
+  startLoadingMoreReviews,
 }: {
-  totalCount: number;
-  reviewsBreakdown: ReviewsBreakdown;
-  averageRating: number;
+  slug: string;
+  setRatingFilter: Dispatch<SetStateAction<Rating | null>>;
+  startLoadingMoreReviews: TransitionStartFunction;
 }) {
+  const { data: productReviewsBreakdownQuery } = useSuspenseQuery(
+    ProductReviewsBreakdownQuery,
+    {
+      variables: {
+        slug,
+      },
+    },
+  );
+  const { averageRating, reviewsBreakdown, reviewsCount, variants } =
+    useFragment(
+      ProductReviewsBreakdownFragmentFragmentDoc,
+      productReviewsBreakdownQuery?.productDetails,
+    );
+  const handleRatingFilterClick = (rating: Rating) => {
+    startLoadingMoreReviews(() => {
+      setRatingFilter(rating);
+    });
+  };
+
   return (
-    <Card className="bg-secondary p-2">
-      <h2>Customer Reviews</h2>
-      <div className="flex flex-col gap-2 border-primary">
-        <div className="flex gap-2 text-lg">
-          <FiveStars rating={averageRating} />
-          <span>{averageRating.toFixed(1)} of 5</span>
+    <div className="sticky top-2 flex h-max w-1/5 flex-col gap-2 rounded">
+      <Card className="bg-secondary p-2">
+        <h2>Customer Reviews</h2>
+        <div className="flex flex-col gap-2 border-primary">
+          <div className="flex gap-2 text-lg">
+            <FiveStars rating={averageRating} />
+            <span>{averageRating.toFixed(1)} of 5</span>
+          </div>
+          <div className="flex flex-col gap-2">
+            {reviewsBreakdown.map((review: ReviewsBreakdown) => (
+              <Button
+                variant="outline"
+                className="group flex w-full border-primary bg-transparent text-black hover:bg-transparent hover:text-primary/90 hover:underline"
+                onClick={() => handleRatingFilterClick(review.rating)}
+                key={review.rating}
+              >
+                <span className="w-1/5 text-left">{`${review.rating} star`}</span>
+                <RatingBar
+                  className="h-[24px] w-3/5"
+                  fillTo={calculatePercentage(review.count, reviewsCount)}
+                />
+                <span className="w-1/5 text-right">
+                  {calculatePercentage(review.count, reviewsCount)}%
+                </span>
+              </Button>
+            ))}
+          </div>
         </div>
-        <div className="flex flex-col gap-2">
-          {reviewsBreakdown.map((review) => (
-            <Button
-              variant="outline"
-              className="group flex w-full border-primary bg-transparent text-black hover:bg-transparent hover:text-primary/90 hover:underline"
-              key={review.rating}
-            >
-              <span className="w-1/5 text-left">{`${review.rating} star`}</span>
-              <RatingBar
-                className="h-[24px] w-3/5"
-                fillTo={calculatePercentage(review.count, totalCount)}
-              />
-              <span className="w-1/5 text-right">
-                {calculatePercentage(review.count, totalCount)}%
-              </span>
-            </Button>
-          ))}
-        </div>
-      </div>
-    </Card>
+      </Card>
+      <LeaveReview productVariants={variants} />
+    </div>
   );
 }

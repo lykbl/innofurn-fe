@@ -17,3 +17,35 @@ export const UserReviewsQuery = gql(/* GraphQL */ `
     }
   }
 `);
+
+export const ProductReviewsBreakdownQuery = gql(/* GraphQL */ `
+  query ProductReviewsBreakdown($slug: String!) {
+    productDetails(slug: $slug) {
+      ...ProductReviewsBreakdownFragment
+    }
+  }
+`);
+
+export const SearchProductReviewsQuery = gql(/* GraphQL */ `
+  query SearchProductReviews(
+    $filters: SearchProductReviewsFiltersInput!
+    $orderBy: SearchProductReviewsOrderBy!
+    $first: Int
+    $page: Int
+  ) {
+    searchProductReviews(
+      filters: $filters
+      orderBy: $orderBy
+      first: $first
+      page: $page
+    ) {
+      data {
+        ...ProductReviewFragment
+      }
+      paginatorInfo {
+        hasMorePages
+        currentPage
+      }
+    }
+  }
+`);

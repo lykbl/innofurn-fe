@@ -183,3 +183,32 @@ const ColorOptionFragment = gql(/* GraphQL */ `
     }
   }
 `);
+
+const ProductReviewsBreakdownFragment = gql(/* GraphQL */ `
+  fragment ProductReviewsBreakdownFragment on Product {
+    reviewsCount
+    reviewsBreakdown
+    averageRating
+    variants {
+      id
+      name
+    }
+  }
+`);
+
+const ProductReviewFragment = gql(/* GraphQL */ `
+  fragment ProductReviewFragment on Review {
+    id
+    title
+    body
+    rating
+    createdAt
+    variant {
+      id
+      name
+    }
+    customer {
+      fullName
+    }
+  }
+`);

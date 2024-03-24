@@ -5,9 +5,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import {
-  ProductReviewVariantFragmentFragment,
-} from '@/gql/generated/graphql';
+import { ProductReviewVariantFragmentFragment } from '@/gql/generated/graphql';
 import {
   FormControl,
   FormField,

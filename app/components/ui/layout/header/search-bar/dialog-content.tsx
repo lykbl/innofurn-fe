@@ -105,7 +105,7 @@ export default function SearchBarDialogContent({
                         <h2 className="flex items-center gap-2">
                           {item.name}
                           <FiveStars
-                            averageRating={item.averageRating}
+                            rating={item.averageRating}
                             reviewsCount={item.reviewsCount}
                           />
                         </h2>

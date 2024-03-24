@@ -23,7 +23,7 @@ const config: CodegenConfig = {
           Map: 'Map',
           DiscountData: 'DiscountData',
           AggregatedValues: 'Array',
-          ReviewsBreakdown: 'ReviewsBreakdown',
+          ReviewsBreakdown: 'Array<ReviewsBreakdown>',
         },
         enumsAsTypes: false,
         constEnums: true,
