@@ -11,7 +11,7 @@ const config: CodegenConfig = {
         strictScalars: true,
         scalars: {
           IntID: 'number',
-          DateTime: 'Date',
+          DateTime: 'string', //TODO resolve to Date?
           Dimension: '{format: string, value: number, unit: string}',
           Email: 'string',
           JSON: '{[key: string]: object | string | number | boolean | null }',

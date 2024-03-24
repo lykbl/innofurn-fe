@@ -10,7 +10,7 @@ const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
   ({ href, className, type, ...props }, ref) => {
     return (
       <BaseLink
-        href={href || ''}
+        href={href || '#'}
         className={cn('hover:underline hover:underline-offset-4', className)}
         ref={ref}
         {...props}

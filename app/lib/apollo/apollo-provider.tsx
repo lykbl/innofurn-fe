@@ -124,6 +124,26 @@ function createClient() {
             },
           },
         },
+        Product: {
+          fields: {
+            reviews: {
+              keyArgs: false,
+              merge: (existing, incoming, { args }) => {
+                console.log(existing, incoming);
+                if (!existing) return incoming;
+
+                return {
+                  __typename: existing.__typename,
+                  data: [...existing.data, ...incoming.data],
+                  paginatorInfo: incoming.paginatorInfo,
+                };
+              },
+            },
+          },
+        },
+        ReviewPaginator: {
+          keyFields: false,
+        },
         MediaPaginator: {
           keyFields: false,
         },

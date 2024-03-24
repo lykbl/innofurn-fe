@@ -2,9 +2,9 @@
 
 import React, { Suspense } from 'react';
 import { useQuery } from '@apollo/client';
-import Details from '@/(storefront)/product/[slug]/details/details';
+import Details from '@/(storefront)/product/[slug]/components/details/details';
 import { ProductDetailsQuery } from '@/gql/queries/product';
-import Reviews from '@/(storefront)/product/[slug]/reviews/reviews';
+import Reviews from '@/(storefront)/product/[slug]/components/reviews/reviews';
 
 export default function Page({
   params: { slug },

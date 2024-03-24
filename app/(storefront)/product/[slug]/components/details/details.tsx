@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/common/button';
 import { FaPhoneAlt } from 'react-icons/fa';
 import { IoChatboxEllipses } from 'react-icons/io5';
-import CartControl from '@/(storefront)/product/[slug]/details/cart-control';
+import CartControl from '@/(storefront)/product/[slug]/components/details/cart-control';
 
 import { FragmentType, useFragment } from '@/gql/generated';
 
@@ -14,10 +14,10 @@ import {
   ProductDetailsVariantFragmentFragment,
   ProductDetailsVariantFragmentFragmentDoc,
 } from '@/gql/generated/graphql';
-import ProductOptionsSelector from '@/(storefront)/product/[slug]/details/product-options-selector';
+import ProductOptionsSelector from '@/(storefront)/product/[slug]/components/details/product-options-selector';
 import { QueryResult } from '@apollo/client';
-import BrandLink from '@/(storefront)/product/[slug]/details/brand-link';
-import Images from '@/(storefront)/product/[slug]/details/images';
+import BrandLink from '@/(storefront)/product/[slug]/components/details/brand-link';
+import Images from '@/(storefront)/product/[slug]/components/details/images';
 import FiveStars from '@/components/ui/common/five-stars';
 import { Card } from '@/components/ui/common/card';
 
@@ -117,7 +117,7 @@ const Details = ({
       <Card className="sticky top-0 flex h-max w-1/2 flex-col gap-2 p-2">
         <h1 className="text-4xl">{selectedVariant.name}</h1>
         <BrandLink brandFragment={productDetails.brand} />
-        <FiveStars averageRating={averageRating} reviewsCount={reviewsCount} />
+        <FiveStars rating={averageRating} reviewsCount={reviewsCount} />
         <h2>{selectedVariant.description}</h2>
         <ProductOptionsSelector
           availableProductOptionValues={availableProductOptionValues}
