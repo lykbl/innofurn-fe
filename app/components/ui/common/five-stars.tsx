@@ -84,6 +84,7 @@ export default function FiveStars({
                 'h-5 p-0.5 hover:bg-transparent',
                 !onClick && 'pointer-events-none',
               )}
+              tabIndex={!onClick ? -1 : undefined}
               onMouseOver={() => handleMouseOver(index + 1)}
               onMouseOut={handleMouseOut}
               onClick={() => handleClick(index + 1)}

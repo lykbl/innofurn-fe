@@ -1,10 +1,4 @@
 import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-} from '@/components/ui/carousel';
-import Image from 'next/image';
-import {
   ProductReviewFragmentFragment,
   ProductReviewVariantFragmentFragmentDoc,
 } from '@/gql/generated/graphql';
@@ -49,24 +43,24 @@ const ReviewRow = React.forwardRef<
         </span>
       </p>
       <div className="py-2">
-        <Carousel>
-          <CarouselContent>
-            {Array(10)
-              .fill(null)
-              .map((_, index) => (
-                <CarouselItem key={index}>
-                  <Image
-                    key={index}
-                    className="min-w-[100px] rounded"
-                    width={100}
-                    height={100}
-                    src="/fallback-image.jpg"
-                    alt="customer pohoto"
-                  />
-                </CarouselItem>
-              ))}
-          </CarouselContent>
-        </Carousel>
+        {/*<Carousel>*/}
+        {/*  <CarouselContent>*/}
+        {/*    {Array(10)*/}
+        {/*      .fill(null)*/}
+        {/*      .map((_, index) => (*/}
+        {/*        <CarouselItem key={index}>*/}
+        {/*          <Image*/}
+        {/*            key={index}*/}
+        {/*            className="min-w-[100px] rounded"*/}
+        {/*            width={100}*/}
+        {/*            height={100}*/}
+        {/*            src="/fallback-image.jpg"*/}
+        {/*            alt="customer pohoto"*/}
+        {/*          />*/}
+        {/*        </CarouselItem>*/}
+        {/*      ))}*/}
+        {/*  </CarouselContent>*/}
+        {/*</Carousel>*/}
       </div>
       {/*<div className="mt-2 flex gap-2">*/}
       {/*  <Button>Helpful</Button>*/}

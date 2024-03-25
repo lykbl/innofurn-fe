@@ -1,10 +1,4 @@
-import {
-  Dispatch,
-  SetStateAction,
-  TransitionStartFunction,
-  useRef,
-} from 'react';
-import { motion, useInView } from 'framer-motion';
+import { Dispatch, SetStateAction, TransitionStartFunction } from 'react';
 import { calculatePercentage, cn } from '@/lib/utils';
 import { Card } from '@/components/ui/common/card';
 import FiveStars from '@/components/ui/common/five-stars';
@@ -15,37 +9,7 @@ import { useSuspenseQuery } from '@apollo/client';
 import { useFragment } from '@/gql/generated';
 import { ProductReviewsBreakdownFragmentFragmentDoc } from '@/gql/generated/graphql';
 import { ProductReviewsBreakdownQuery } from '@/gql/queries/product';
-
-const RatingBar = ({
-  fillTo,
-  className,
-  selected,
-}: {
-  fillTo: number;
-  className?: string;
-  selected?: boolean;
-}) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, amount: 0.3 });
-
-  return (
-    <div
-      ref={ref}
-      className={cn(
-        'rounded border border-primary bg-gray-100 drop-shadow-lg hover:border-primary/90',
-        selected && 'border-white hover:border-white/90',
-        className,
-      )}
-    >
-      <motion.div
-        className={cn(
-          'h-full w-0 bg-primary duration-300 group-hover:bg-primary/90',
-        )}
-        animate={isInView ? { width: `${fillTo}%` } : { width: 0 }}
-      />
-    </div>
-  );
-};
+import RatingBar from '@/(storefront)/product/[slug]/components/reviews/rating-bar';
 
 export default function ReviewsBreakdownView({
   slug,

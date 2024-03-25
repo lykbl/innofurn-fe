@@ -4,6 +4,8 @@ import ReviewsBreakdownView from '@/(storefront)/product/[slug]/components/revie
 import { Suspense, useState, useTransition } from 'react';
 import { Rating } from '@/gql/scalars';
 import ReviewsSearch from '@/(storefront)/product/[slug]/components/reviews/reviews-search';
+import ReviewsSearchSkeleton from '@/(storefront)/product/[slug]/skeletons/reviews-search-skeleton';
+import ReviewsBreakdownSkeleton from '@/(storefront)/product/[slug]/skeletons/reviews-breakdown-skeleton';
 
 export default function Reviews({ slug }: { slug: string }) {
   const [ratingFilter, setRatingFilter] = useState<Rating | null>(null);
@@ -11,7 +13,7 @@ export default function Reviews({ slug }: { slug: string }) {
 
   return (
     <section className="flex justify-between gap-2">
-      <Suspense>
+      <Suspense fallback={<ReviewsBreakdownSkeleton />}>
         <ReviewsBreakdownView
           slug={slug}
           ratingFilter={ratingFilter}
@@ -20,7 +22,7 @@ export default function Reviews({ slug }: { slug: string }) {
           isLoadingMoreReviews={isLoadingMoreReviews}
         />
       </Suspense>
-      <Suspense>
+      <Suspense fallback={<ReviewsSearchSkeleton />}>
         <ReviewsSearch
           slug={slug}
           ratingFilter={ratingFilter}
