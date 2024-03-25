@@ -1,22 +1,26 @@
-'use client';
-
 import React from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/common/button';
 import { FragmentType, useFragment } from '@/gql/generated';
 import {
+  Exact,
   MediaPaginatorFragmentFragmentDoc,
   ProductDetailsQuery,
 } from '@/gql/generated/graphql';
-import { QueryResult } from '@apollo/client';
 import { Card } from '@/components/ui/common/card';
+import { FetchMoreFunction } from '@apollo/client/react/hooks/useSuspenseQuery';
 
 const Images = ({
   variantImagesFragment,
   fetchMoreImages,
+  slug,
 }: {
   variantImagesFragment: FragmentType<typeof MediaPaginatorFragmentFragmentDoc>;
-  fetchMoreImages: QueryResult<ProductDetailsQuery>['fetchMore'];
+  slug: string;
+  fetchMoreImages: FetchMoreFunction<
+    ProductDetailsQuery,
+    Exact<{ slug: string; imagesPage: number }>
+  >;
 }) => {
   const variantImages = useFragment(
     MediaPaginatorFragmentFragmentDoc,
@@ -25,7 +29,10 @@ const Images = ({
 
   const handleLoadMoreImages = () =>
     fetchMoreImages({
-      variables: { page: variantImages.paginatorInfo.currentPage + 1 },
+      variables: {
+        slug: slug,
+        imagesPage: variantImages.paginatorInfo.currentPage + 1,
+      },
     });
 
   return (

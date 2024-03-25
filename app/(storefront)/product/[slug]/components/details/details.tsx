@@ -2,24 +2,23 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/common/button';
-import { FaPhoneAlt } from 'react-icons/fa';
-import { IoChatboxEllipses } from 'react-icons/io5';
 import CartControl from '@/(storefront)/product/[slug]/components/details/cart-control';
 
-import { FragmentType, useFragment } from '@/gql/generated';
+import { useFragment } from '@/gql/generated';
 
 import {
   ProductDetailsFragmentFragmentDoc,
-  ProductDetailsQuery,
   ProductDetailsVariantFragmentFragment,
   ProductDetailsVariantFragmentFragmentDoc,
 } from '@/gql/generated/graphql';
 import ProductOptionsSelector from '@/(storefront)/product/[slug]/components/details/product-options-selector';
-import { QueryResult } from '@apollo/client';
+import { useSuspenseQuery } from '@apollo/client';
 import BrandLink from '@/(storefront)/product/[slug]/components/details/brand-link';
 import Images from '@/(storefront)/product/[slug]/components/details/images';
 import FiveStars from '@/components/ui/common/five-stars';
 import { Card } from '@/components/ui/common/card';
+import { ProductDetailsQuery } from '@/gql/queries/product';
+import { Icons } from '@/components/icons';
 
 const getAvailableProductOptionValues = (
   variants: Array<ProductDetailsVariantFragmentFragment>,
@@ -73,15 +72,12 @@ const findSelectedVariant = (
   );
 };
 
-const Details = ({
-  productDetailsFragment,
-  fetchMoreImages,
-}: {
-  productDetailsFragment: FragmentType<
-    typeof ProductDetailsFragmentFragmentDoc
-  >;
-  fetchMoreImages: QueryResult<ProductDetailsQuery>['fetchMore'];
-}) => {
+const Details = ({ slug }: { slug: string }) => {
+  const { data: productDetailsQuery, fetchMore: fetchMoreImages } =
+    useSuspenseQuery(ProductDetailsQuery, {
+      variables: { slug, imagesPage: 1 },
+    });
+  const productDetailsFragment = productDetailsQuery?.productDetails;
   const productDetails = useFragment(
     ProductDetailsFragmentFragmentDoc,
     productDetailsFragment,
@@ -107,9 +103,10 @@ const Details = ({
   };
 
   return (
-    <div className="flex gap-4">
+    <div className="flex gap-2">
       <Card className="w-1/2 p-2">
         <Images
+          slug={slug}
           variantImagesFragment={selectedVariant.images}
           fetchMoreImages={fetchMoreImages}
         />
@@ -133,12 +130,12 @@ const Details = ({
           </div>
           <div className="flex gap-2">
             <Button className="flex gap-1 p-2">
-              <FaPhoneAlt size={24} />
+              <Icons.phone width={24} height={24} />
               <span>Call Us</span>
             </Button>
             <Button className="flex gap-1 p-2">
-              <IoChatboxEllipses size={24} />
-              <span>Call Us</span>
+              <Icons.chat width={24} height={24} />
+              <span>Ask in chat</span>
             </Button>
           </div>
         </div>
