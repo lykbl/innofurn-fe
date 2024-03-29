@@ -23,14 +23,23 @@ const DynamicFilters = dynamic(
   },
 );
 
+export type SearchParams = {
+  [key: string]: string | Array<string> | undefined;
+};
+
 export default async function Page({
   params: { collectionSlug },
+  searchParams,
 }: {
   params: { collectionSlug: string };
+  searchParams: SearchParams;
 }) {
   return (
     <div className="flex w-full gap-4 pb-10">
-      <DynamicFilters collectionSlug={collectionSlug} />
+      <DynamicFilters
+        collectionSlug={collectionSlug}
+        searchParams={searchParams}
+      />
       <Card className="flex w-4/5 flex-col gap-8 border-l p-4">
         <div className="flex items-end justify-between">
           <h1 className="text-3xl">Results for: {'Search query'}</h1>

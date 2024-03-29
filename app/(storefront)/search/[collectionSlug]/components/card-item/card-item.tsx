@@ -21,7 +21,6 @@ import {
   DiscountFragmentFragmentDoc,
   ProductVariantGridFragmentFragment,
 } from '@/gql/generated/graphql';
-import FiveStars from '@/components/ui/common/five-stars';
 import Price from '@/(storefront)/search/[collectionSlug]/components/card-item/price';
 
 export default function CardItem({
@@ -91,10 +90,10 @@ export default function CardItem({
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger>
-              <FiveStars
-                averageRating={averageRating}
-                reviewsCount={reviewsCount}
-              />
+              {/*<FiveStars*/}
+              {/*  averageRating={averageRating}*/}
+              {/*  reviewsCount={reviewsCount}*/}
+              {/*/>*/}
             </TooltipTrigger>
             <TooltipContent></TooltipContent>
           </Tooltip>

@@ -3,26 +3,23 @@
 import {
   ProductVariantGridFragmentFragmentDoc,
   ProductVariantOrderBy,
-  ProductVariantsForCollectionFilterInput,
 } from '@/gql/generated/graphql';
 import React from 'react';
 import { useSuspenseQuery } from '@apollo/client';
-import { useSearchFilterQuery } from '@/(storefront)/search/[collectionSlug]/components/filters/filters';
 import { useFragment } from '@/gql/generated';
 import CardItem from '@/(storefront)/search/[collectionSlug]/components/card-item/card-item';
 import { FindProductVariantsForCollectionQuery } from '@/gql/queries/product-variant';
+import { useSearchParams } from 'next/navigation';
+import { buildFilterInput } from '@/(storefront)/search/[collectionSlug]/components/filters/filters.context';
 
 const PAGE_SIZE = 20;
-
-//TODO improve
-const SUPPORTED_ATTRIBUTE_FILTERS = ['color', 'material'];
 
 export default function ProductsGrid({
   collectionSlug,
 }: {
   collectionSlug: string;
 }) {
-  const { urlSearchParams } = useSearchFilterQuery();
+  const urlSearchParams = useSearchParams();
   const filterInput = buildFilterInput(collectionSlug, urlSearchParams);
   const { data, error } = useSuspenseQuery(
     FindProductVariantsForCollectionQuery,
@@ -43,8 +40,8 @@ export default function ProductsGrid({
     },
   );
 
-  const paginatorInfo = data?.findProductVariantForCollection.paginatorInfo;
-  const gridItems = data?.findProductVariantForCollection.data.map(
+  const paginatorInfo = data?.findProductVariantsForCollection.paginatorInfo;
+  const gridItems = data?.findProductVariantsForCollection.data.map(
     (productVariantFragment) =>
       useFragment(
         ProductVariantGridFragmentFragmentDoc,
@@ -60,31 +57,3 @@ export default function ProductsGrid({
     </div>
   );
 }
-
-const buildFilterInput = (
-  collectionSlug: string,
-  urlSearchParams: URLSearchParams,
-): ProductVariantsForCollectionFilterInput => {
-  return {
-    search: urlSearchParams.get('search') ?? '',
-    collection: collectionSlug,
-    options: SUPPORTED_ATTRIBUTE_FILTERS.map((handle) => {
-      return {
-        handle,
-        values: urlSearchParams.getAll(handle),
-      };
-    }).filter(Boolean),
-    price: {
-      min: urlSearchParams.has('minPrice')
-        ? Number(urlSearchParams.get('minPrice')) * 100
-        : null,
-      max: urlSearchParams.has('maxPrice')
-        ? Number(urlSearchParams.get('maxPrice')) * 100
-        : null,
-    },
-    rating: urlSearchParams.has('rating')
-      ? Number(urlSearchParams.get('rating'))
-      : null,
-    onSaleOnly: urlSearchParams.has('onSaleOnly'),
-  };
-};

@@ -4,9 +4,9 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { Input } from '@/components/ui/common/input';
-import { Dispatch, SetStateAction, useState } from 'react';
-import { useSearchFilterQuery } from '@/(storefront)/search/[collectionSlug]/components/filters/filters';
+import { Dispatch, SetStateAction, useContext, useState } from 'react';
 import { useDebounce } from 'react-use';
+import { FiltersContext } from '@/(storefront)/search/[collectionSlug]/components/filters/filters.context';
 
 const MAX_PRICE = 999999;
 const MIN_PRICE = 0;
@@ -44,8 +44,8 @@ type NumberInputPropsType = {
   setError: Dispatch<SetStateAction<string | null>>;
 };
 const NumberInput = ({ handle, error, setError }: NumberInputPropsType) => {
-  const { urlSearchParams, updateSearchFilter } = useSearchFilterQuery();
-  const defaultValue = urlSearchParams.get(handle) || '';
+  const { optimisticFilters, updateStaticFilter } = useContext(FiltersContext);
+  const defaultValue = optimisticFilters[handle]?.toString() || '';
   const [value, setValue] = useState<string>(defaultValue);
 
   useDebounce(
@@ -54,10 +54,9 @@ const NumberInput = ({ handle, error, setError }: NumberInputPropsType) => {
         return;
       }
 
-      value
-        ? urlSearchParams.set(handle, Number(value).toFixed(0).toString())
-        : urlSearchParams.delete(handle);
-      updateSearchFilter(urlSearchParams);
+      const newValue = value ? Number(value).toFixed(0) : null;
+      console.log('updating staging filter', handle, newValue);
+      updateStaticFilter(handle, newValue);
     },
     500,
     [value],
@@ -73,8 +72,8 @@ const NumberInput = ({ handle, error, setError }: NumberInputPropsType) => {
 
     const compareValue =
       key === MIN_PRICE_HANDLE
-        ? Number(urlSearchParams.get(MAX_PRICE_HANDLE))
-        : Number(urlSearchParams.get(MIN_PRICE_HANDLE));
+        ? Number(optimisticFilters[MAX_PRICE_HANDLE])
+        : Number(optimisticFilters[MIN_PRICE_HANDLE]);
     if (
       key === MIN_PRICE_HANDLE &&
       compareValue &&
@@ -93,6 +92,7 @@ const NumberInput = ({ handle, error, setError }: NumberInputPropsType) => {
       setError(null);
     }
 
+    console.log('new value', value);
     setValue(value);
   };
 

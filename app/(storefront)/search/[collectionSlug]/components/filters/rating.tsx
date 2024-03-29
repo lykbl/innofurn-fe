@@ -1,59 +1,44 @@
-import { useSearchFilterQuery } from '@/(storefront)/search/[collectionSlug]/components/filters/filters';
 import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import { useState } from 'react';
+import { useContext } from 'react';
 import { Button } from '@/components/ui/common/button';
 import FiveStars from '@/components/ui/common/five-stars';
+import { FiltersContext } from '@/(storefront)/search/[collectionSlug]/components/filters/filters.context';
+import { Icons } from '@/components/icons';
 
 const DEFAULT_FILTER = 3;
 
 export default function RatingFilter() {
-  const { urlSearchParams, updateSearchFilter } = useSearchFilterQuery();
-  const selectedRatingFilter =
-    Number(urlSearchParams.get('rating')) || DEFAULT_FILTER;
-  const [previewRating, setPreviewRating] =
-    useState<number>(selectedRatingFilter);
+  const { optimisticFilters, updateStaticFilter } = useContext(FiltersContext);
+  const selectedRatingFilter = optimisticFilters.rating;
 
-  const handleStarHover = (index: number) => {
-    setPreviewRating(index + 1);
-  };
-
-  const resetFilter = () => {
-    setPreviewRating(selectedRatingFilter);
-  };
-
-  const handleStarClick = (index: number) => {
-    urlSearchParams.set('rating', String(index + 1));
-    updateSearchFilter(urlSearchParams);
-    setPreviewRating(index + 1);
-  };
-
-  const deleteReviewFilter = () => {
-    urlSearchParams.delete('rating');
-    updateSearchFilter(urlSearchParams);
-    setPreviewRating(DEFAULT_FILTER);
+  const updateRatingFilter = (rating: number | null) => {
+    updateStaticFilter('rating', rating);
   };
 
   return (
     <AccordionItem value="rating">
       <AccordionTrigger className="px-1">Rating</AccordionTrigger>
-      <AccordionContent className="flex flex-col gap-2">
-        <div className="flex items-center gap-2 text-xs">
-          <FiveStars averageRating={0} reviewsCount={0} />
-          {previewRating === 5 ? '' : <span>& Up</span>}
+      <AccordionContent className="flex justify-between gap-2">
+        <div className="flex items-center gap-1 text-xs">
+          <FiveStars
+            rating={selectedRatingFilter || DEFAULT_FILTER}
+            onClick={updateRatingFilter}
+          />
+          {selectedRatingFilter === 5 ? '' : <span>& Up</span>}
         </div>
-        <div className="w-full px-0.5">
-          <Button
-            className="w-full text-xs"
-            variant="outline"
-            onClick={deleteReviewFilter}
-          >
-            Any rating
+        {selectedRatingFilter && (
+          <Button variant="outline" className="h-6 p-1">
+            <Icons.x
+              width={16}
+              height={16}
+              onClick={() => updateRatingFilter(null)}
+            />
           </Button>
-        </div>
+        )}
       </AccordionContent>
     </AccordionItem>
   );

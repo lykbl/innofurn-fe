@@ -68,7 +68,9 @@ export default function FiveStars({
   const [previewRating, setPreviewRating] = useState<number>(rating);
   const handleMouseOver = (rating: number) => setPreviewRating(rating);
   const handleMouseOut = () => setPreviewRating(rating);
-  const handleClick = (rating: number) => onClick && onClick(rating);
+  const handleClick = (rating: number) => {
+    onClick && onClick(rating);
+  };
 
   return (
     <div className={cn(className, 'flex items-center gap-1')}>

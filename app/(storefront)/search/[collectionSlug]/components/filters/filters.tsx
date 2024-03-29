@@ -4,7 +4,6 @@ import { Accordion } from '@/components/ui/accordion';
 import React from 'react';
 import { ProductOptionFragmentFragmentDoc } from '@/gql/generated/graphql';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { AttributeFilters } from '@/(storefront)/search/[collectionSlug]/components/filters/options';
 import { OnSaleFilter } from '@/(storefront)/search/[collectionSlug]/components/filters/on-sale';
 import { useDebounce } from 'react-use';
 import { useFragment } from '@/gql/generated';
@@ -13,11 +12,16 @@ import { useSuspenseQuery } from '@apollo/client';
 import { OptionFiltersForCollectionQuery } from '@/gql/queries/product-variant';
 import RatingFilter from '@/(storefront)/search/[collectionSlug]/components/filters/rating';
 import PriceFilter from '@/(storefront)/search/[collectionSlug]/components/filters/prices';
+import { SearchParams } from '@/(storefront)/search/[collectionSlug]/page';
+import { FiltersProvider } from '@/(storefront)/search/[collectionSlug]/components/filters/filters.context';
+import MultiSelectFilter from '@/(storefront)/search/[collectionSlug]/components/filters/options/multi-select-filter';
 
 export default function CollectionFilters({
   collectionSlug,
+  searchParams,
 }: {
   collectionSlug: string;
+  searchParams: SearchParams;
 }) {
   const { data: availableOptionsQuery, error: optionsFilterError } =
     useSuspenseQuery(OptionFiltersForCollectionQuery, {
@@ -28,19 +32,27 @@ export default function CollectionFilters({
   const productOptions = availableOptionsQuery?.optionFiltersForCollection.map(
     (option) => useFragment(ProductOptionFragmentFragmentDoc, option),
   );
+
   if (optionsFilterError) {
     return <div>Sorry! Filters could not be loaded.</div>;
   }
 
   return (
-    <Card className="flex w-1/5 flex-col gap-4 p-4">
-      <Accordion type="multiple">
-        <AttributeFilters productOptions={productOptions} />
-        <RatingFilter />
-        <PriceFilter />
-      </Accordion>
-      <OnSaleFilter />
-    </Card>
+    <FiltersProvider searchParams={searchParams}>
+      <Card className="flex w-1/5 flex-col gap-4 p-4">
+        <Accordion type="multiple">
+          {productOptions?.map((productOption) => (
+            <MultiSelectFilter
+              key={productOption.handle}
+              productOption={productOption}
+            />
+          ))}
+          <RatingFilter />
+          <PriceFilter />
+        </Accordion>
+        <OnSaleFilter />
+      </Card>
+    </FiltersProvider>
   );
 }
 
@@ -54,6 +66,7 @@ export const useSearchFilterQuery = () => {
   );
   useDebounce(
     () => {
+      console.log('oki doki');
       if (urlSearchParams.toString() !== newQuery) {
         replace(`${pathname}?${newQuery}`, { scroll: false });
       }
@@ -63,6 +76,7 @@ export const useSearchFilterQuery = () => {
   );
 
   const updateSearchFilter = (urlSearchParams: URLSearchParams) => {
+    console.log('DEBONUNCING');
     setNewQuery(urlSearchParams.toString());
   };
 

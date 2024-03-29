@@ -1,24 +1,19 @@
 import { Checkbox } from '@/components/ui/common/checkbox';
-import React from 'react';
-import { useSearchFilterQuery } from '@/(storefront)/search/[collectionSlug]/components/filters/filters';
-
-const filterKey = 'onSaleOnly';
+import React, { useContext } from 'react';
+import { FiltersContext } from '@/(storefront)/search/[collectionSlug]/components/filters/filters.context';
 
 export const OnSaleFilter = () => {
-  const { urlSearchParams, updateSearchFilter } = useSearchFilterQuery();
+  const { optimisticFilters, updateStaticFilter } = useContext(FiltersContext);
 
   const handleCheckedChange = (checked: boolean) => {
-    checked
-      ? urlSearchParams.set(filterKey, 'true')
-      : urlSearchParams.delete(filterKey);
-    updateSearchFilter(urlSearchParams);
+    updateStaticFilter('onSaleOnly', checked);
   };
 
   return (
     <div className="flex items-center space-x-2 px-1">
       <Checkbox
         id="onSale"
-        defaultChecked={urlSearchParams.get(filterKey) === 'true'}
+        defaultChecked={optimisticFilters.onSaleOnly === true}
         onCheckedChange={handleCheckedChange}
       />
       <label
