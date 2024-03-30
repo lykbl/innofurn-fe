@@ -11,10 +11,10 @@ import { Card } from '@/components/ui/common/card';
 import { useSuspenseQuery } from '@apollo/client';
 import { OptionFiltersForCollectionQuery } from '@/gql/queries/product-variant';
 import RatingFilter from '@/(storefront)/search/[collectionSlug]/components/filters/rating';
-import PriceFilter from '@/(storefront)/search/[collectionSlug]/components/filters/prices';
 import { SearchParams } from '@/(storefront)/search/[collectionSlug]/page';
 import { FiltersProvider } from '@/(storefront)/search/[collectionSlug]/components/filters/filters.context';
 import MultiSelectFilter from '@/(storefront)/search/[collectionSlug]/components/filters/options/multi-select-filter';
+import PriceFilter from '@/(storefront)/search/[collectionSlug]/components/filters/prices/price-filter';
 
 export default function CollectionFilters({
   collectionSlug,

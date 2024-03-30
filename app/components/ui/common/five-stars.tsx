@@ -83,7 +83,7 @@ export default function FiveStars({
               key={index}
               variant="ghost"
               className={cn(
-                'h-5 p-0.5 hover:bg-transparent',
+                'h-5 p-0.5 hover:bg-transparent focus-visible:ring-inset',
                 !onClick && 'pointer-events-none',
               )}
               tabIndex={!onClick ? -1 : undefined}

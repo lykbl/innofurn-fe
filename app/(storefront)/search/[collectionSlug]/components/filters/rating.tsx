@@ -23,8 +23,9 @@ export default function RatingFilter() {
     <AccordionItem value="rating">
       <AccordionTrigger className="px-1">Rating</AccordionTrigger>
       <AccordionContent className="flex justify-between gap-2">
-        <div className="flex items-center gap-1 text-xs">
+        <div className="flex h-6 items-center gap-1 text-xs">
           <FiveStars
+            key={selectedRatingFilter}
             rating={selectedRatingFilter || DEFAULT_FILTER}
             onClick={updateRatingFilter}
           />

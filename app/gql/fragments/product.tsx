@@ -33,9 +33,9 @@ const ProductVariantGridFragment = gql(/* GraphQL */ `
       defaultUrl {
         slug
       }
-      colorOptions {
-        ...ColorOptionFragment
-      }
+      #      colorOptions {
+      #        ...ColorOptionFragment
+      #      }
     }
     primaryImage {
       id

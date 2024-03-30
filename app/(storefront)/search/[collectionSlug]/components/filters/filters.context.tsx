@@ -70,7 +70,8 @@ export const buildFilterInput = (
 ): ProductVariantsForCollectionFilterInput => {
   const dynamicFilters = Array.from(urlSearchParams.keys()).filter(
     (key, index, self) =>
-      STATIC_FILTERS.indexOf(key as typeof STATIC_FILTERS[number]) === -1 && self.indexOf(key) === index,
+      STATIC_FILTERS.indexOf(key as (typeof STATIC_FILTERS)[number]) === -1 &&
+      self.indexOf(key) === index,
   );
 
   return {
