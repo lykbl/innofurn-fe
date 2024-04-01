@@ -1,4 +1,1 @@
-type Action = {
-  type: string;
-  payload: any;
-};
+export type ObjectValues<T> = T[keyof T];

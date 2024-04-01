@@ -31,19 +31,19 @@ const CartControl = ({
   };
 
   return (
-    <div className="flex w-full flex-col gap-2 rounded bg-secondary p-2">
+    <div className="flex w-full flex-col gap-2 rounded border border-primary bg-secondary p-2">
       <Button onClick={() => handleAddToCart(sku, count)} disabled={loading}>
         Add to cart
       </Button>
       <div className="flex gap-4">
-        <div className="flex w-1/3 items-center justify-center gap-6 rounded bg-white outline outline-1 outline-black">
+        <div className="flex w-1/3 items-center justify-center gap-6 rounded border border-primary bg-secondary">
           <Button size="iconSm" onClick={decrement}>
             <Icons.minus />
           </Button>
           <span>
             {formatToCurrency(value)} x {count}
           </span>
-          <Button size="iconSm" onClick={increment}>
+          <Button size="iconSm" onClick={increment} variant="outline">
             <Icons.plus />
           </Button>
         </div>

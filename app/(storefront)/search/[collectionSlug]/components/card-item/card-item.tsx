@@ -58,7 +58,7 @@ export default function CardItem({
   // };
 
   return (
-    <Card className="max-h flex flex-col">
+    <Card className="max-h flex flex-col overflow-hidden rounded">
       <CardHeader className="relative space-y-0 p-0">
         {isFeatured && (
           <Badge className="absolute left-0 top-0 bg-pink-600">New</Badge>
@@ -67,7 +67,7 @@ export default function CardItem({
           <Badge className="absolute left-0 top-0 bg-emerald-600">Sale</Badge>
         )}
         <Image
-          className="w-full rounded-t"
+          className="w-full"
           width={225}
           height={225}
           alt={

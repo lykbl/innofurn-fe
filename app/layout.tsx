@@ -1,16 +1,10 @@
-// import '@/styles/global.css';
 import '@/styles/output.css';
 import React from 'react';
-// import { ReactQueryProvider } from "@/lib/query-provider"; //TODO remove this
-// import { GraphQLClientProvider } from "@/lib/graphql-client-provider";
 import { ApolloWrapper } from '@/lib/apollo/apollo-provider';
 import { cn } from '@/lib/utils';
 import { inter } from '@/components/fonts';
 import { Toaster } from '@/components/ui/toaster';
-export const metadata = {
-  title: 'Rename Me',
-  description: 'Update me',
-};
+import ThemeProvider from '@/components/theme.context';
 
 export default function RootLayout({
   children,
@@ -19,16 +13,20 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body
-        className={cn(
-          'flex flex-col items-center text-base antialiased',
-          inter.variable,
-        )}
-      >
-        <ApolloWrapper>
-          {children}
-          <Toaster />
-        </ApolloWrapper>
+      <body>
+        <ThemeProvider>
+          <ApolloWrapper>
+            <main
+              className={cn(
+                'flex flex-col items-center bg-background text-base antialiased',
+                inter.variable,
+              )}
+            >
+              {children}
+              <Toaster />
+            </main>
+          </ApolloWrapper>
+        </ThemeProvider>
       </body>
     </html>
   );

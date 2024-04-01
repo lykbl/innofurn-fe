@@ -6,10 +6,10 @@ export default function ProductsGridSkeleton() {
   return (
     <div className="pointer-events-none grid animate-pulse gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5">
       {Array.from({ length: 10 }).map((_, i) => (
-        <Card className="max-h flex flex-col" key={i}>
+        <Card className="max-h flex flex-col overflow-hidden rounded" key={i}>
           <CardHeader className="relative space-y-0 p-0">
             <Image
-              className="w-full rounded-t"
+              className="w-full"
               width={225}
               height={225}
               alt={'Skeleton fallback image'}

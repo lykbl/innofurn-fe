@@ -16,9 +16,7 @@ export default function RootLayout({
         {children}
         <Chat />
       </main>
-      <footer className="w-full bg-neutral-100 py-16">
-        <Footer />
-      </footer>
+      <Footer />
     </>
   );
 }

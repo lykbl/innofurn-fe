@@ -2,7 +2,7 @@
 
 import BaseLink from 'next/link';
 import ROUTES from '@/lib/routes';
-import { Suspense } from 'react';
+import { Suspense, useContext } from 'react';
 import NotificationsTriggerSkeleton from '@/components/ui/layout/header/notifications-popover/notifications-trigger-skeleton';
 import NotificationsPopover from '@/components/ui/layout/header/notifications-popover/notifications-popover';
 import CartTriggerSkeleton from '@/components/ui/layout/header/cart-popover/cart-trigger-skeleton';
@@ -14,27 +14,32 @@ import { CheckMeQuery } from '@/gql/queries/user';
 import { Icons } from '@/components/icons';
 import GuestMenu from '@/components/ui/layout/header/user-popover/guest-popover';
 import SearchBar from '@/components/ui/layout/header/search-bar/search-bar';
+import { Button } from '@/components/ui/common/button';
+import { ThemeContext, THEMES } from '@/components/theme.context';
 
 const Header = () => {
   const { data, loading } = useQuery(CheckMeQuery);
-  const user = data?.checkMe ?? null;
+  const user = data?.checkMe;
+  const { theme, toggleTheme } = useContext(ThemeContext);
 
   return (
     <div className="w-full border-b bg-background">
       <div className="mx-auto flex max-w-screen-2xl items-center justify-between gap-4 px-2 py-3">
         <div className="flex w-1/5 items-center">
-          <BaseLink
-            href={ROUTES.HOME}
-            className="rounded border border-transparent p-2 hover:border-black"
-          >
-            <Icons.logo />
-          </BaseLink>
+          <Button asChild variant="outline">
+            <BaseLink href={ROUTES.HOME} className="text-primary">
+              <Icons.logo fill="white" />
+            </BaseLink>
+          </Button>
         </div>
         <div className="flex h-min w-3/5 items-center justify-between rounded">
           <SearchBar />
         </div>
-        <div className="flex w-1/5 items-center justify-end">
+        <div className="flex w-1/5 items-center justify-end text-primary">
           <div className="flex items-center gap-3">
+            <Button onClick={toggleTheme} variant="outline">
+              {theme === THEMES.DARK ? <Icons.sun /> : <Icons.moon />}
+            </Button>
             <Suspense fallback={<NotificationsTriggerSkeleton />}>
               <NotificationsPopover />
             </Suspense>

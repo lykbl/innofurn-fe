@@ -42,7 +42,7 @@ const Star = ({
     <Icons.star
       className={cn(
         'h-full w-full stroke-primary',
-        isFilled ? 'text-primary' : 'text-white',
+        isFilled ? 'text-primary' : 'text-secondary',
         className,
         onClick && 'cursor-pointer',
       )}

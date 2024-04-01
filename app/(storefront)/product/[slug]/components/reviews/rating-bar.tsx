@@ -18,14 +18,14 @@ export default function RatingBar({
     <div
       ref={ref}
       className={cn(
-        'rounded border border-primary bg-gray-100 drop-shadow-lg hover:border-primary/90',
-        selected && 'border-white hover:border-white/90',
+        'hover:border-primary/90 rounded border border-primary bg-secondary drop-shadow-lg',
+        selected && 'hover:border-primary/90 border-primary',
         className,
       )}
     >
       <motion.div
         className={cn(
-          'h-full w-0 bg-primary duration-300 group-hover:bg-primary/90',
+          'group-hover:bg-primary/90 h-full w-0 bg-primary duration-300',
         )}
         animate={isInView ? { width: `${fillTo}%` } : { width: 0 }}
       />

@@ -22,7 +22,7 @@ export default function ReviewsBreakdownSkeleton() {
                 <Button
                   variant="outline"
                   className={cn(
-                    'group flex w-full border-primary bg-transparent text-black hover:bg-transparent hover:text-primary/90 hover:underline',
+                    'hover:text-primary/90 group flex w-full border-primary bg-transparent text-black hover:bg-transparent hover:underline',
                   )}
                   key={index}
                 >

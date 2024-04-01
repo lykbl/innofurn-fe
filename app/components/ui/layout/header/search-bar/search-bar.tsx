@@ -34,6 +34,10 @@ export default function SearchBar() {
   const openSearchDialog: ChangeEventHandler<HTMLInputElement> = (e) => {
     handleSearchChange(e);
   };
+  const closeModal = () => {
+    setDialogOpen(false);
+    setSearch('');
+  };
   const handleSearchChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setSearch(e.target.value.trimStart());
   };
@@ -51,7 +55,7 @@ export default function SearchBar() {
       <Suspense>
         <DialogOverlay className="overlay">
           <SearchBarDialogContent
-            closeModal={() => setDialogOpen(false)}
+            closeModal={closeModal}
             search={search}
             searchQuery={searchQuery}
             handleSearchChange={handleSearchChange}

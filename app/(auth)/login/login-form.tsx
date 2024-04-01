@@ -55,6 +55,7 @@ export function LoginForm() {
     }
     if (response.data) {
       client.resetStore();
+      //TODO return back to last page
       router.push(ROUTES.HOME);
     }
   }

@@ -66,7 +66,6 @@ export const useSearchFilterQuery = () => {
   );
   useDebounce(
     () => {
-      console.log('oki doki');
       if (urlSearchParams.toString() !== newQuery) {
         replace(`${pathname}?${newQuery}`, { scroll: false });
       }
@@ -76,7 +75,6 @@ export const useSearchFilterQuery = () => {
   );
 
   const updateSearchFilter = (urlSearchParams: URLSearchParams) => {
-    console.log('DEBONUNCING');
     setNewQuery(urlSearchParams.toString());
   };
 

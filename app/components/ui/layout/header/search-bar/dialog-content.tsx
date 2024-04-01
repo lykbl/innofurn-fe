@@ -85,9 +85,10 @@ export default function SearchBarDialogContent({
             {productVariants?.map((item) => (
               <Button
                 variant="outline"
-                className="flex h-full w-full items-start justify-start gap-2 p-2 ring-inset"
+                className="flex h-full w-full items-start justify-start gap-2 overflow-hidden rounded bg-secondary p-2 ring-inset"
                 asChild
                 key={item.id}
+                onClick={closeModal}
               >
                 <Link href={`/product/${item.product.defaultUrl.slug}`}>
                   <Image

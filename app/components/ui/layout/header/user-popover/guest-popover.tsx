@@ -53,7 +53,7 @@ export default function GuestMenu() {
             className={buttonVariants({
               variant: 'default',
               className:
-                'focus:rin h-8 w-full text-left focus:bg-primary/90 focus:text-white',
+                'focus:rin focus:bg-primary/90 h-8 w-full text-left focus:text-white',
             })}
           >
             Log in

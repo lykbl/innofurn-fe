@@ -57,9 +57,9 @@ export default function ReviewsBreakdownView({
               <Button
                 variant="outline"
                 className={cn(
-                  'group flex w-full border-primary bg-transparent text-black hover:bg-transparent hover:text-primary/90 hover:underline',
+                  'hover:text-primary/90 group flex w-full border-primary bg-transparent text-primary hover:bg-transparent hover:underline',
                   review.rating === ratingFilter
-                    ? 'bg-primary text-white hover:bg-primary/90 hover:text-white/90'
+                    ? 'hover:bg-primary/90 bg-primary text-white hover:text-white/90'
                     : '',
                 )}
                 disabled={isLoadingMoreReviews}
