@@ -48,7 +48,7 @@ const UserPopover = ({
       <PopoverTrigger asChild>
         <Button
           variant="ghost"
-          className="relative h-[40px] w-[42px] rounded-full p-0"
+          className="relative h-[40px] w-[42px] rounded-full p-0 border-primary border"
         >
           <Avatar className="h-full w-full">
             <AvatarImage src="https://avatars.githubusercontent.com/u/23196361?v=4" />

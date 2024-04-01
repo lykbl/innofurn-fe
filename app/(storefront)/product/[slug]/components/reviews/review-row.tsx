@@ -37,12 +37,12 @@ const ReviewRow = React.forwardRef<
       </div>
       <p className="text-lg font-semibold">{review.title}</p>
       <p>{review.body}</p>
-      <p className="flex gap-2 text-gray-500">
+      <p className="flex gap-2 text-gray-500 pt-2">
         <span>
           Reviewed on {new Date(review.createdAt).toISOString().split('T')[0]}
         </span>
       </p>
-      <div className="py-2">
+      {/*<div className="py-2">*/}
         {/*<Carousel>*/}
         {/*  <CarouselContent>*/}
         {/*    {Array(10)*/}
@@ -61,7 +61,7 @@ const ReviewRow = React.forwardRef<
         {/*      ))}*/}
         {/*  </CarouselContent>*/}
         {/*</Carousel>*/}
-      </div>
+      {/*</div>*/}
       {/*<div className="mt-2 flex gap-2">*/}
       {/*  <Button>Helpful</Button>*/}
       {/*  <Button>Report</Button>*/}
