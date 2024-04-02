@@ -218,3 +218,50 @@ const ProductReviewVariantFragment = gql(/* GraphQL */ `
     name
   }
 `);
+
+//TODO remove fragment from name
+const AssociatedProductsFragment = gql(/* GraphQL */ `
+  fragment AssociatedProductsFragment on Product {
+    id
+    associations {
+      target {
+        ...ProductCardFragment
+      }
+    }
+  }
+`);
+
+const ProductCardFragment = gql(/* GraphQL */ `
+  fragment ProductCardFragment on Product {
+    id
+    reviewsCount
+    averageRating
+    defaultUrl {
+      id
+      slug
+    }
+    brand {
+      id
+      name
+      defaultUrl {
+        id
+        slug
+      }
+    }
+    variantsPaginated(first: 1, page: 1) {
+      data {
+        id
+        name
+        prices {
+          id
+          price
+        }
+        primaryImage {
+          id
+          name
+          conversions(types: [MEDIUM])
+        }
+      }
+    }
+  }
+`);

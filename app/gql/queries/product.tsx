@@ -49,3 +49,12 @@ export const SearchProductReviewsQuery = gql(/* GraphQL */ `
     }
   }
 `);
+
+//TODO add merge function
+export const AssociatedProductsQuery = gql(/* GraphQL */ `
+  query AssociatedProductsQuery($slug: String!) {
+    productDetails(slug: $slug) {
+      ...AssociatedProductsFragment
+    }
+  }
+`);
