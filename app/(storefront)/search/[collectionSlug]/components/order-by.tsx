@@ -25,10 +25,10 @@ export const OrderBySelect = () => {
         <SelectValue placeholder="Sort By" />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value={ProductVariantOrderBy.RATING_DESC}>
+        <SelectItem value={ProductVariantOrderBy.AVG_RATING_ASC}>
           Rating: High to Low
         </SelectItem>
-        <SelectItem value={ProductVariantOrderBy.RATING_ASC}>
+        <SelectItem value={ProductVariantOrderBy.AVG_RATING_DESC}>
           Rating: Low to High
         </SelectItem>
         <SelectItem value={ProductVariantOrderBy.PRICE_DESC}>

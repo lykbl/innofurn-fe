@@ -37,8 +37,13 @@ export default function ProductsGrid({
           ProductVariantOrderBy.PRICE_DESC,
       },
       fetchPolicy: 'no-cache',
+      errorPolicy: 'ignore',
     },
   );
+
+  if (error) {
+    return <div>Uh-oh! Something went wrong.</div>;
+  }
 
   const paginatorInfo = data?.findProductVariantsForCollection.paginatorInfo;
   const gridItems = data?.findProductVariantsForCollection.data.map(
@@ -51,7 +56,7 @@ export default function ProductsGrid({
 
   return (
     <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5">
-      {gridItems.map((productVariant) => (
+      {gridItems?.map((productVariant) => (
         //TODO replace with general ProductCard component
         <CardItem key={productVariant.id} productVariant={productVariant} />
       ))}
