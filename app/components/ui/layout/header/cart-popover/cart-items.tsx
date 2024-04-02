@@ -8,10 +8,9 @@ import {
   CartLineFragmentFragmentDoc,
 } from '@/gql/generated/graphql';
 import { useFragment } from '@/gql/generated';
-import Link from 'next/link';
-import { cn } from '@/lib/utils';
-import { buttonVariants } from '@/components/ui/common/button';
+import { Button } from '@/components/ui/common/button';
 import { PopoverClose } from '@radix-ui/react-popover';
+import BaseLink from 'next/link';
 
 type CartItemsProps = {
   myCart: CartFragmentFragment;
@@ -56,12 +55,9 @@ const Totals = ({
     <div className="flex flex-col gap-2 text-xs">
       <p className="text-base font-bold">Items Total: {total.format}</p>
       <PopoverClose asChild>
-        <Link
-          className={cn(buttonVariants({ variant: 'default' }))}
-          href="/checkout"
-        >
-          Checkout
-        </Link>
+        <Button asChild className="hover:bg-primary/90">
+          <BaseLink href="/checkout">Checkout</BaseLink>
+        </Button>
       </PopoverClose>
     </div>
   );
