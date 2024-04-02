@@ -43,7 +43,7 @@ const CartControl = ({
           <span>
             {formatToCurrency(value)} x {count}
           </span>
-          <Button size="iconSm" onClick={increment} variant="outline">
+          <Button size="iconSm" onClick={increment}>
             <Icons.plus />
           </Button>
         </div>

@@ -7,12 +7,7 @@ import {
 } from '@/components/ui/common/card';
 import { Badge } from '@/components/ui/badge';
 import Image from 'next/image';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
+
 import { Button } from '@/components/ui/common/button';
 import { Icons } from '@/components/icons';
 import { cn } from '@/lib/utils';
@@ -22,6 +17,8 @@ import {
   ProductVariantGridFragmentFragment,
 } from '@/gql/generated/graphql';
 import Price from '@/(storefront)/search/[collectionSlug]/components/card-item/price';
+import FiveStars from '@/components/ui/common/five-stars';
+import BaseLink from 'next/link';
 
 export default function CardItem({
   productVariant,
@@ -86,18 +83,18 @@ export default function CardItem({
         {/*  colorOptions={colorOptions}*/}
         {/*  previewVariantColor={previewVariantColor}*/}
         {/*/>*/}
-        <p>{selectedProductVariant.name}</p>
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger>
-              {/*<FiveStars*/}
-              {/*  averageRating={averageRating}*/}
-              {/*  reviewsCount={reviewsCount}*/}
-              {/*/>*/}
-            </TooltipTrigger>
-            <TooltipContent></TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+        <Button
+          asChild
+          variant="link"
+          className="text-md h-full justify-start p-0 text-start"
+        >
+          <BaseLink
+            href={`/product/${selectedProductVariant.product.defaultUrl.slug}`}
+          >
+            <p>{selectedProductVariant.name}</p>
+          </BaseLink>
+        </Button>
+        <FiveStars rating={averageRating} reviewsCount={reviewsCount} />
         <Price priceData={priceData} discounts={discounts} />
       </CardContent>
       <CardFooter className="flex items-stretch bg-secondary p-2">

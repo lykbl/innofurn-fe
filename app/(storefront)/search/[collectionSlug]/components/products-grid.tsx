@@ -52,6 +52,7 @@ export default function ProductsGrid({
   return (
     <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5">
       {gridItems.map((productVariant) => (
+        //TODO replace with general ProductCard component
         <CardItem key={productVariant.id} productVariant={productVariant} />
       ))}
     </div>

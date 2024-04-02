@@ -37,30 +37,30 @@ const ReviewRow = React.forwardRef<
       </div>
       <p className="text-lg font-semibold">{review.title}</p>
       <p>{review.body}</p>
-      <p className="flex gap-2 text-gray-500 pt-2">
+      <p className="flex gap-2 pt-2">
         <span>
           Reviewed on {new Date(review.createdAt).toISOString().split('T')[0]}
         </span>
       </p>
       {/*<div className="py-2">*/}
-        {/*<Carousel>*/}
-        {/*  <CarouselContent>*/}
-        {/*    {Array(10)*/}
-        {/*      .fill(null)*/}
-        {/*      .map((_, index) => (*/}
-        {/*        <CarouselItem key={index}>*/}
-        {/*          <Image*/}
-        {/*            key={index}*/}
-        {/*            className="min-w-[100px] rounded"*/}
-        {/*            width={100}*/}
-        {/*            height={100}*/}
-        {/*            src="/fallback-image.jpg"*/}
-        {/*            alt="customer pohoto"*/}
-        {/*          />*/}
-        {/*        </CarouselItem>*/}
-        {/*      ))}*/}
-        {/*  </CarouselContent>*/}
-        {/*</Carousel>*/}
+      {/*<Carousel>*/}
+      {/*  <CarouselContent>*/}
+      {/*    {Array(10)*/}
+      {/*      .fill(null)*/}
+      {/*      .map((_, index) => (*/}
+      {/*        <CarouselItem key={index}>*/}
+      {/*          <Image*/}
+      {/*            key={index}*/}
+      {/*            className="min-w-[100px] rounded"*/}
+      {/*            width={100}*/}
+      {/*            height={100}*/}
+      {/*            src="/fallback-image.jpg"*/}
+      {/*            alt="customer pohoto"*/}
+      {/*          />*/}
+      {/*        </CarouselItem>*/}
+      {/*      ))}*/}
+      {/*  </CarouselContent>*/}
+      {/*</Carousel>*/}
       {/*</div>*/}
       {/*<div className="mt-2 flex gap-2">*/}
       {/*  <Button>Helpful</Button>*/}
