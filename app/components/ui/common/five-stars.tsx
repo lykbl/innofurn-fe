@@ -2,8 +2,22 @@ import React, { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Icons } from '@/components/icons';
 import { Button } from '@/components/ui/common/button';
+import { cva, type VariantProps } from 'class-variance-authority';
 
-const RatingToEmoji = (rating: number) => {
+const starIconVariants = cva('', {
+  variants: {
+    size: {
+      default: 'h-5 w-5',
+      sm: 'h-4 w-4',
+      lg: 'h-6 w-6',
+    },
+  },
+  defaultVariants: {
+    size: 'default',
+  },
+});
+
+const ratingToEmoji = (rating: number) => {
   switch (rating) {
     case 0:
       return '😶';
@@ -22,17 +36,12 @@ const RatingToEmoji = (rating: number) => {
   }
 };
 
-const Star = ({
+const StarIcon = ({
   rating,
   starWeight,
-  onMouseOver,
-  onClick,
   className,
-}: {
-  rating: number;
+}: Pick<FiveStarsProps, 'rating' | 'size'> & {
   starWeight: number;
-  onMouseOver?: () => void;
-  onClick?: () => void;
   className?: string;
 }) => {
   const isFilled = rating >= starWeight;
@@ -44,59 +53,91 @@ const Star = ({
         'h-full w-full stroke-primary',
         isFilled ? 'text-primary' : 'text-secondary',
         className,
-        onClick && 'cursor-pointer',
       )}
       withGradient={withGradient}
-      onMouseOver={onMouseOver}
-      onClick={onClick}
     />
   );
 };
+
+const StarButton = ({
+  className,
+  rating,
+  starWeight,
+  handleClick,
+  handleMouseOut,
+  handleMouseOver,
+  size,
+}: Pick<FiveStarsProps, 'rating' | 'size'> & {
+  className: string;
+  starWeight: number;
+  handleMouseOver: (starWeight: number) => void;
+  handleMouseOut: () => void;
+  handleClick?: (starWeight: number) => void;
+}) => {
+  if (handleClick) {
+    return (
+      <Button
+        type="button"
+        variant="ghost"
+        className={cn(
+          'h-5 p-0.5 hover:bg-transparent focus-visible:ring-inset',
+        )}
+        onMouseOver={() => handleMouseOver(starWeight)}
+        onMouseOut={handleMouseOut}
+        onClick={() => handleClick(starWeight)}
+      >
+        <StarIcon rating={rating} starWeight={starWeight} />
+      </Button>
+    );
+  }
+
+  return (
+    <StarIcon
+      rating={rating}
+      starWeight={starWeight}
+      className={className}
+      size={size}
+    />
+  );
+};
+
+type FiveStarsProps = {
+  className?: string;
+  rating: number;
+  reviewsCount?: number;
+  handleClick?: (rating: number) => void;
+  withEmojis?: boolean;
+} & VariantProps<typeof starIconVariants>;
+
 export default function FiveStars({
   className,
   rating,
   reviewsCount,
-  onClick,
+  handleClick,
   withEmojis,
-}: {
-  className?: string;
-  rating: number;
-  reviewsCount?: number;
-  onClick?: (rating: number) => void;
-  withEmojis?: boolean;
-}) {
+  size,
+}: FiveStarsProps) {
   const [previewRating, setPreviewRating] = useState<number>(rating);
   const handleMouseOver = (rating: number) => setPreviewRating(rating);
   const handleMouseOut = () => setPreviewRating(rating);
-  const handleClick = (rating: number) => {
-    onClick && onClick(rating);
-  };
 
   return (
-    <div className={cn(className, 'flex items-center gap-1')}>
+    <div className={cn('flex items-center gap-1', className)}>
       <div className="flex">
-        {Array.from({ length: 5 })
-          .fill(null)
-          .map((_, index) => (
-            <Button
-              type="button"
-              key={index}
-              variant="ghost"
-              className={cn(
-                'h-5 p-0.5 hover:bg-transparent focus-visible:ring-inset',
-                !onClick && 'pointer-events-none',
-              )}
-              tabIndex={!onClick ? -1 : undefined}
-              onMouseOver={() => handleMouseOver(index + 1)}
-              onMouseOut={handleMouseOut}
-              onClick={() => handleClick(index + 1)}
-            >
-              <Star starWeight={index + 1} rating={previewRating} />
-            </Button>
-          ))}
+        {Array.from({ length: 5 }, (_, index) => (
+          <StarButton
+            className={cn(starIconVariants({ size, className }))}
+            key={index}
+            starWeight={index + 1}
+            rating={previewRating}
+            handleMouseOver={() => handleMouseOver(index + 1)}
+            handleMouseOut={handleMouseOut}
+            handleClick={handleClick}
+          />
+        ))}
       </div>
       {reviewsCount && <span className="text-xs">({reviewsCount})</span>}
-      {withEmojis && <span>{RatingToEmoji(previewRating)}</span>}
+      {withEmojis && <span>{ratingToEmoji(previewRating)}</span>}
       {/*TODO slot this?*/}
     </div>
   );
