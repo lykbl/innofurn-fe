@@ -44,7 +44,7 @@ function ItemsCounter({
   if (!itemsCount) return null;
 
   return (
-    <div className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-2xs font-medium text-white">
+    <div className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-2xs font-medium text-primary-foreground">
       <span
         className={cn(
           'absolute h-full w-full rounded-full bg-primary',
