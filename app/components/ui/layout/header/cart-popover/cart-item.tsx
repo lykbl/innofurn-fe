@@ -27,8 +27,11 @@ export const CartItem = ({
     <li className="flex gap-2 rounded border-b border-solid border-secondary p-1">
       <Image
         className="w-1/3"
-        src={line.purchasable.primaryImage.originalUrl}
-        alt={line.purchasable.primaryImage.name}
+        src={
+          line.purchasable.primaryImage?.conversions[0] ||
+          'https://via.placeholder.com/75'
+        }
+        alt={line.purchasable.primaryImage?.name || ''}
         width={50}
         height={50}
       />

@@ -25,8 +25,8 @@ const CartLineFragment = gql(/* GraphQL */ `
       }
       primaryImage {
         id
-        originalUrl
         name
+        conversions(types: [SMALL])
       }
       prices {
         id

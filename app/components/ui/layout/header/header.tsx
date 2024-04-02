@@ -6,7 +6,7 @@ import { Suspense, useContext } from 'react';
 import NotificationsTriggerSkeleton from '@/components/ui/layout/header/notifications-popover/notifications-trigger-skeleton';
 import NotificationsPopover from '@/components/ui/layout/header/notifications-popover/notifications-popover';
 import CartTriggerSkeleton from '@/components/ui/layout/header/cart-popover/cart-trigger-skeleton';
-import { CartPopover } from '@/components/ui/layout/header/cart-popover/cart-control';
+import CartPopover from '@/components/ui/layout/header/cart-popover/cart-control';
 import UserMenu from '@/components/ui/layout/header/user-popover/user-menu';
 import * as React from 'react';
 import { useQuery } from '@apollo/client';

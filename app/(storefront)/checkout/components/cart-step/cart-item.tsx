@@ -31,14 +31,13 @@ const CartItem = ({
     averageRating,
     reviewsCount,
   } = purchasable;
-  const { originalUrl: imageUrl, name: imageAlt } = primaryImage;
 
   return (
     <Card className={cn('flex gap-4 p-4', isUpdating && 'animate-pulse')}>
       <Image
         className="rounded"
-        src={imageUrl}
-        alt={imageAlt}
+        src={primaryImage?.conversions[0] || 'https://via.placeholder.com/200'}
+        alt={primaryImage?.name || 'Add alt here'}
         width={200}
         height={200}
       />
@@ -58,10 +57,7 @@ const CartItem = ({
               </Link>
               <span> | {sku}</span>
             </h3>
-            <FiveStars
-              averageRating={averageRating}
-              reviewsCount={reviewsCount}
-            />
+            <FiveStars rating={averageRating} reviewsCount={reviewsCount} />
           </div>
           <div>
             {productOptions?.map((value) => (

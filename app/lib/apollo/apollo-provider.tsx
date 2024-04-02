@@ -17,10 +17,25 @@ import { removeTypenameFromVariables } from '@apollo/client/link/remove-typename
 
 const errorLink = onError(
   ({ graphQLErrors, networkError, operation, forward }) => {
+    console.log(
+      'errorLink -> operation',
+      graphQLErrors,
+      networkError,
+      operation,
+    );
     if (graphQLErrors) {
       for (let err of graphQLErrors) {
         switch (err.extensions.code) {
           case 'UNAUTHENTICATED':
+            //TODO verify this
+            // const oldHeaders = operation.getContext().headers;
+            // operation.setContext({
+            //   headers: {
+            //     ...oldHeaders,
+            //     authorization: getNewToken(),
+            //   },
+            // });
+            // Retry the request, returning the new observable
             return forward(operation);
         }
       }
@@ -87,6 +102,9 @@ function createClient() {
   return new NextSSRApolloClient({
     link: from(links),
     defaultOptions: {
+      query: {
+        // errorPolicy: 'ignore',
+      },
       mutate: {
         errorPolicy: 'all',
       },

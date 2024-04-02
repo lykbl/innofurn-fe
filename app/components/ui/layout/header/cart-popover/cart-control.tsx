@@ -17,12 +17,64 @@ import { MyCartQuery } from '@/gql/queries/cart';
 import { cn } from '@/lib/utils';
 import { Icons } from '@/components/icons';
 
-export const CartPopover = () => {
+function Trigger({
+  itemsCount,
+  cartUpdated,
+}: {
+  itemsCount?: number;
+  cartUpdated: boolean;
+}) {
+  return (
+    <PopoverTrigger asChild>
+      <Button variant="outline" className="relative">
+        <Icons.shoppingBag />
+        <ItemsCounter itemsCount={itemsCount} cartUpdated={cartUpdated} />
+      </Button>
+    </PopoverTrigger>
+  );
+}
+
+function ItemsCounter({
+  itemsCount,
+  cartUpdated,
+}: {
+  itemsCount?: number;
+  cartUpdated: boolean;
+}) {
+  if (!itemsCount) return null;
+
+  return (
+    <div className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-2xs font-medium text-white">
+      <span
+        className={cn(
+          'absolute h-full w-full rounded-full bg-primary',
+          cartUpdated && 'animate-ping',
+        )}
+      />
+      <span className="z-10">{itemsCount}</span>
+    </div>
+  );
+}
+
+function Content({ myCart }: { myCart?: CartFragmentFragment | null }) {
+  if (!myCart) {
+    return null;
+  }
+
+  return (
+    <PopoverContent className="w-64 p-1" align="end" forceMount asChild>
+      <CartItems myCart={myCart} />
+    </PopoverContent>
+  );
+}
+
+export default function CartPopover() {
   const [cartUpdated, setCartUpdated] = useState(false);
-  const { data: myCartQuery, client } = useSuspenseQuery(MyCartQuery);
+  const { data: myCartQuery, client, error } = useSuspenseQuery(MyCartQuery);
   const myCart = useFragment(CartFragmentFragmentDoc, myCartQuery?.myCart);
   let timeoutId = useRef<NodeJS.Timeout | null>();
   const queryObserver = client.watchQuery({ query: MyCartQuery });
+
   const startTimer = () => {
     setCartUpdated(true);
     if (timeoutId.current) {
@@ -51,55 +103,4 @@ export const CartPopover = () => {
       <Content myCart={myCart} />
     </Popover>
   );
-};
-
-const Trigger = ({
-  itemsCount,
-  cartUpdated,
-}: {
-  itemsCount?: number;
-  cartUpdated: boolean;
-}) => {
-  return (
-    <PopoverTrigger asChild>
-      <Button variant="outline" className="relative">
-        <Icons.shoppingBag />
-        <ItemsCounter itemsCount={itemsCount} cartUpdated={cartUpdated} />
-      </Button>
-    </PopoverTrigger>
-  );
-};
-
-const ItemsCounter = ({
-  itemsCount,
-  cartUpdated,
-}: {
-  itemsCount?: number;
-  cartUpdated: boolean;
-}) => {
-  if (!itemsCount) return null;
-
-  return (
-    <div className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-2xs font-medium text-white">
-      <span
-        className={cn(
-          'absolute h-full w-full rounded-full bg-primary',
-          cartUpdated && 'animate-ping',
-        )}
-      />
-      <span className="z-10">{itemsCount}</span>
-    </div>
-  );
-};
-
-const Content = ({ myCart }: { myCart?: CartFragmentFragment | null }) => {
-  if (!myCart) {
-    return null;
-  }
-
-  return (
-    <PopoverContent className="w-64 p-1" align="end" forceMount asChild>
-      <CartItems myCart={myCart} />
-    </PopoverContent>
-  );
-};
+}
