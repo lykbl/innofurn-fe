@@ -59,7 +59,7 @@ export const AssociatedProductsQuery = gql(/* GraphQL */ `
   }
 `);
 
-const RecentlyViewedProductsQuery = gql(/* GraphQL */ `
+export const RecentlyViewedProductsQuery = gql(/* GraphQL */ `
   query RecentlyViewedProducts {
     recentlyViewedProducts {
       ...RecentlyViewedProductFragment

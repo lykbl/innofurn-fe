@@ -1,6 +1,6 @@
 import ProductCardSkeleton from '@/skeletons/product/product-card-skeleton';
 
-const MAX_PRODUCTS = 30;
+const MAX_PRODUCTS = 15;
 
 export default function RecentlyViewedProductsGridSkeleton() {
   return (

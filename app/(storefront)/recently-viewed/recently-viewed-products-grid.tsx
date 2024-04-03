@@ -3,8 +3,12 @@
 import { useSuspenseQuery } from '@apollo/client';
 import { useFragment } from '@/gql/generated';
 import React from 'react';
-import { ProductCardFragmentFragmentDoc } from '@/gql/generated/graphql';
+import {
+  ProductCardFragmentFragmentDoc,
+  RecentlyViewedProductFragmentFragmentDoc,
+} from '@/gql/generated/graphql';
 import ProductCard from '@/components/product/product-card';
+import { RecentlyViewedProductsQuery } from '@/gql/queries/product';
 
 export default function RecentlyViewedProducts() {
   const { data: recentlyViewedProductsQuery } = useSuspenseQuery(
@@ -13,7 +17,10 @@ export default function RecentlyViewedProducts() {
   const recentlyViewedProducts =
     recentlyViewedProductsQuery.recentlyViewedProducts.map(
       (recentlyViewedProduct) =>
-        useFragment(RecentlyViewedProductFragment, recentlyViewedProduct),
+        useFragment(
+          RecentlyViewedProductFragmentFragmentDoc,
+          recentlyViewedProduct,
+        ),
     );
 
   return (
