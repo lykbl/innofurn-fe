@@ -13,29 +13,28 @@ export default function ProductCard({
 }) {
   const averageRating = 3.2;
   const reviewsCount = 10;
-  const selectedProductVariant = product.variantsPaginated.data[0];
-  const priceData = selectedProductVariant.prices[0].price;
+  console.log(product.startingPrice?.price.format);
 
   return (
-    <Card className="max-h flex w-60 flex-col gap-2 overflow-hidden rounded p-2">
+    <Card className="h-100 flex w-60 flex-col gap-2 overflow-hidden rounded p-2">
       <Image
         className="w-full"
         width={225}
         height={225}
         alt={
-          selectedProductVariant.primaryImage?.name ||
-          selectedProductVariant.name ||
+          product.primaryImage?.name ||
+          product.name ||
           ''
         }
         src={
-          selectedProductVariant.primaryImage?.conversions[0] ||
+          product.primaryImage?.conversions[0] ||
           '/fallback-image.jpg'
         }
       />
       <div className="flex flex-col gap-1">
         <Button asChild variant="link" size="link" className="justify-start">
           <BaseLink href={`/product/${product.defaultUrl.slug}`}>
-            <h3>{selectedProductVariant.name}</h3>
+            <h3>{product.name}</h3>
           </BaseLink>
         </Button>
         <Button
@@ -48,20 +47,14 @@ export default function ProductCard({
             <h4>By {product.brand.name}</h4>
           </BaseLink>
         </Button>
-        {/* TODO add rating breakdown? */}
-        {/*<TooltipProvider>*/}
-        {/*  <Tooltip>*/}
-        {/*    <TooltipTrigger>*/}
         <FiveStars
           rating={averageRating}
           reviewsCount={reviewsCount}
           size="sm"
         />
-        {/*</TooltipTrigger>*/}
-        {/*<TooltipContent></TooltipContent>*/}
-        {/*</Tooltip>*/}
-        {/*</TooltipProvider>*/}
-        <p className="text-2xl font-semibold">{priceData.format}</p>
+        <p id="hehe" className="text-2xl font-semibold">
+          {product.startingPrice?.price.format || 'Price unavailable'}
+        </p>
       </div>
       <Button className="w-full">Add to cart</Button>
     </Card>
