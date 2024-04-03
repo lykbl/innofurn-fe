@@ -259,3 +259,12 @@ const ProductCardFragment = gql(/* GraphQL */ `
     }
   }
 `);
+
+const RecentlyViewedProductFragment = gql(/* GraphQL */ `
+  fragment RecentlyViewedProductFragment on ProductView {
+    id
+    product {
+      ...ProductCardFragment
+    }
+  }
+`);

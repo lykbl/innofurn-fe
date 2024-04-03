@@ -11,10 +11,6 @@ export default function ProductCard({
 }: {
   product: ProductCardFragmentFragment;
 }) {
-  const averageRating = 3.2;
-  const reviewsCount = 10;
-  console.log(product.startingPrice?.price.format);
-
   return (
     <Card className="flex h-100 w-60 flex-col gap-2 overflow-hidden rounded p-2">
       <Image
@@ -41,8 +37,8 @@ export default function ProductCard({
           </BaseLink>
         </Button>
         <FiveStars
-          rating={averageRating}
-          reviewsCount={reviewsCount}
+          rating={product.averageRating}
+          reviewsCount={product.reviewsCount}
           size="sm"
         />
         <p id="hehe" className="text-2xl font-semibold">

@@ -1,27 +1,10 @@
 'use client';
 
 import { useSuspenseQuery } from '@apollo/client';
-import { gql, useFragment } from '@/gql/generated';
+import { useFragment } from '@/gql/generated';
 import React from 'react';
 import { ProductCardFragmentFragmentDoc } from '@/gql/generated/graphql';
 import ProductCard from '@/components/product/product-card';
-
-const RecentlyViewedProductsQuery = gql(/* GraphQL */ `
-  query RecentlyViewedProducts {
-    recentlyViewedProducts {
-      ...RecentlyViewedProductFragment
-    }
-  }
-`);
-
-const RecentlyViewedProductFragment = gql(/* GraphQL */ `
-  fragment RecentlyViewedProductFragment on ProductView {
-    id
-    product {
-      ...ProductCardFragment
-    }
-  }
-`);
 
 export default function RecentlyViewedProducts() {
   const { data: recentlyViewedProductsQuery } = useSuspenseQuery(

@@ -15,8 +15,6 @@ import {
 } from '@/components/ui/popover';
 import { Separator } from '@/components/ui/common/separator';
 
-
-
 export default function UserPopover({
   user,
 }: {
