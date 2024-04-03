@@ -1,6 +1,8 @@
-import { FragmentType, useFragment } from '@/gql/generated';
-import { CheckMeFragmentFragmentDoc } from '@/gql/generated/graphql';
-import { useMutation } from '@apollo/client';
+import { FragmentType, gql, useFragment } from '@/gql/generated';
+import {
+  CheckMeFragmentFragmentDoc,
+} from '@/gql/generated/graphql';
+import { useMutation, useSuspenseQuery } from '@apollo/client';
 import { LogoutMutation } from '@/gql/mutations/user';
 import { Button, buttonVariants } from '@/components/ui/common/button';
 
@@ -15,26 +17,16 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { Separator } from '@/components/ui/common/separator';
+import { Drawer, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer';
+import { Suspense } from 'react';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import Image from 'next/image';
 
-const GhostLink = ({ href, children }: { href: string; children: string }) => (
-  <BaseLink
-    href={href}
-    className={cn(
-      buttonVariants({
-        variant: 'ghost',
-        className: 'h-8 w-full justify-start px-2 py-1',
-      }),
-    )}
-  >
-    {children}
-  </BaseLink>
-);
-
-const UserPopover = ({
+export default function UserPopover({
   user,
 }: {
   user?: FragmentType<typeof CheckMeFragmentFragmentDoc> | null;
-}) => {
+}) {
   const [logoutAsync, { client }] = useMutation(LogoutMutation);
   const userData = useFragment(CheckMeFragmentFragmentDoc, user);
 
@@ -69,10 +61,34 @@ const UserPopover = ({
         </div>
         <Separator />
         <div className="flex flex-col gap-2">
-          <GhostLink href={ROUTES.BOOKMARKS}>Favorites</GhostLink>
-          <GhostLink href={ROUTES.PROFILE}>Profile</GhostLink>
-          <GhostLink href={ROUTES.SETTINGS}>Settings</GhostLink>
+          <Button
+            variant="ghost"
+            asChild
+            className="h-8 w-full justify-start px-2 py-1"
+          >
+            <BaseLink href={ROUTES.BOOKMARKS}>Favorites</BaseLink>
+          </Button>
+          <Button
+            asChild
+            variant="ghost"
+            className="h-8 w-full justify-start px-2 py-1"
+          >
+          <BaseLink href={ROUTES.PROFILE}>Profile</BaseLink>
+          </Button>
+          <Button
+            asChild
+            variant="ghost"
+            className="h-8 w-full justify-start px-2 py-1"
+          >
+            <BaseLink href={ROUTES.SETTINGS}>Settings</BaseLink>
+          </Button>
         </div>
+        <Separator />
+        <Button asChild variant="ghost">
+          <BaseLink href="/recently-viewed">
+            Recently Viewed
+          </BaseLink>
+        </Button>
         <Separator />
         <div>
           <Button
@@ -87,5 +103,3 @@ const UserPopover = ({
     </Popover>
   );
 };
-
-export default UserPopover;
