@@ -234,6 +234,7 @@ const AssociatedProductsFragment = gql(/* GraphQL */ `
 const ProductCardFragment = gql(/* GraphQL */ `
   fragment ProductCardFragment on Product {
     id
+    name
     reviewsCount
     averageRating
     defaultUrl {
@@ -248,20 +249,22 @@ const ProductCardFragment = gql(/* GraphQL */ `
         slug
       }
     }
-    variantsPaginated(first: 1, page: 1) {
-      data {
-        id
-        name
-        prices {
-          id
-          price
-        }
-        primaryImage {
-          id
-          name
-          conversions(types: [MEDIUM])
-        }
-      }
+    primaryImage {
+      id
+      name
+      conversions(types: [MEDIUM])
+    }
+    startingPrice {
+      price
+    }
+  }
+`);
+
+const RecentlyViewedProductFragment = gql(/* GraphQL */ `
+  fragment RecentlyViewedProductFragment on ProductView {
+    id
+    product {
+      ...ProductCardFragment
     }
   }
 `);
