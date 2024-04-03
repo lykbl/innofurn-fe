@@ -16,20 +16,13 @@ export default function ProductCard({
   console.log(product.startingPrice?.price.format);
 
   return (
-    <Card className="h-100 flex w-60 flex-col gap-2 overflow-hidden rounded p-2">
+    <Card className="flex h-100 w-60 flex-col gap-2 overflow-hidden rounded p-2">
       <Image
         className="w-full"
         width={225}
         height={225}
-        alt={
-          product.primaryImage?.name ||
-          product.name ||
-          ''
-        }
-        src={
-          product.primaryImage?.conversions[0] ||
-          '/fallback-image.jpg'
-        }
+        alt={product.primaryImage?.name || product.name || ''}
+        src={product.primaryImage?.conversions[0] || '/fallback-image.jpg'}
       />
       <div className="flex flex-col gap-1">
         <Button asChild variant="link" size="link" className="justify-start">

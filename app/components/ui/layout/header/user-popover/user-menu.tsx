@@ -1,26 +1,21 @@
-import { FragmentType, gql, useFragment } from '@/gql/generated';
-import {
-  CheckMeFragmentFragmentDoc,
-} from '@/gql/generated/graphql';
-import { useMutation, useSuspenseQuery } from '@apollo/client';
+import { FragmentType, useFragment } from '@/gql/generated';
+import { CheckMeFragmentFragmentDoc } from '@/gql/generated/graphql';
+import { useMutation } from '@apollo/client';
 import { LogoutMutation } from '@/gql/mutations/user';
-import { Button, buttonVariants } from '@/components/ui/common/button';
+import { Button } from '@/components/ui/common/button';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import BaseLink from 'next/link';
 import ROUTES from '@/lib/routes';
 import * as React from 'react';
-import { cn } from '@/lib/utils';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { Separator } from '@/components/ui/common/separator';
-import { Drawer, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer';
-import { Suspense } from 'react';
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
-import Image from 'next/image';
+
+
 
 export default function UserPopover({
   user,
@@ -73,7 +68,7 @@ export default function UserPopover({
             variant="ghost"
             className="h-8 w-full justify-start px-2 py-1"
           >
-          <BaseLink href={ROUTES.PROFILE}>Profile</BaseLink>
+            <BaseLink href={ROUTES.PROFILE}>Profile</BaseLink>
           </Button>
           <Button
             asChild
@@ -85,9 +80,7 @@ export default function UserPopover({
         </div>
         <Separator />
         <Button asChild variant="ghost">
-          <BaseLink href="/recently-viewed">
-            Recently Viewed
-          </BaseLink>
+          <BaseLink href="/recently-viewed">Recently Viewed</BaseLink>
         </Button>
         <Separator />
         <div>
@@ -102,4 +95,4 @@ export default function UserPopover({
       </PopoverContent>
     </Popover>
   );
-};
+}

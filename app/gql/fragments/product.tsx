@@ -255,7 +255,7 @@ const ProductCardFragment = gql(/* GraphQL */ `
       conversions(types: [MEDIUM])
     }
     startingPrice {
-     price
+      price
     }
   }
 `);

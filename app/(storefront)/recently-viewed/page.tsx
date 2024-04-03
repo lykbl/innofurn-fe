@@ -1,6 +1,4 @@
 import React, { Suspense } from 'react';
-import { useSuspenseQuery } from '@apollo/client';
-import { useFragment } from '@/gql/generated';
 import RecentlyViewedProducts from '@/(storefront)/recently-viewed/recently-viewed-products-grid';
 import RecentlyViewedProductsGridSkeleton from '@/(storefront)/recently-viewed/recently-viewed-products-grid-skeleton';
 
