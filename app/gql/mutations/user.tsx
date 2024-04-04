@@ -23,3 +23,23 @@ export const LogoutMutation = gql(/* GraphQL */ `
     }
   }
 `);
+
+export const UpdateEmailMutation = gql(/* GraphQL */ `
+    mutation UpdateEmail($email: Email!) {
+        updateEmail(email: $email) {
+            email
+        }
+    }
+`);
+
+export const UpdateDetailsMutation = gql(/* GraphQL */ `
+    mutation UpdateDetails($input: UpdateDetailsInput!) {
+        updateDetails(input: $input) {
+            customer {
+                firstName
+                lastName
+                title
+            }
+        }
+    }
+`);

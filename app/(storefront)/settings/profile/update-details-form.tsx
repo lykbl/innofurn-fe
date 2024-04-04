@@ -19,10 +19,10 @@ import * as z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CheckMeFragmentFragment } from '@/gql/generated/graphql';
-import { gql } from '@/gql/generated';
 import { useMutation } from '@apollo/client';
 import { toast } from '@/components/ui/use-toast';
 import { cn } from '@/lib/utils';
+import { UpdateDetailsMutation } from '@/gql/mutations/user';
 
 const AVAILABLE_TITLES = ['Mr', 'Mrs', 'Ms', 'Mx', 'Ind'];
 
@@ -31,18 +31,6 @@ const schema = z.object({
   lastName: z.string().min(2),
   title: z.string().min(2),
 });
-
-const UpdateDetailsMutation = gql(/* GraphQL */ `
-  mutation UpdateDetails($input: UpdateDetailsInput!) {
-    updateDetails(input: $input) {
-      customer {
-        firstName
-        lastName
-        title
-      }
-    }
-  }
-`);
 
 export default function UpdateDetailsForm({
   user,
@@ -58,9 +46,7 @@ export default function UpdateDetailsForm({
     },
     mode: 'onSubmit',
   });
-  const [updateProfileDetails, { loading }] = useMutation(
-    UpdateDetailsMutation,
-  );
+  const [updateProfileDetails, { loading }] = useMutation(UpdateDetailsMutation);
   const handleSubmit = form.handleSubmit(async (data) => {
     const response = await updateProfileDetails({
       variables: {

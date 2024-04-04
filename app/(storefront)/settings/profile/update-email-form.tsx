@@ -13,21 +13,13 @@ import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CheckMeFragmentFragment } from '@/gql/generated/graphql';
 import { useMutation } from '@apollo/client';
-import { gql } from '@/gql/generated';
 import { useToast } from '@/components/ui/use-toast';
 import { cn } from '@/lib/utils';
+import { UpdateEmailMutation } from '@/gql/mutations/user';
 
 const emailSchema = z.object({
   email: z.string().email(),
 });
-
-const UpdateEmailMutation = gql(/* GraphQL */ `
-  mutation UpdateEmail($email: Email!) {
-    updateEmail(email: $email) {
-      email
-    }
-  }
-`);
 
 export default function UpdateEmailForm({
   user,
