@@ -6,9 +6,9 @@ import { useSuspenseQuery } from '@apollo/client';
 import { FragmentType, useFragment } from '@/gql/generated';
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/common/button';
-import AddressCard from '@/(storefront)/checkout/components/address-step/address-card';
 import AddressForm from '@/components/address/address-form/form';
 import { MyAddressesQuery } from '@/gql/queries/address';
+import AddressCard from '@/components/address/addresses-list/address-card';
 
 export default function AddressesList() {
   const { data: addressesQuery } = useSuspenseQuery(MyAddressesQuery);
@@ -45,7 +45,7 @@ export default function AddressesList() {
   }
 
   return (
-    <>
+    <div>
       {addresses.map((address) => (
         <AddressCard
           key={address.id}
@@ -56,6 +56,6 @@ export default function AddressesList() {
         />
       ))}
       <Button onClick={toggleNewAddressForm}>Add new address</Button>
-    </>
+    </div>
   );
 };

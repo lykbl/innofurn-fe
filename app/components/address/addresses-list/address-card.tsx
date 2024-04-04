@@ -3,8 +3,9 @@ import { cn } from '@/lib/utils';
 import React, { useTransition } from 'react';
 import { useMutation } from '@apollo/client';
 import { Card } from '@/components/ui/common/card';
-import AddressCardContent from '@/(storefront)/checkout/components/address-step/address-card-content';
-import { REMOVE_ADDRESS_MUTATION } from '@/gql/mutations/address';
+import { RemoveAddressMutation } from '@/gql/mutations/address';
+import AddressCardContent from '@/components/address/addresses-list/address-card-content';
+import AddressControls from '@/components/address/addresses-list/address-card-controls';
 
 export type AddressCardProps = {
   address: AddressFragmentFragment;
@@ -19,7 +20,7 @@ export default function AddressCard({
   handleAddressChange,
   toggleAddressFormView,
 }: AddressCardProps) {
-  const [deleteAddress] = useMutation(REMOVE_ADDRESS_MUTATION);
+  const [deleteAddress] = useMutation(RemoveAddressMutation);
   const [isPending, startTransition] = useTransition();
 
   const handleDeleteAddress = () => {
@@ -63,6 +64,11 @@ export default function AddressCard({
         handleAddressChange={handleAddressChange}
         toggleAddressFormView={toggleAddressFormView}
         handleDeleteAddress={handleDeleteAddress}
+      />
+      <AddressControls
+        isSelected={isSelected}
+        handleDeleteAddress={handleDeleteAddress}
+        toggleAddressFormView={toggleAddressFormView}
       />
     </Card>
   );

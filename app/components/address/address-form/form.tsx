@@ -29,8 +29,8 @@ import CountryInput from '@/components/address/address-form/country-input';
 import PhoneInput from '@/components/address/address-form/phone-input';
 import { Card, CardContent } from '@/components/ui/common/card';
 import {
-  ADD_ADDRESS_MUTATION,
-  EDIT_ADDRESS_MUTATION,
+  AddAddressMutation,
+  EditAddressMutation,
 } from '@/gql/mutations/address';
 import { COUNTRIES_QUERY } from '@/gql/queries/country';
 import { CheckMeQuery } from '@/gql/queries/user';
@@ -86,8 +86,8 @@ const AddressForm = ({
       billingDefault: address?.billingDefault || false,
     },
   });
-  const [editAddress] = useMutation(EDIT_ADDRESS_MUTATION);
-  const [addAddress] = useMutation(ADD_ADDRESS_MUTATION);
+  const [editAddress] = useMutation(EditAddressMutation);
+  const [addAddress] = useMutation(AddAddressMutation);
   const { data: countriesQuery } = useQuery(COUNTRIES_QUERY);
   const [isPending, startTransition] = useTransition();
 
