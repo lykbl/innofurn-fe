@@ -10,7 +10,8 @@ import { useForm } from 'react-hook-form';
 import {
   AddressFragmentFragment,
   AddressFragmentFragmentDoc,
-  AddressInput, CheckMeFragmentFragmentDoc,
+  AddressInput,
+  CheckMeFragmentFragmentDoc,
   CountryFragmentFragmentDoc,
 } from '@/gql/generated/graphql';
 import { z } from 'zod';

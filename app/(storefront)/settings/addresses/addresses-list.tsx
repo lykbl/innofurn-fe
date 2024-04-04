@@ -58,4 +58,4 @@ export default function AddressesList() {
       <Button onClick={toggleNewAddressForm}>Add new address</Button>
     </div>
   );
-};
+}

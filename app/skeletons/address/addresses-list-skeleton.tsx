@@ -7,7 +7,7 @@ export default function AddressesListSkeleton() {
       {Array.from({ length: 3 }, (_, i) => (
         <Card
           key={i}
-          className='flex h-52 w-full rounded border border-input p-4 animate-pulse'
+          className="flex h-52 w-full animate-pulse rounded border border-input p-4"
         />
       ))}
     </div>

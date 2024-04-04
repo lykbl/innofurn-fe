@@ -1,6 +1,6 @@
 'use client';
 
-import React, { Suspense, useState, useTransition } from 'react';
+import React, { useState, useTransition } from 'react';
 import { useFragment } from '@/gql/generated';
 import { useQuery } from '@apollo/client';
 import { Card, CardContent } from '@/components/ui/common/card';
@@ -15,7 +15,6 @@ import { MyCartQuery } from '@/gql/queries/cart';
 import AddressStep from '@/(storefront)/checkout/components/address-step/address-step';
 import PaymentStep from '@/(storefront)/checkout/components/payment-step/payment-step';
 import CartStep from '@/(storefront)/checkout/components/cart-step/cart-step';
-import AddressesListSkeleton from '@/skeletons/address/addresses-list-skeleton';
 
 export enum STEPS {
   CART,

@@ -72,4 +72,4 @@ export default function AddressCard({
       />
     </Card>
   );
-};
+}

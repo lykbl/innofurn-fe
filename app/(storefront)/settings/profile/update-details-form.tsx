@@ -46,7 +46,9 @@ export default function UpdateDetailsForm({
     },
     mode: 'onSubmit',
   });
-  const [updateProfileDetails, { loading }] = useMutation(UpdateDetailsMutation);
+  const [updateProfileDetails, { loading }] = useMutation(
+    UpdateDetailsMutation,
+  );
   const handleSubmit = form.handleSubmit(async (data) => {
     const response = await updateProfileDetails({
       variables: {
