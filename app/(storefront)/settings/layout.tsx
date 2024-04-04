@@ -4,45 +4,28 @@ import { Button } from '@/components/ui/common/button';
 import BaseLink from 'next/link';
 import ROUTES, { Route } from '@/lib/routes';
 
-function NavigationLink({
-  label,
-  route,
-}:{
-  label: string,
-  route: Route
-}) {
+function NavigationLink({ label, route }: { label: string; route: Route }) {
   return (
     <li>
-      <Button
-        asChild
-        variant="ghost"
-        className="w-full justify-start"
-      >
-        <BaseLink href={route}>
-          {label}
-        </BaseLink>
+      <Button asChild variant="ghost" className="w-full justify-start">
+        <BaseLink href={route}>{label}</BaseLink>
       </Button>
     </li>
   );
 }
 
-
-export default function Layout({
-  children,
-}: {
-  children: ReactNode;
-}) {
+export default function Layout({ children }: { children: ReactNode }) {
   return (
-    <div className="flex flex-col gap-4 w-full">
+    <div className="flex w-full flex-col gap-4">
       <div>
         <h1>Settings</h1>
         <p>Manage your account settings</p>
       </div>
       <Separator />
       <nav className="flex w-full gap-4">
-        <div className="w-1/5 flex flex-col gap-2">
+        <div className="flex w-1/5 flex-col gap-2">
           <div>
-            <p className="font-semibold text-xl">Personal Information</p>
+            <p className="text-xl font-semibold">Personal Information</p>
             <ul>
               <NavigationLink
                 label="Account & Device Info"
@@ -55,7 +38,7 @@ export default function Layout({
             </ul>
           </div>
           <div>
-            <p className="font-semibold text-xl">Your Purchases</p>
+            <p className="text-xl font-semibold">Your Purchases</p>
             <ul>
               <NavigationLink
                 label="Find Your Purchases"
@@ -72,19 +55,14 @@ export default function Layout({
             </ul>
           </div>
           <div>
-            <p className="font-semibold text-xl">Need Help?</p>
+            <p className="text-xl font-semibold">Need Help?</p>
             <ul>
-              <NavigationLink
-                label="Help Center"
-                route={ROUTES.HELP_CENTER}
-              />
+              <NavigationLink label="Help Center" route={ROUTES.HELP_CENTER} />
             </ul>
           </div>
         </div>
         <div className="w-4/5">
-          <Suspense>
-            {children}
-          </Suspense>
+          <Suspense>{children}</Suspense>
         </div>
       </nav>
     </div>

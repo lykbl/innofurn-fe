@@ -1,5 +1,18 @@
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/common/form';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/common/form';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Input } from '@/components/ui/common/input';
 import { Button } from '@/components/ui/common/button';
 import * as z from 'zod';
@@ -20,19 +33,19 @@ const schema = z.object({
 });
 
 const UpdateDetailsMutation = gql(/* GraphQL */ `
-    mutation UpdateDetails($input: UpdateDetailsInput!) {
-        updateDetails(input: $input) {
-            customer {
-                firstName
-                lastName
-                title
-            }
-        }
+  mutation UpdateDetails($input: UpdateDetailsInput!) {
+    updateDetails(input: $input) {
+      customer {
+        firstName
+        lastName
+        title
+      }
     }
+  }
 `);
 
 export default function UpdateDetailsForm({
-  user
+  user,
 }: {
   user: CheckMeFragmentFragment;
 }) {
@@ -45,7 +58,9 @@ export default function UpdateDetailsForm({
     },
     mode: 'onSubmit',
   });
-  const [updateProfileDetails, { loading }] = useMutation(UpdateDetailsMutation);
+  const [updateProfileDetails, { loading }] = useMutation(
+    UpdateDetailsMutation,
+  );
   const handleSubmit = form.handleSubmit(async (data) => {
     const response = await updateProfileDetails({
       variables: {
@@ -53,8 +68,8 @@ export default function UpdateDetailsForm({
           title: data.title,
           firstName: data.firstName,
           lastName: data.lastName,
-        }
-      }
+        },
+      },
     });
 
     if (response.errors) {
@@ -82,15 +97,12 @@ export default function UpdateDetailsForm({
         title: response.data.updateDetails.customer.title,
       });
     }
-  })
+  });
 
   return (
     <Form {...form}>
       <form
-        className={cn(
-          "flex flex-col gap-2",
-          loading && 'animate-pulse'
-        )}
+        className={cn('flex flex-col gap-2', loading && 'animate-pulse')}
         onSubmit={handleSubmit}
       >
         <div className="flex gap-2">
@@ -98,9 +110,7 @@ export default function UpdateDetailsForm({
             name="title"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>
-                  Title
-                </FormLabel>
+                <FormLabel>Title</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={user.customer.title}
@@ -110,14 +120,9 @@ export default function UpdateDetailsForm({
                       <SelectValue placeholder="Title" />
                     </SelectTrigger>
                   </FormControl>
-                  <SelectContent
-                    defaultValue={user.customer.title}
-                  >
+                  <SelectContent defaultValue={user.customer.title}>
                     {AVAILABLE_TITLES.map((title) => (
-                      <SelectItem
-                        key={title}
-                        value={title}
-                      >
+                      <SelectItem key={title} value={title}>
                         {title}
                       </SelectItem>
                     ))}
@@ -130,16 +135,10 @@ export default function UpdateDetailsForm({
           <FormField
             name="firstName"
             render={({ field }) => (
-              <FormItem
-                className="flex-1"
-              >
-                <FormLabel>
-                  First name
-                </FormLabel>
+              <FormItem className="flex-1">
+                <FormLabel>First name</FormLabel>
                 <FormControl>
-                  <Input
-                    {...field}
-                  />
+                  <Input {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -148,26 +147,17 @@ export default function UpdateDetailsForm({
           <FormField
             name="lastName"
             render={({ field }) => (
-              <FormItem
-                className="flex-1"
-              >
-                <FormLabel>
-                  Last name
-                </FormLabel>
+              <FormItem className="flex-1">
+                <FormLabel>Last name</FormLabel>
                 <FormControl>
-                  <Input
-                    {...field}
-                  />
+                  <Input {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
         </div>
-        <Button
-          type="submit"
-          disabled={loading || !form.formState.isDirty}
-        >
+        <Button type="submit" disabled={loading || !form.formState.isDirty}>
           Update Details
         </Button>
       </form>

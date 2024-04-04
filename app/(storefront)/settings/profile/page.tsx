@@ -13,7 +13,7 @@ export default function Page() {
   const user = useFragment(CheckMeFragmentFragmentDoc, checkMeQuery?.checkMe);
 
   return (
-    <div className="flex flex-col gap-4 w-2/3">
+    <div className="flex w-2/3 flex-col gap-4">
       <div>
         <h2>Profile page</h2>
         <p>Your personal details</p>

@@ -21,7 +21,7 @@ const Header = () => {
   const { data, loading, error } = useQuery(CheckMeQuery);
   const user = data?.checkMe;
   const { theme, toggleTheme } = useContext(ThemeContext);
-  console.log(error)
+  console.log(error);
 
   return (
     <div className="w-full border-b bg-background">

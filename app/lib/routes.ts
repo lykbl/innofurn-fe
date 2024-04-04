@@ -16,7 +16,6 @@ const ROUTES = {
   HELP_CENTER: '/help-center',
 } as const;
 
-
 export type Route = ObjectValues<typeof ROUTES>;
 
 export default ROUTES;

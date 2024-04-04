@@ -1,4 +1,11 @@
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/common/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/common/form';
 import { Input } from '@/components/ui/common/input';
 import { Button } from '@/components/ui/common/button';
 import { useForm } from 'react-hook-form';
@@ -15,11 +22,11 @@ const emailSchema = z.object({
 });
 
 const UpdateEmailMutation = gql(/* GraphQL */ `
-    mutation UpdateEmail($email: Email!) {
-        updateEmail(email: $email) {
-            email
-        }
+  mutation UpdateEmail($email: Email!) {
+    updateEmail(email: $email) {
+      email
     }
+  }
 `);
 
 export default function UpdateEmailForm({
@@ -58,7 +65,8 @@ export default function UpdateEmailForm({
         duration: 5000,
         type: 'foreground',
         title: 'Success',
-        description: 'Email successfully updated. Please check your email for verification link.',
+        description:
+          'Email successfully updated. Please check your email for verification link.',
         variant: 'default',
       });
 
@@ -66,40 +74,30 @@ export default function UpdateEmailForm({
         email: response.data.updateEmail.email,
       });
     }
-  })
+  });
 
   return (
     <Form {...form}>
       <form
-        className={cn(
-          "flex flex-col gap-2",
-          loading && 'animate-pulse',
-        )}
+        className={cn('flex flex-col gap-2', loading && 'animate-pulse')}
         onSubmit={handleSubmit}
       >
         <FormField
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>
-                Email
-              </FormLabel>
+              <FormLabel>Email</FormLabel>
               {user.emailVerifiedAt === null && (
                 <p className="text-xs text-secondary">Email not verified</p>
               )}
               <FormControl>
-                <Input
-                  {...field}
-                />
+                <Input {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button
-          disabled={loading || !form.formState.isDirty}
-          type="submit"
-        >
+        <Button disabled={loading || !form.formState.isDirty} type="submit">
           Update Email
         </Button>
       </form>
