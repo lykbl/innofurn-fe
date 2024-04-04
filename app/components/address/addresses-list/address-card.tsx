@@ -13,12 +13,12 @@ export type AddressCardProps = {
   toggleAddressFormView: () => void;
 };
 
-const AddressCard = ({
+export default function AddressCard({
   address,
   isSelected,
   handleAddressChange,
   toggleAddressFormView,
-}: AddressCardProps) => {
+}: AddressCardProps) {
   const [deleteAddress] = useMutation(REMOVE_ADDRESS_MUTATION);
   const [isPending, startTransition] = useTransition();
 
@@ -67,5 +67,3 @@ const AddressCard = ({
     </Card>
   );
 };
-
-export default AddressCard;

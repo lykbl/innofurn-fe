@@ -91,7 +91,7 @@ const EditMode = ({
 
   return (
     <div ref={editInputRef} className="flex gap-2">
-      <Input {...field} ref={inputRef} className="border-none px-0 text-2xl" />
+      <Input {...field} ref={inputRef} className="border-none pl-2 text-2xl" />
       <Button variant="default" type="button" onClick={toggleTitleEditMode}>
         Save
       </Button>

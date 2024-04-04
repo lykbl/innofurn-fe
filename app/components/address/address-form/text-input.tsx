@@ -8,7 +8,7 @@ import {
   FormMessage,
 } from '@/components/ui/common/form';
 import { Input } from '@/components/ui/common/input';
-import { AddressFormSchema } from '@/(storefront)/checkout/components/address-form/form';
+import { AddressFormSchema } from '@/components/address/address-form/form';
 import { cn } from '@/lib/utils';
 
 type TextInputFields = Omit<

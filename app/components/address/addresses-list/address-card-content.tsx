@@ -2,14 +2,14 @@ import React from 'react';
 import { AddressCardProps } from '@/(storefront)/checkout/components/address-step/address-card';
 import AddressControls from '@/(storefront)/checkout/components/address-step/address-card-controls';
 
-const AddressCardContent = ({
+export default function AddressCardContent({
   address,
   isSelected,
   toggleAddressFormView,
   handleDeleteAddress,
-}: AddressCardProps & { handleDeleteAddress: () => void }) => {
+}: AddressCardProps & { handleDeleteAddress: () => void }) {
   return (
-    <>
+    <div>
       <div className="flex h-full flex-col gap-12 text-start text-sm font-medium">
         <div className="flex flex-col gap-4">
           <div>
@@ -49,8 +49,6 @@ const AddressCardContent = ({
           toggleAddressFormView={toggleAddressFormView}
         />
       }
-    </>
+    </div>
   );
 };
-
-export default AddressCardContent;
