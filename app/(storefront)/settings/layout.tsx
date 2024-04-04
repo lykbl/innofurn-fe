@@ -65,6 +65,10 @@ export default function Layout({
                 label="See Your Reviews"
                 route={ROUTES.SETTINGS_REVIEWS}
               />
+              <NavigationLink
+                label="Your Product Lists"
+                route={ROUTES.SETTINGS_PRODUCTS_LISTS}
+              />
             </ul>
           </div>
           <div>

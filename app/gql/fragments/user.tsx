@@ -5,12 +5,14 @@ const CheckMeFragment = gql(/* GraphQL */ `
     id
     email
     name
+    emailVerifiedAt
     customer {
       id
       fullName
       firstName
       lastName
       role
+      title
     }
   }
 `);

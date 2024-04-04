@@ -12,6 +12,7 @@ const ROUTES = {
   SETTINGS_PROFILE: '/settings/profile',
   SETTINGS_ORDERS: '/settings/orders',
   SETTINGS_REVIEWS: '/settings/reviews',
+  SETTINGS_PRODUCTS_LISTS: '/settings/products-lists',
   HELP_CENTER: '/help-center',
 } as const;
 
