@@ -104,7 +104,7 @@ export const Icons = {
   star: ({
     withGradient = false,
     ...props
-  }: SVGProps<SVGSVGElement> & { withGradient: boolean }) => (
+  }: SVGProps<SVGSVGElement> & { withGradient?: boolean }) => (
     <svg
       height="24"
       fill="none"
