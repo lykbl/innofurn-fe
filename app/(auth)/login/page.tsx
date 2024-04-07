@@ -11,7 +11,8 @@ import {
 import { LoginForm } from '@/(auth)/login/login-form';
 import { OAuthButtons } from '@/(auth)/oauth-buttons';
 import { TermsAndConditions } from '@/(auth)/terms-and-conditions';
-import { SeparatorWithText } from '@/(auth)/separator-with-text';
+import { SeparatorWithText } from '@/components/ui/common/separator-with-text';
+import React from 'react';
 export default function Page() {
   return (
     <Card className="w-1/2 p-2">
@@ -22,7 +23,11 @@ export default function Page() {
       <CardContent className="p-4">
         <LoginForm />
       </CardContent>
-      <SeparatorWithText>Or continue with</SeparatorWithText>
+      <SeparatorWithText
+        className="bg-background px-2 text-muted-foreground text-xs uppercase"
+      >
+          Or continue with
+      </SeparatorWithText>
       <CardFooter className="justify-evenly p-4">
         <OAuthButtons />
       </CardFooter>
