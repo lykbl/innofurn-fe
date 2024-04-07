@@ -25,7 +25,7 @@ export default function Page() {
         <SignupForm />
       </CardContent>
       <SeparatorWithText>
-        <span className="bg-background px-2 text-muted-foreground text-xs uppercase">
+        <span className="bg-background px-2 text-xs uppercase text-muted-foreground">
           Or continue with
         </span>
       </SeparatorWithText>

@@ -1,14 +1,14 @@
 import {
   OrderAddressFragmentFragmentDoc,
-  OrderFragmentFragment, OrderFragmentFragmentDoc,
-  ProductLineFragmentFragmentDoc, ShippingLineFragmentFragmentDoc,
+  OrderFragmentFragment,
+  ProductLineFragmentFragmentDoc,
+  ShippingLineFragmentFragmentDoc,
 } from '@/gql/generated/graphql';
-import { gql, useFragment } from '@/gql/generated';
+import { useFragment } from '@/gql/generated';
 import { Card } from '@/components/ui/common/card';
-import { Badge, badgeVariants } from '@/components/ui/badge';
+import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/common/button';
-import BaseLink from 'next/link';
 import { SeparatorWithText } from '@/components/ui/common/separator-with-text';
 import { Separator } from '@/components/ui/common/separator';
 import { Icons } from '@/components/icons';
@@ -16,23 +16,31 @@ import ProductLine from '@/components/order/product-line';
 import { useLazyQuery } from '@apollo/client';
 import { OrderDetailsQuery } from '@/gql/queries/order';
 import { useToast } from '@/components/ui/use-toast';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-import { VariantProps } from 'class-variance-authority';
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '@/components/ui/collapsible';
 
 export default function OrderLine({
   order,
   minimumVisibleProductLines,
 }: {
-  order: OrderFragmentFragment
-  minimumVisibleProductLines: number,
+  order: OrderFragmentFragment;
+  minimumVisibleProductLines: number;
 }) {
-  const productLines = order.productLines.data.map((line) => (useFragment(ProductLineFragmentFragmentDoc, line)));
-  const { hasMorePages: hasMoreProductLines, total: linesTotal } = order.productLines.paginatorInfo;
-  const shippingAddress = useFragment(OrderAddressFragmentFragmentDoc, order.shippingAddress);
-  const shippingLines = order.shippingLines.map((shippingLineFragment) => useFragment(
-    ShippingLineFragmentFragmentDoc,
-    shippingLineFragment,
-  ));
+  const productLines = order.productLines.data.map((line) =>
+    useFragment(ProductLineFragmentFragmentDoc, line),
+  );
+  const { hasMorePages: hasMoreProductLines, total: linesTotal } =
+    order.productLines.paginatorInfo;
+  const shippingAddress = useFragment(
+    OrderAddressFragmentFragmentDoc,
+    order.shippingAddress,
+  );
+  const shippingLines = order.shippingLines.map((shippingLineFragment) =>
+    useFragment(ShippingLineFragmentFragmentDoc, shippingLineFragment),
+  );
   const { toast } = useToast();
 
   const [fetchAllProductLines, { client }] = useLazyQuery(OrderDetailsQuery);
@@ -72,11 +80,15 @@ export default function OrderLine({
         <div className="flex justify-between">
           <span className="text-xl font-semibold">#{order.id}</span>
           <Badge
-            variant={cn(
-              order.status === 'payment-received' && 'success',
-              order.status === 'awaiting-payment' && 'pending',
-              order.status === 'failed' && 'destructive',
-            ) as 'destructive' || 'pending' || 'success'}
+            variant={
+              (cn(
+                order.status === 'payment-received' && 'success',
+                order.status === 'awaiting-payment' && 'pending',
+                order.status === 'failed' && 'destructive',
+              ) as 'destructive') ||
+              'pending' ||
+              'success'
+            }
             //TODO actually type this
           >
             {order.status}
@@ -84,75 +96,72 @@ export default function OrderLine({
         </div>
         <div className="">
           <div className="flex flex-col gap-2 pb-2">
-            {productLines.slice(0, minimumVisibleProductLines).map((productLine) => (
-              <ProductLine productLine={productLine} />
-            ))}
+            {productLines
+              .slice(0, minimumVisibleProductLines)
+              .map((productLine) => (
+                <ProductLine productLine={productLine} />
+              ))}
           </div>
           {minimumVisibleProductLines < productLines.length && (
             <Collapsible
               defaultOpen={true}
               className={cn(
-                "flex flex-col gap-2 data-[state=open]:flex-row data-[state=open]:gap-0",
+                'flex flex-col gap-2 data-[state=open]:flex-row data-[state=open]:gap-0',
               )}
             >
               <CollapsibleContent
                 //TODO why is animation triggering twice?
                 // className="flex flex-col gap-2 overflow-hidden transition-all data-[state=open]:animate-collapsible-down data-[state=closed]:animate-collapsible-up"
-                className="flex flex-col gap-2 min-w-[100%]"
+                className="flex min-w-[100%] flex-col gap-2"
               >
-                {productLines.slice(minimumVisibleProductLines).map((productLine) => (
-                  <ProductLine productLine={productLine} />
-                ))}
+                {productLines
+                  .slice(minimumVisibleProductLines)
+                  .map((productLine) => (
+                    <ProductLine productLine={productLine} />
+                  ))}
               </CollapsibleContent>
               <CollapsibleTrigger
                 className={cn(
-                  "data-[state=open]:sticky data-[state=open]:min-w-max data-[state=open]:top-2 data-[state=open]:translate-x-4",
+                  'data-[state=open]:sticky data-[state=open]:top-2 data-[state=open]:min-w-max data-[state=open]:translate-x-4',
                 )}
                 asChild
               >
-                <Button>
-                  Show all items
-                </Button>
+                <Button>Show all items</Button>
               </CollapsibleTrigger>
             </Collapsible>
-            )}
+          )}
           {hasMoreProductLines && (
-            <div className="flex flex-col gap-2 items-center">
-              <SeparatorWithText
-                className="font-semibold"
-              >
+            <div className="flex flex-col items-center gap-2">
+              <SeparatorWithText className="font-semibold">
                 {linesTotal - productLines.length} products are hidden
               </SeparatorWithText>
-              {<Button
-                variant="outline"
-                className="w-max"
-                onClick={handleLoadAllProductLines}
-              >
-                Show all products
-              </Button>}
+              {
+                <Button
+                  variant="outline"
+                  className="w-max"
+                  onClick={handleLoadAllProductLines}
+                >
+                  Show all products
+                </Button>
+              }
             </div>
           )}
         </div>
         <Separator />
         <div className="flex flex-col gap-2">
           <div className="flex justify-between">
-            <div className="flex flex-col w-1/3">
+            <div className="flex w-1/3 flex-col">
               <p className="flex flex-col">
-                        <span className="font-semibold">
-                           Delivery to:
-                        </span>
+                <span className="font-semibold">Delivery to:</span>
                 <span>
-                          {shippingAddress.city} {shippingAddress.country.name} {shippingAddress.lineOne}
-                       </span>
+                  {shippingAddress.city} {shippingAddress.country.name}{' '}
+                  {shippingAddress.lineOne}
+                </span>
               </p>
-              <div className="pt-4 *:justify-between *:flex">
+              <div className="pt-4 *:flex *:justify-between">
                 <p>
-                        <span>
-                            Contact Email:
-                        </span>
-                  <span>
-                      {shippingAddress.contactEmail}
-                        </span>
+                  <span>Contact Email:</span>
+                  <span>{shippingAddress.contactEmail}</span>
                 </p>
                 <p>
                   <span>Contact Phone:</span>
@@ -160,7 +169,7 @@ export default function OrderLine({
                 </p>
               </div>
             </div>
-            <div className="flex flex-col w-1/3 justify-between *:flex *:justify-between">
+            <div className="flex w-1/3 flex-col justify-between *:flex *:justify-between">
               <div className="flex flex-col *:flex *:justify-between">
                 <p>
                   <span>Subtotal:</span>
@@ -188,25 +197,19 @@ export default function OrderLine({
           {/*  </Button>*/}
           {/*</div>*/}
         </div>
-        <div className="p-2 hidden">
-          <Card className="flex bg-muted flex-col gap-4 p-2">
+        <div className="hidden p-2">
+          <Card className="flex flex-col gap-4 bg-muted p-2">
             <div className="flex flex-col gap-2">
               {shippingLines.map((shippingLine) => (
                 <div className="flex justify-between">
                   <div className="flex gap-2">
-                            <span>
-                                <Icons.truck />
-                            </span>
                     <span>
-                                {shippingLine.description}
-                            </span>
-                    <span>
-                                {shippingLine.identifier}
-                            </span>
+                      <Icons.truck />
+                    </span>
+                    <span>{shippingLine.description}</span>
+                    <span>{shippingLine.identifier}</span>
                   </div>
-                  <div>
-                    {shippingLine.total.format}
-                  </div>
+                  <div>{shippingLine.total.format}</div>
                 </div>
               ))}
             </div>
@@ -216,7 +219,7 @@ export default function OrderLine({
                 <p className="font-semibold">Delivery Instructions:</p>
                 <p>{shippingAddress.deliveryInstructions}</p>
               </div>
-              <div className="flex flex-col gap-2 w-1/3 *:flex *:justify-between">
+              <div className="flex w-1/3 flex-col gap-2 *:flex *:justify-between">
                 <p>
                   <span>Sub Total:</span>
                   <span>{order.subTotal.format}</span>

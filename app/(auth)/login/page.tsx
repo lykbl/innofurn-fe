@@ -23,10 +23,8 @@ export default function Page() {
       <CardContent className="p-4">
         <LoginForm />
       </CardContent>
-      <SeparatorWithText
-        className="bg-background px-2 text-muted-foreground text-xs uppercase"
-      >
-          Or continue with
+      <SeparatorWithText className="bg-background px-2 text-xs uppercase text-muted-foreground">
+        Or continue with
       </SeparatorWithText>
       <CardFooter className="justify-evenly p-4">
         <OAuthButtons />

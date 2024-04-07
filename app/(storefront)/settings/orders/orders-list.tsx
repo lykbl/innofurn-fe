@@ -7,19 +7,24 @@ import { useTransition } from 'react';
 import { MyOrdersQuery } from '@/gql/queries/order';
 import OrderLine from '@/components/order/order-line';
 
-
 const MINIMUM_VISIBLE_PRODUCTS_LINES = 3;
 
 export default function OrdersList() {
-  const { data: myOrdersQuery, fetchMore: fetchMoreOrders } = useSuspenseQuery(MyOrdersQuery, {
-    variables: {
-      page: 3,
-      first: 5,
-      firstProductLines: MINIMUM_VISIBLE_PRODUCTS_LINES,
+  const { data: myOrdersQuery, fetchMore: fetchMoreOrders } = useSuspenseQuery(
+    MyOrdersQuery,
+    {
+      variables: {
+        page: 3,
+        first: 5,
+        firstProductLines: MINIMUM_VISIBLE_PRODUCTS_LINES,
+      },
     },
-  });
-  const orders = myOrdersQuery?.myOrders.data.map((order) => (useFragment(OrderFragmentFragmentDoc, order)));
-  const { hasMorePages: hasMoreOrders, currentPage: currentOrdersPage } = myOrdersQuery?.myOrders?.paginatorInfo;
+  );
+  const orders = myOrdersQuery?.myOrders.data.map((order) =>
+    useFragment(OrderFragmentFragmentDoc, order),
+  );
+  const { hasMorePages: hasMoreOrders, currentPage: currentOrdersPage } =
+    myOrdersQuery?.myOrders?.paginatorInfo;
   const [loadingMoreOrders, startLoadingMoreOrders] = useTransition();
 
   const handleLoadMoreOrders = () => {
@@ -38,10 +43,7 @@ export default function OrdersList() {
           return {
             myOrders: {
               ...fetchMoreResult.myOrders,
-              data: [
-                ...prev.myOrders.data,
-                ...fetchMoreResult.myOrders.data,
-              ],
+              data: [...prev.myOrders.data, ...fetchMoreResult.myOrders.data],
             },
           };
         },
@@ -64,10 +66,7 @@ export default function OrdersList() {
         />
       ))}
       {hasMoreOrders && (
-        <Button
-          onClick={handleLoadMoreOrders}
-          disabled={loadingMoreOrders}
-        >
+        <Button onClick={handleLoadMoreOrders} disabled={loadingMoreOrders}>
           Load more orders
         </Button>
       )}
