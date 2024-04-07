@@ -5,7 +5,7 @@ import {
 } from '@/gql/generated/graphql';
 import { gql, useFragment } from '@/gql/generated';
 import { Card } from '@/components/ui/common/card';
-import { Badge } from '@/components/ui/badge';
+import { Badge, badgeVariants } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/common/button';
 import BaseLink from 'next/link';
@@ -16,11 +16,15 @@ import ProductLine from '@/components/order/product-line';
 import { useLazyQuery } from '@apollo/client';
 import { OrderDetailsQuery } from '@/gql/queries/order';
 import { useToast } from '@/components/ui/use-toast';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { VariantProps } from 'class-variance-authority';
 
 export default function OrderLine({
   order,
+  minimumVisibleProductLines,
 }: {
   order: OrderFragmentFragment
+  minimumVisibleProductLines: number,
 }) {
   const productLines = order.productLines.data.map((line) => (useFragment(ProductLineFragmentFragmentDoc, line)));
   const { hasMorePages: hasMoreProductLines, total: linesTotal } = order.productLines.paginatorInfo;
@@ -31,14 +35,14 @@ export default function OrderLine({
   ));
   const { toast } = useToast();
 
-  const [fetchAllProductLines, { client }] = useLazyQuery(OrderDetailsQuery)
+  const [fetchAllProductLines, { client }] = useLazyQuery(OrderDetailsQuery);
   const handleLoadAllProductLines = async () => {
     const response = await fetchAllProductLines({
       variables: {
         id: order.id,
         firstProductLines: linesTotal,
       },
-    })
+    });
 
     if (response.error) {
       toast({
@@ -52,16 +56,15 @@ export default function OrderLine({
     }
 
     const newProductLines = response.data?.orderDetails.productLines;
-
     if (newProductLines) {
       client.cache.modify({
         id: `Order:${order.id}`,
         fields: {
           productLines: () => newProductLines,
         },
-      })
+      });
     }
-  }
+  };
 
   return (
     <li>
@@ -69,17 +72,50 @@ export default function OrderLine({
         <div className="flex justify-between">
           <span className="text-xl font-semibold">#{order.id}</span>
           <Badge
-            className={cn(
-              order.status === 'payment-received' && 'bg-green-600',
-            )}
+            variant={cn(
+              order.status === 'payment-received' && 'success',
+              order.status === 'awaiting-payment' && 'pending',
+              order.status === 'failed' && 'destructive',
+            ) as 'destructive' || 'pending' || 'success'}
+            //TODO actually type this
           >
             {order.status}
           </Badge>
         </div>
-        <div className="flex flex-col gap-2">
-          {productLines.map((productLine) => (
-            <ProductLine productLine={productLine} />
-          ))}
+        <div className="">
+          <div className="flex flex-col gap-2 pb-2">
+            {productLines.slice(0, minimumVisibleProductLines).map((productLine) => (
+              <ProductLine productLine={productLine} />
+            ))}
+          </div>
+          {minimumVisibleProductLines < productLines.length && (
+            <Collapsible
+              defaultOpen={true}
+              className={cn(
+                "flex flex-col gap-2 data-[state=open]:flex-row data-[state=open]:gap-0",
+              )}
+            >
+              <CollapsibleContent
+                //TODO why is animation triggering twice?
+                // className="flex flex-col gap-2 overflow-hidden transition-all data-[state=open]:animate-collapsible-down data-[state=closed]:animate-collapsible-up"
+                className="flex flex-col gap-2 min-w-[100%]"
+              >
+                {productLines.slice(minimumVisibleProductLines).map((productLine) => (
+                  <ProductLine productLine={productLine} />
+                ))}
+              </CollapsibleContent>
+              <CollapsibleTrigger
+                className={cn(
+                  "data-[state=open]:sticky data-[state=open]:min-w-max data-[state=open]:top-2 data-[state=open]:translate-x-4",
+                )}
+                asChild
+              >
+                <Button>
+                  Show all items
+                </Button>
+              </CollapsibleTrigger>
+            </Collapsible>
+            )}
           {hasMoreProductLines && (
             <div className="flex flex-col gap-2 items-center">
               <SeparatorWithText
@@ -141,16 +177,16 @@ export default function OrderLine({
               </p>
             </div>
           </div>
-          <div className="flex justify-end gap-2">
-            <Button
-              asChild
-              variant="outline"
-            >
-              <BaseLink href="/orders/1">
-                Order details
-              </BaseLink>
-            </Button>
-          </div>
+          {/*<div className="flex justify-end gap-2">*/}
+          {/*  <Button*/}
+          {/*    asChild*/}
+          {/*    variant="outline"*/}
+          {/*  >*/}
+          {/*    <BaseLink href="/orders/1">*/}
+          {/*      Order details*/}
+          {/*    </BaseLink>*/}
+          {/*  </Button>*/}
+          {/*</div>*/}
         </div>
         <div className="p-2 hidden">
           <Card className="flex bg-muted flex-col gap-4 p-2">

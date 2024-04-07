@@ -69,6 +69,7 @@ function Content({ myCart }: { myCart?: CartFragmentFragment | null }) {
 }
 
 export default function CartPopover() {
+  return;
   const [cartUpdated, setCartUpdated] = useState(false);
   const { data: myCartQuery, client, error } = useSuspenseQuery(MyCartQuery);
   const myCart = useFragment(CartFragmentFragmentDoc, myCartQuery?.myCart);

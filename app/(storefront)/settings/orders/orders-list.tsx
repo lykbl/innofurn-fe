@@ -7,12 +7,15 @@ import { useTransition } from 'react';
 import { MyOrdersQuery } from '@/gql/queries/order';
 import OrderLine from '@/components/order/order-line';
 
+
+const MINIMUM_VISIBLE_PRODUCTS_LINES = 3;
+
 export default function OrdersList() {
   const { data: myOrdersQuery, fetchMore: fetchMoreOrders } = useSuspenseQuery(MyOrdersQuery, {
     variables: {
       page: 3,
       first: 5,
-      firstProductLines: 3,
+      firstProductLines: MINIMUM_VISIBLE_PRODUCTS_LINES,
     },
   });
   const orders = myOrdersQuery?.myOrders.data.map((order) => (useFragment(OrderFragmentFragmentDoc, order)));
@@ -25,7 +28,7 @@ export default function OrdersList() {
         variables: {
           page: currentOrdersPage + 1,
           first: 5,
-          firstProductLines: 3,
+          firstProductLines: MINIMUM_VISIBLE_PRODUCTS_LINES,
         },
         updateQuery: (prev, { fetchMoreResult }) => {
           if (!fetchMoreResult) {
@@ -54,7 +57,11 @@ export default function OrdersList() {
       )}
     >
       {orders.map((order) => (
-        <OrderLine order={order} key={order.id} />
+        <OrderLine
+          order={order}
+          key={order.id}
+          minimumVisibleProductLines={MINIMUM_VISIBLE_PRODUCTS_LINES}
+        />
       ))}
       {hasMoreOrders && (
         <Button
