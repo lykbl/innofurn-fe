@@ -159,6 +159,16 @@ function createClient() {
             },
           },
         },
+        Order: {
+          fields: {
+            productLines: {
+              keyArgs: false,
+            },
+          },
+        },
+        ProductLinePaginator: {
+          keyFields: false,
+        },
         ReviewPaginator: {
           keyFields: false,
         },
