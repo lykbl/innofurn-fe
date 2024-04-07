@@ -31,7 +31,7 @@ export default function ProductLine({
               {productLine.purchasable.name}
             </BaseLink>
           </Button>
-          <p className="text-secondary pb-4">
+          <p className="pb-4">
             SKU: {productLine.purchasable.sku}
           </p>
           <Button size="default">

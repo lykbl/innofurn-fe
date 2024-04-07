@@ -31,6 +31,7 @@ export default function AssociatedProducts({ slug }: { slug: string }) {
 
   return (
     <Carousel>
+      <h2>You may be interested:</h2>
       <CarouselContent>
         {associatedProducts.map((product) => (
           <CarouselItem className="basis-1/6" key={product.id}>

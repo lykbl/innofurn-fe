@@ -12,7 +12,7 @@ export default function ProductCard({
   product: ProductCardFragmentFragment;
 }) {
   return (
-    <Card className="flex h-100 w-60 flex-col gap-2 overflow-hidden rounded p-2">
+    <Card className="flex h-108 w-60 flex-col gap-2 overflow-hidden rounded p-2">
       <Image
         className="w-full"
         width={225}
