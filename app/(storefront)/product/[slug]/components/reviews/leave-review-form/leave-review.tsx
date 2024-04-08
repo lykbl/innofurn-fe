@@ -1,4 +1,3 @@
-import { Card } from '@/components/ui/common/card';
 import { Button } from '@/components/ui/common/button';
 import {
   Dialog,
@@ -13,7 +12,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery } from '@apollo/client';
-import { gql, useFragment } from '@/gql/generated';
+import { useFragment } from '@/gql/generated';
 import {
   CheckMeFragmentFragmentDoc,
   ProductReviewVariantFragmentFragment,
@@ -102,10 +101,7 @@ export default function LeaveReview({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button
-          className="py-1"
-          onClick={handleOpenLeaveReviewForm}
-        >
+        <Button className="py-1" onClick={handleOpenLeaveReviewForm}>
           Leave a review
         </Button>
       </DialogTrigger>
@@ -116,17 +112,14 @@ export default function LeaveReview({
             Tell us about your impressions in detail
           </p>
           <p>
-            Why did you decide to buy this product? What did you especially
-            like and didn't like?
+            Why did you decide to buy this product? What did you especially like
+            and didn't like?
           </p>
         </div>
         <Form {...form}>
           <form
             onSubmit={onSubmit}
-            className={cn(
-              'flex flex-col gap-2',
-              isPending && 'animate-pulse',
-            )}
+            className={cn('flex flex-col gap-2', isPending && 'animate-pulse')}
           >
             <div className="flex gap-2">
               <VariantsInput variants={productVariants} />
@@ -136,11 +129,7 @@ export default function LeaveReview({
             <BodyInput />
             {/* TODO add this */}
             {/*<ProsNConsInput />*/}
-            <Button
-              type="submit"
-              className="w-full"
-              disabled={user === null}
-            >
+            <Button type="submit" className="w-full" disabled={user === null}>
               Submit review
             </Button>
           </form>
