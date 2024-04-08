@@ -25,6 +25,7 @@ import BodyInput from '@/(storefront)/product/[slug]/components/reviews/leave-re
 import { CheckMeQuery } from '@/gql/queries/user';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/components/ui/use-toast';
+import { CreateReviewMutation } from '@/gql/mutations/review';
 
 const LeaveReviewFormSchema = z.object({
   productVariantId: z.number().int(),
@@ -32,17 +33,6 @@ const LeaveReviewFormSchema = z.object({
   body: z.string().max(65535),
   rating: z.number().int().min(1).max(5),
 });
-
-const CreateReviewMutation = gql(`
-  mutation CreateReviewMutation($input: CreateReviewInput!) {
-    createReview(input: $input) {
-      id
-      title
-      body
-      rating
-    }
-  }
-`);
 
 export default function LeaveReview({
   productVariants,
@@ -52,7 +42,13 @@ export default function LeaveReview({
   const { toast } = useToast();
   const [createReview] = useMutation(CreateReviewMutation, {
     onCompleted: () => {
-      console.log('Review created');
+      toast({
+        duration: 2000,
+        type: 'foreground',
+        title: 'Success',
+        description: 'Thank you! Your review was submitted.',
+        variant: 'success',
+      });
     },
     onError: (error) => {
       return toast({
@@ -104,50 +100,53 @@ export default function LeaveReview({
   };
 
   return (
-    <Card className="flex flex-col gap-2 bg-secondary p-2">
-      <h5 className="font-semibold">Review this product</h5>
-      <span className="text-sm">Share your thoughts with other customers</span>
-      <Dialog>
-        <DialogTrigger asChild>
-          <Button className="py-1" onClick={handleOpenLeaveReviewForm}>
-            Leave a review
-          </Button>
-        </DialogTrigger>
-        <DialogContent className="flex w-[80%] flex-col gap-2">
-          <h1 className="text-xl">Your review for {reviewableVariant.name}</h1>
-          <div className="space-y-1 text-xs">
-            <p className="font-semibold">
-              Tell us about your impressions in detail
-            </p>
-            <p>
-              Why did you decide to buy this product? What did you especially
-              like and didn't like?
-            </p>
-          </div>
-          <Form {...form}>
-            <form
-              onSubmit={onSubmit}
-              className={cn(
-                'flex flex-col gap-2',
-                isPending && 'animate-pulse',
-              )}
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button
+          className="py-1"
+          onClick={handleOpenLeaveReviewForm}
+        >
+          Leave a review
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="flex w-[80%] flex-col gap-2">
+        <h1 className="text-xl">Your review for {reviewableVariant.name}</h1>
+        <div className="space-y-1 text-xs">
+          <p className="font-semibold">
+            Tell us about your impressions in detail
+          </p>
+          <p>
+            Why did you decide to buy this product? What did you especially
+            like and didn't like?
+          </p>
+        </div>
+        <Form {...form}>
+          <form
+            onSubmit={onSubmit}
+            className={cn(
+              'flex flex-col gap-2',
+              isPending && 'animate-pulse',
+            )}
+          >
+            <div className="flex gap-2">
+              <VariantsInput variants={productVariants} />
+              <RatingInput />
+            </div>
+            <TitleInput />
+            <BodyInput />
+            {/* TODO add this */}
+            {/*<ProsNConsInput />*/}
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={user === null}
             >
-              <div className="flex gap-2">
-                <VariantsInput variants={productVariants} />
-                <RatingInput />
-              </div>
-              <TitleInput />
-              <BodyInput />
-              {/* TODO add this */}
-              {/*<ProsNConsInput />*/}
-              <Button type="submit" className="w-full" disabled={user === null}>
-                Submit review
-              </Button>
-            </form>
-          </Form>
-          <DialogClose />
-        </DialogContent>
-      </Dialog>
-    </Card>
+              Submit review
+            </Button>
+          </form>
+        </Form>
+        <DialogClose />
+      </DialogContent>
+    </Dialog>
   );
 }

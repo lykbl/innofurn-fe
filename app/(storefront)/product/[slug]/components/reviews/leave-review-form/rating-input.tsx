@@ -23,7 +23,7 @@ export default function RatingInput() {
             <FiveStars
               className="h-10"
               rating={field.value}
-              onClick={field.onChange}
+              handleClick={field.onChange}
               withEmojis={true}
             />
           </FormControl>

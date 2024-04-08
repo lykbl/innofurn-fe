@@ -51,7 +51,7 @@ const StarIcon = ({
     <Icons.star
       className={cn(
         'h-full w-full stroke-primary',
-        isFilled ? 'text-primary' : 'text-secondary',
+        isFilled ? 'text-primary' : 'text-transparent',
         className,
       )}
       withGradient={withGradient}

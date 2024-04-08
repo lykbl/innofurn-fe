@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, TransitionStartFunction } from 'react';
+import React, { Dispatch, SetStateAction, TransitionStartFunction } from 'react';
 import { calculatePercentage, cn } from '@/lib/utils';
 import { Card } from '@/components/ui/common/card';
 import FiveStars from '@/components/ui/common/five-stars';
@@ -80,7 +80,11 @@ export default function ReviewsBreakdownView({
           </div>
         </div>
       </Card>
-      <LeaveReview productVariants={variants} />
+      <Card className="flex flex-col gap-2 bg-secondary p-2">
+        <h5 className="font-semibold">Review this product</h5>
+        <span className="text-sm">Share your thoughts with other customers</span>
+        <LeaveReview productVariants={variants} />
+      </Card>
     </div>
   );
 }

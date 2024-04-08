@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/common/button';
 import BaseLink from 'next/link';
 import { ProductLineFragmentFragment } from '@/gql/generated/graphql';
+import LeaveReview from '@/(storefront)/product/[slug]/components/reviews/leave-review-form/leave-review';
 
 export default function ProductLine({
   productLine,
@@ -30,7 +31,7 @@ export default function ProductLine({
             </BaseLink>
           </Button>
           <p className="pb-4">SKU: {productLine.purchasable.sku}</p>
-          <Button size="default">Leave a review</Button>
+          <LeaveReview productVariants={[productLine.purchasable]} />
         </div>
         <div className="flex w-1/4 justify-between">
           <span>{productLine.unitQuantity} pcs.</span>

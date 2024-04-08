@@ -76,7 +76,7 @@ export default function OrderLine({
 
   return (
     <li>
-      <Card className="flex flex-col gap-4 p-2">
+      <Card className="flex flex-col gap-4 p-4">
         <div className="flex justify-between">
           <span className="text-xl font-semibold">#{order.id}</span>
           <Badge
@@ -94,7 +94,7 @@ export default function OrderLine({
             {order.status}
           </Badge>
         </div>
-        <div className="">
+        <div>
           <div className="flex flex-col gap-2 pb-2">
             {productLines
               .slice(0, minimumVisibleProductLines)
@@ -122,11 +122,18 @@ export default function OrderLine({
               </CollapsibleContent>
               <CollapsibleTrigger
                 className={cn(
-                  'data-[state=open]:sticky data-[state=open]:top-2 data-[state=open]:min-w-max data-[state=open]:translate-x-4',
+                  'group data-[state=open]:sticky data-[state=open]:top-2 data-[state=open]:min-w-max data-[state=open]:translate-x-4',
                 )}
                 asChild
               >
-                <Button>Show all items</Button>
+                <Button>
+                  <span className="group-data-[state=closed]:hidden">
+                    Hide extra items
+                  </span>
+                  <span className="group-data-[state=open]:hidden">
+                    Show extra items
+                  </span>
+                </Button>
               </CollapsibleTrigger>
             </Collapsible>
           )}
