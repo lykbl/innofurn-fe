@@ -1,22 +1,22 @@
 import { useSuspenseQuery } from '@apollo/client';
 import { useFragment } from '@/gql/generated';
 import { Button } from '@/components/ui/common/button';
-import { OrderFragmentFragmentDoc, ReviewFragmentFragmentDoc } from '@/gql/generated/graphql';
+import {
+  ReviewFragmentFragmentDoc,
+} from '@/gql/generated/graphql';
 import { cn } from '@/lib/utils';
 import { useTransition } from 'react';
 import { MyReviewsQuery } from '@/gql/queries/review';
 import ReviewLine from '@/components/review/review-line';
 
 export default function ReviewsList() {
-  const { data: myReviewsQuery, fetchMore: fetchMoreReviews } = useSuspenseQuery(
-    MyReviewsQuery,
-    {
+  const { data: myReviewsQuery, fetchMore: fetchMoreReviews } =
+    useSuspenseQuery(MyReviewsQuery, {
       variables: {
         page: 1,
         first: 5,
       },
-    },
-  );
+    });
   const reviews = myReviewsQuery?.myReviews.data.map((order) =>
     useFragment(ReviewFragmentFragmentDoc, order),
   );
@@ -55,10 +55,7 @@ export default function ReviewsList() {
       )}
     >
       {reviews.map((review) => (
-        <ReviewLine
-          review={review}
-          key={review.id}
-        />
+        <ReviewLine review={review} key={review.id} />
       ))}
       {hasMoreReviews && (
         <Button onClick={handleLoadMoreReviews} disabled={loadingMoreReviews}>

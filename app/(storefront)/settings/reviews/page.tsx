@@ -2,7 +2,6 @@
 
 import { Separator } from '@/components/ui/common/separator';
 import { Suspense } from 'react';
-import OrdersList from '@/(storefront)/settings/orders/orders-list';
 import ReviewsList from '@/(storefront)/settings/reviews/reviews-list';
 import ReviewsListSkeleton from '@/skeletons/review/reviews-list-skeleton';
 
