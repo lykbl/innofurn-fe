@@ -73,7 +73,7 @@ export default function UserPopover({
             variant="ghost"
             className="h-8 w-full justify-start px-2 py-1"
           >
-            <BaseLink href={ROUTES.SETTINGS}>Settings</BaseLink>
+            <BaseLink href={ROUTES.SETTINGS_PROFILE}>Settings</BaseLink>
           </Button>
         </div>
         <Separator />

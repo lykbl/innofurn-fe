@@ -9,7 +9,8 @@ import {
 import { SignupForm } from '@/(auth)/signup/signup-form';
 import { OAuthButtons } from '@/(auth)/oauth-buttons';
 import { TermsAndConditions } from '@/(auth)/terms-and-conditions';
-import { SeparatorWithText } from '@/(auth)/separator-with-text';
+import { SeparatorWithText } from '@/components/ui/common/separator-with-text';
+import React from 'react';
 
 export default function Page() {
   return (
@@ -23,7 +24,11 @@ export default function Page() {
       <CardContent className="p-4">
         <SignupForm />
       </CardContent>
-      <SeparatorWithText>Or continue with</SeparatorWithText>
+      <SeparatorWithText>
+        <span className="bg-background px-2 text-xs uppercase text-muted-foreground">
+          Or continue with
+        </span>
+      </SeparatorWithText>
       <CardFooter className="justify-evenly p-4">
         <OAuthButtons />
       </CardFooter>

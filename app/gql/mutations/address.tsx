@@ -1,6 +1,6 @@
 import { gql } from '@/gql/generated';
 
-export const ADD_ADDRESS_MUTATION = gql(/* GraphQL */ `
+export const AddAddressMutation = gql(/* GraphQL */ `
   mutation addAddress($input: AddressInput!) {
     addAddress(input: $input) {
       ...AddressFragment
@@ -8,7 +8,7 @@ export const ADD_ADDRESS_MUTATION = gql(/* GraphQL */ `
   }
 `);
 
-export const EDIT_ADDRESS_MUTATION = gql(/* GraphQL */ `
+export const EditAddressMutation = gql(/* GraphQL */ `
   mutation editAddress($input: AddressInput!) {
     editAddress(input: $input) {
       ...AddressFragment
@@ -16,7 +16,7 @@ export const EDIT_ADDRESS_MUTATION = gql(/* GraphQL */ `
   }
 `);
 
-export const REMOVE_ADDRESS_MUTATION = gql(/* GraphQL */ `
+export const RemoveAddressMutation = gql(/* GraphQL */ `
   mutation removeAddress($id: IntID!) {
     removeAddress(id: $id)
   }

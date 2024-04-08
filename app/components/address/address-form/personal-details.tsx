@@ -1,4 +1,4 @@
-import TextInput from '@/(storefront)/checkout/components/address-form/text-input';
+import TextInput from '@/components/address/address-form/text-input';
 import { MouseEventHandler, useState } from 'react';
 import { Button } from '@/components/ui/common/button';
 

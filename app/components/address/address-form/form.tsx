@@ -11,28 +11,30 @@ import {
   AddressFragmentFragment,
   AddressFragmentFragmentDoc,
   AddressInput,
+  CheckMeFragmentFragmentDoc,
   CountryFragmentFragmentDoc,
 } from '@/gql/generated/graphql';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Textarea } from '@/components/ui/textarea';
-import AddressLines from '@/(storefront)/checkout/components/address-form/address-lines';
-import TextInput from '@/(storefront)/checkout/components/address-form/text-input';
-import TitleInput from '@/(storefront)/checkout/components/address-form/title';
-import PersonalDetails from '@/(storefront)/checkout/components/address-form/personal-details';
+import AddressLines from '@/components/address/address-form/address-lines';
+import TextInput from '@/components/address/address-form/text-input';
+import TitleInput from '@/components/address/address-form/title';
+import PersonalDetails from '@/components/address/address-form/personal-details';
 import { Button } from '@/components/ui/common/button';
 import { useFragment } from '@/gql/generated';
-import { useMutation, useQuery } from '@apollo/client';
+import { useMutation, useQuery, useSuspenseQuery } from '@apollo/client';
 import { useTransition } from 'react';
 import { cn } from '@/lib/utils';
-import CountryInput from '@/(storefront)/checkout/components/address-form/country-input';
-import PhoneInput from '@/(storefront)/checkout/components/address-form/phone-input';
+import CountryInput from '@/components/address/address-form/country-input';
+import PhoneInput from '@/components/address/address-form/phone-input';
 import { Card, CardContent } from '@/components/ui/common/card';
 import {
-  ADD_ADDRESS_MUTATION,
-  EDIT_ADDRESS_MUTATION,
+  AddAddressMutation,
+  EditAddressMutation,
 } from '@/gql/mutations/address';
 import { COUNTRIES_QUERY } from '@/gql/queries/country';
+import { CheckMeQuery } from '@/gql/queries/user';
 
 export const AddressFormSchema = z.object({
   title: z.string().min(1).max(255),
@@ -62,12 +64,14 @@ const AddressForm = ({
   toggleAddressFormView: () => void;
   handleAddressChange: (address?: AddressFragmentFragment) => void;
 }) => {
+  const { data: checkMeQuery } = useSuspenseQuery(CheckMeQuery);
+  const user = useFragment(CheckMeFragmentFragmentDoc, checkMeQuery?.checkMe);
   const form = useForm<z.infer<typeof AddressFormSchema>>({
     resolver: zodResolver(AddressFormSchema),
     defaultValues: {
       title: address?.title || '',
-      firstName: address?.firstName || '',
-      lastName: address?.lastName || '',
+      firstName: address?.firstName || user?.customer?.firstName || '',
+      lastName: address?.lastName || user?.customer?.lastName || '',
       companyName: address?.companyName || '',
       lineOne: address?.lineOne || '',
       lineTwo: address?.lineTwo || '',
@@ -83,8 +87,8 @@ const AddressForm = ({
       billingDefault: address?.billingDefault || false,
     },
   });
-  const [editAddress] = useMutation(EDIT_ADDRESS_MUTATION);
-  const [addAddress] = useMutation(ADD_ADDRESS_MUTATION);
+  const [editAddress] = useMutation(EditAddressMutation);
+  const [addAddress] = useMutation(AddAddressMutation);
   const { data: countriesQuery } = useQuery(COUNTRIES_QUERY);
   const [isPending, startTransition] = useTransition();
 

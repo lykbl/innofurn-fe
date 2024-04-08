@@ -18,7 +18,7 @@ import { Button } from '@/components/ui/common/button';
 import { ThemeContext, THEMES } from '@/components/theme.context';
 
 const Header = () => {
-  const { data, loading } = useQuery(CheckMeQuery);
+  const { data, loading, error } = useQuery(CheckMeQuery);
   const user = data?.checkMe;
   const { theme, toggleTheme } = useContext(ThemeContext);
 

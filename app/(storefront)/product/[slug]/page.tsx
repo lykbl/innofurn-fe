@@ -12,7 +12,7 @@ export default function Page({
   params: { slug: string };
 }) {
   return (
-    <div className="flex w-full flex-col gap-2">
+    <div className="flex w-full flex-col gap-4">
       <Suspense fallback={<DetailsSkeleton />}>
         <Details slug={slug} />
       </Suspense>

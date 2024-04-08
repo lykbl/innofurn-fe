@@ -2,15 +2,15 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/common/button';
 import { Icons } from '@/components/icons';
 import React from 'react';
-import { AddressCardProps } from '@/(storefront)/checkout/components/address-step/address-card';
+import { AddressCardProps } from '@/components/address/addresses-list/address-card';
 
-const AddressControls = ({
+export default function AddressControls({
   isSelected,
   toggleAddressFormView,
   handleDeleteAddress,
 }: Pick<AddressCardProps, 'isSelected' | 'toggleAddressFormView'> & {
   handleDeleteAddress: () => void;
-}) => {
+}) {
   return (
     <div
       className={cn(
@@ -36,6 +36,4 @@ const AddressControls = ({
       </div>
     </div>
   );
-};
-
-export default AddressControls;
+}

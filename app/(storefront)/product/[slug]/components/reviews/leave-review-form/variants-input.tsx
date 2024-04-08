@@ -34,7 +34,10 @@ export default function VariantsInput({
             defaultValue={field.value.toString()} //TODO annoying?
           >
             <FormControl>
-              <SelectTrigger className="w-[180px]">
+              <SelectTrigger
+                disabled={variants.length === 1}
+                className="w-[180px]"
+              >
                 <SelectValue placeholder="Variant" />
               </SelectTrigger>
             </FormControl>

@@ -1,9 +1,9 @@
 import { MouseEventHandler, useState } from 'react';
 import { Button } from '@/components/ui/common/button';
 import { Icons } from '@/components/icons';
-import TextInput from '@/(storefront)/checkout/components/address-form/text-input';
+import TextInput from '@/components/address/address-form/text-input';
 import { useFormContext } from 'react-hook-form';
-import { AddressFormSchema } from '@/(storefront)/checkout/components/address-form/form';
+import { AddressFormSchema } from '@/components/address/address-form/form';
 import { z } from 'zod';
 
 const maxLines = 3;

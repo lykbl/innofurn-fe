@@ -144,7 +144,7 @@ const ChatMessage =
                         id: id,
                         __typename: 'ChatMessage',
                         body: body,
-                        createdAt: new Date(),
+                        createdAt: new Date().toDateString(),
                         status: ChatMessageStatus.PENDING,
                         author: {
                           __typename: 'Customer',
