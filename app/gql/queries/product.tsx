@@ -8,16 +8,6 @@ export const ProductDetailsQuery = gql(/* GraphQL */ `
   }
 `);
 
-export const UserReviewsQuery = gql(/* GraphQL */ `
-  query UserReviews {
-    userReviews {
-      id
-      title
-      body
-    }
-  }
-`);
-
 export const ProductReviewsBreakdownQuery = gql(/* GraphQL */ `
   query ProductReviewsBreakdown($slug: String!) {
     productDetails(slug: $slug) {

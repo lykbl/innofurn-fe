@@ -14,7 +14,7 @@ export default function OrdersList() {
     MyOrdersQuery,
     {
       variables: {
-        page: 3,
+        page: 1,
         first: 5,
         firstProductLines: MINIMUM_VISIBLE_PRODUCTS_LINES,
       },

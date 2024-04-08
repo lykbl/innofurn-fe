@@ -19,7 +19,7 @@ export default function Layout({ children }: { children: ReactNode }) {
     <div className="flex w-full flex-col gap-4">
       <div>
         <h1>Settings</h1>
-        <p>Manage your account settings</p>
+        <p>Manage your account</p>
       </div>
       <Separator />
       <nav className="flex w-full gap-4">
@@ -48,10 +48,10 @@ export default function Layout({ children }: { children: ReactNode }) {
                 label="See Your Reviews"
                 route={ROUTES.SETTINGS_REVIEWS}
               />
-              <NavigationLink
-                label="Your Product Lists"
-                route={ROUTES.SETTINGS_PRODUCTS_LISTS}
-              />
+              {/*<NavigationLink*/}
+              {/*  label="Your Product Lists"*/}
+              {/*  route={ROUTES.SETTINGS_PRODUCTS_LISTS}*/}
+              {/*/>*/}
             </ul>
           </div>
           <div>
