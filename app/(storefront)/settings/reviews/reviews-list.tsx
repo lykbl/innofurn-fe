@@ -1,9 +1,7 @@
 import { useSuspenseQuery } from '@apollo/client';
 import { useFragment } from '@/gql/generated';
 import { Button } from '@/components/ui/common/button';
-import {
-  ReviewFragmentFragmentDoc,
-} from '@/gql/generated/graphql';
+import { ReviewFragmentFragmentDoc } from '@/gql/generated/graphql';
 import { cn } from '@/lib/utils';
 import { useTransition } from 'react';
 import { MyReviewsQuery } from '@/gql/queries/review';

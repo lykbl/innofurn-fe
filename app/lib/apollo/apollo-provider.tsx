@@ -177,7 +177,7 @@ function createClient() {
         },
         ProductView: {
           keyFields: ['product', ['id']],
-        }
+        },
       },
     }),
   });

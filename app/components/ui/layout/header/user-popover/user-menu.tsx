@@ -63,20 +63,24 @@ export default function UserPopover({
             <BaseLink href={ROUTES.SETTINGS_ORDERS}>Orders</BaseLink>
           </Button>
           <Button
-              asChild
-              className="h-8 w-full justify-start px-2 py-1"
-              variant="link"
-              size="link"
-            >
-              <BaseLink href={ROUTES.SETTINGS_REVIEWS}>Review my Purchases</BaseLink>
-            </Button>
+            asChild
+            className="h-8 w-full justify-start px-2 py-1"
+            variant="link"
+            size="link"
+          >
+            <BaseLink href={ROUTES.SETTINGS_REVIEWS}>
+              Review my Purchases
+            </BaseLink>
+          </Button>
           <Button
             asChild
             variant="link"
             size="link"
             className="h-8 w-full justify-start px-2 py-1"
           >
-            <BaseLink href={ROUTES.SETTINGS_RECENTLY_VIEWED}>Recently Viewed</BaseLink>
+            <BaseLink href={ROUTES.SETTINGS_RECENTLY_VIEWED}>
+              Recently Viewed
+            </BaseLink>
           </Button>
         </div>
         <Separator />
