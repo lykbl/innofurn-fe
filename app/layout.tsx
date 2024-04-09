@@ -16,7 +16,7 @@ export default function RootLayout({
       <body>
         <ThemeProvider>
           <ApolloWrapper>
-            <main
+            <div
               className={cn(
                 'flex flex-col items-center bg-background text-base antialiased',
                 inter.variable,
@@ -24,7 +24,7 @@ export default function RootLayout({
             >
               {children}
               <Toaster />
-            </main>
+            </div>
           </ApolloWrapper>
         </ThemeProvider>
       </body>

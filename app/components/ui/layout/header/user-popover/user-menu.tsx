@@ -42,7 +42,7 @@ export default function UserPopover({
         </Button>
       </PopoverTrigger>
       <PopoverContent
-        className="flex w-56 flex-col gap-1"
+        className="flex w-56 flex-col gap-2"
         align="end"
         forceMount
       >
@@ -55,31 +55,41 @@ export default function UserPopover({
         <Separator />
         <div className="flex flex-col gap-2">
           <Button
-            variant="ghost"
             asChild
+            variant="link"
+            size="link"
             className="h-8 w-full justify-start px-2 py-1"
           >
-            <BaseLink href={ROUTES.BOOKMARKS}>Favorites</BaseLink>
+            <BaseLink href={ROUTES.SETTINGS_ORDERS}>Orders</BaseLink>
           </Button>
           <Button
+              asChild
+              className="h-8 w-full justify-start px-2 py-1"
+              variant="link"
+              size="link"
+            >
+              <BaseLink href={ROUTES.SETTINGS_REVIEWS}>Review my Purchases</BaseLink>
+            </Button>
+          <Button
             asChild
-            variant="ghost"
+            variant="link"
+            size="link"
             className="h-8 w-full justify-start px-2 py-1"
           >
-            <BaseLink href={ROUTES.PROFILE}>Profile</BaseLink>
+            <BaseLink href={ROUTES.SETTINGS_RECENTLY_VIEWED}>Recently Viewed</BaseLink>
           </Button>
+        </div>
+        <Separator />
+        <div>
           <Button
             asChild
-            variant="ghost"
-            className="h-8 w-full justify-start px-2 py-1"
+            variant="link"
+            size="link"
+            className="h-8 w-full justify-start p-2"
           >
             <BaseLink href={ROUTES.SETTINGS_PROFILE}>Settings</BaseLink>
           </Button>
         </div>
-        <Separator />
-        <Button asChild variant="ghost">
-          <BaseLink href="/recently-viewed">Recently Viewed</BaseLink>
-        </Button>
         <Separator />
         <div>
           <Button

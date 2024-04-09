@@ -175,6 +175,9 @@ function createClient() {
         MediaPaginator: {
           keyFields: false,
         },
+        ProductView: {
+          keyFields: ['product', ['id']],
+        }
       },
     }),
   });
