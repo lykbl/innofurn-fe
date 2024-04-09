@@ -1,6 +1,12 @@
 'use client';
 
-import { ChangeEventHandler, Suspense, useState, useTransition } from 'react';
+import {
+  ChangeEventHandler,
+  Suspense,
+  useEffect,
+  useState,
+  useTransition,
+} from 'react';
 import { Input } from '@/components/ui/common/input';
 import { useDebounce } from 'react-use';
 import { Dialog, DialogOverlay, DialogTrigger } from '@/components/ui/dialog';
@@ -12,6 +18,16 @@ export default function SearchBar() {
   const [searchQuery, setSearchQuery] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
   const [isTransitioning, startTransition] = useTransition();
+  useEffect(() => {
+    function handleKeyPress(e: KeyboardEvent) {
+      if (e.metaKey && e.key === 'k' && !dialogOpen) {
+        setDialogOpen(true);
+      }
+    }
+    window.addEventListener('keydown', handleKeyPress);
+
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, []);
 
   useDebounce(
     async () => {
@@ -44,14 +60,20 @@ export default function SearchBar() {
 
   return (
     <Dialog open={dialogOpen}>
-      <DialogTrigger asChild>
-        <Input
-          className=""
-          value={search}
-          onChange={openSearchDialog}
-          type="text"
-        />
-      </DialogTrigger>
+      <div className="relative">
+        <DialogTrigger asChild>
+          <Input
+            className="w-60"
+            value={search}
+            onChange={openSearchDialog}
+            placeholder="Search anything..."
+            type="text"
+          />
+        </DialogTrigger>
+        <kbd className="pointer-events-none absolute right-2 top-[50%] hidden h-5 translate-y-[-50%] select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex">
+          <span className="text-xs">⌘</span>K
+        </kbd>
+      </div>
       <Suspense>
         <DialogOverlay className="overlay">
           <SearchBarDialogContent

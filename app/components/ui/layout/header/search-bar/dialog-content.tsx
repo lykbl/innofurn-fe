@@ -59,7 +59,11 @@ export default function SearchBarDialogContent({
       className="flex h-[95%] min-w-[80%] flex-col gap-4 p-12"
     >
       <div className="flex flex-col gap-2 pr-3">
-        <Input value={search} onChange={handleSearchChange} />
+        <Input
+          value={search}
+          onChange={handleSearchChange}
+          placeholder="Search anything..."
+        />
         <div className="flex gap-2">
           {facetDistribution?.map(({ count, collection }, i) => (
             <Link
