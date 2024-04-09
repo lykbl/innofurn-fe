@@ -38,7 +38,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             </ul>
           </div>
           <div>
-            <p className="text-xl font-semibold">Your Purchases</p>
+            <p className="text-xl font-semibold">Produts & Orders</p>
             <ul>
               <NavigationLink
                 label="Find Your Purchases"
@@ -47,6 +47,10 @@ export default function Layout({ children }: { children: ReactNode }) {
               <NavigationLink
                 label="See Your Reviews"
                 route={ROUTES.SETTINGS_REVIEWS}
+              />
+              <NavigationLink
+                label="Recently Viewed Products"
+                route={ROUTES.SETTINGS_RECENTLY_VIEWED}
               />
               {/*<NavigationLink*/}
               {/*  label="Your Product Lists"*/}

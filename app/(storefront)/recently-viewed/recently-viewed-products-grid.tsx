@@ -22,18 +22,24 @@ export default function RecentlyViewedProducts() {
           recentlyViewedProduct,
         ),
     );
+  if (recentlyViewedProducts.length === 0) {
+    return (
+      <div className="flex h-80 w-full flex-col items-center justify-center">
+        Uh-oh! Looks like there is nothing here.
+      </div>
+    );
+  }
 
   return (
     <div className="grid grid-cols-5 gap-4">
-      {recentlyViewedProducts.map((recentlyViewedProductVariant) => (
-        <ProductCard
-          key={recentlyViewedProductVariant.id}
-          product={useFragment(
-            ProductCardFragmentFragmentDoc,
-            recentlyViewedProductVariant.product,
-          )}
-        />
-      ))}
+      {recentlyViewedProducts.map((recentlyViewedProductVariant) => {
+        const product = useFragment(
+          ProductCardFragmentFragmentDoc,
+          recentlyViewedProductVariant.product,
+        );
+
+        return <ProductCard key={product.id} product={product} />;
+      })}
     </div>
   );
 }

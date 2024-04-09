@@ -5,8 +5,10 @@ import RecentlyViewedProductsGridSkeleton from '@/(storefront)/recently-viewed/r
 export default function Page() {
   return (
     <div className="flex flex-col gap-2">
-      <h1 className="text-2xl">Your recently viewed products</h1>
-      <p className="text-xl">Take a second look at what you've been up to!</p>
+      <div>
+        <h1 className="text-2xl">Your recently viewed products</h1>
+        <p className="text-xl">Take a second look at what you've been up to!</p>
+      </div>
       <Suspense fallback={<RecentlyViewedProductsGridSkeleton />}>
         <RecentlyViewedProducts />
       </Suspense>

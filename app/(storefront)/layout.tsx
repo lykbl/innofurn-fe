@@ -12,7 +12,7 @@ export default function RootLayout({
   return (
     <>
       <Header />
-      <main className="mx-auto flex w-full max-w-screen-2xl flex-col items-center py-4">
+      <main className="mx-auto flex w-full max-w-screen-2xl flex-col py-4">
         {children}
         <Chat />
       </main>

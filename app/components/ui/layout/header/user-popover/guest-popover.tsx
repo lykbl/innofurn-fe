@@ -41,10 +41,6 @@ export default function GuestMenu() {
       >
         <p className="px-2 pt-2 font-semibold">Welcome, Guest</p>
         <Separator />
-        <div className="flex w-full flex-col gap-1">
-          <GhostLink href={ROUTES.PROFILE}>Help & Contact</GhostLink>
-        </div>
-        <Separator />
         <div className="flex w-full flex-col gap-2">
           <BaseLink
             href={ROUTES.LOGIN}

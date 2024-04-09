@@ -1,9 +1,6 @@
-import {
-  ReviewFragmentFragment,
-} from '@/gql/generated/graphql';
+import { ReviewFragmentFragment } from '@/gql/generated/graphql';
 import { Card } from '@/components/ui/common/card';
 import { Button } from '@/components/ui/common/button';
-
 
 import Image from 'next/image';
 import FiveStars from '@/components/ui/common/five-stars';
