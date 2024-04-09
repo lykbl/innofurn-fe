@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
-import RecentlyViewedProducts from '@/(storefront)/recently-viewed/recently-viewed-products-grid';
-import RecentlyViewedProductsGridSkeleton from '@/(storefront)/recently-viewed/recently-viewed-products-grid-skeleton';
+import RecentlyViewedProducts from '@/(storefront)/settings/recently-viewed/recently-viewed-products-grid';
+import RecentlyViewedProductsGridSkeleton from '@/(storefront)/settings/recently-viewed/recently-viewed-products-grid-skeleton';
 
 export default function Page() {
   return (

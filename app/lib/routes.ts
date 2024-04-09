@@ -7,7 +7,7 @@ const ROUTES = {
   OAUTH_REDIRECT: '/oauth/redirect',
   PROFILE: '/profile',
   BOOKMARKS: '/bookmarks',
-  SETTINGS_RECENTLY_VIEWED: '/recently-viewed',
+  SETTINGS_RECENTLY_VIEWED: '/settings/recently-viewed',
   SETTINGS_ADDRESSES: '/settings/addresses',
   SETTINGS_PROFILE: '/settings/profile',
   SETTINGS_ORDERS: '/settings/orders',

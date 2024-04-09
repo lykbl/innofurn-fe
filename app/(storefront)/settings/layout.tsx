@@ -38,7 +38,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             </ul>
           </div>
           <div>
-            <p className="text-xl font-semibold">Produts & Orders</p>
+            <p className="text-xl font-semibold">Products & Orders</p>
             <ul>
               <NavigationLink
                 label="Find Your Purchases"
