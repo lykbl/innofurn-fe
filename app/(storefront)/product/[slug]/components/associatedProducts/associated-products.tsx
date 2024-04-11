@@ -20,6 +20,7 @@ export default function AssociatedProducts({ slug }: { slug: string }) {
     variables: {
       slug: slug,
     },
+    fetchPolicy: 'no-cache',
   });
   const productDetails = useFragment(
     AssociatedProductsFragmentFragmentDoc,

@@ -74,6 +74,7 @@ export default function SearchBar() {
           <span className="text-xs">⌘</span>K
         </kbd>
       </div>
+      {/* TODO fix old search showing? */}
       <Suspense>
         <DialogOverlay className="overlay">
           <SearchBarDialogContent

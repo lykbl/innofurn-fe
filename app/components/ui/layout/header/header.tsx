@@ -3,8 +3,6 @@
 import BaseLink from 'next/link';
 import ROUTES from '@/lib/routes';
 import { Suspense, useContext } from 'react';
-import NotificationsTriggerSkeleton from '@/components/ui/layout/header/notifications-popover/notifications-trigger-skeleton';
-import NotificationsPopover from '@/components/ui/layout/header/notifications-popover/notifications-popover';
 import CartTriggerSkeleton from '@/components/ui/layout/header/cart-popover/cart-trigger-skeleton';
 import CartPopover from '@/components/ui/layout/header/cart-popover/cart-control';
 import UserMenu from '@/components/ui/layout/header/user-popover/user-menu';
@@ -40,9 +38,9 @@ const Header = () => {
             <Button onClick={toggleTheme} variant="outline">
               {theme === THEMES.DARK ? <Icons.sun /> : <Icons.moon />}
             </Button>
-            <Suspense fallback={<NotificationsTriggerSkeleton />}>
-              <NotificationsPopover />
-            </Suspense>
+            {/*<Suspense fallback={<NotificationsTriggerSkeleton />}>*/}
+            {/*  <NotificationsPopover />*/}
+            {/*</Suspense>*/}
             <Suspense fallback={<CartTriggerSkeleton />}>
               <CartPopover />
             </Suspense>
