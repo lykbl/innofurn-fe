@@ -124,6 +124,18 @@ function createClient() {
             productDetails: {
               keyArgs: false,
             },
+            searchProductReviews: {
+              keyArgs: false,
+              merge: (existing, incoming, { args }) => {
+                if (!existing) return incoming;
+
+                return {
+                  __typename: existing.__typename,
+                  data: [...existing.data, ...incoming.data],
+                  paginatorInfo: incoming.paginatorInfo,
+                };
+              },
+            },
           },
         },
         ProductVariant: {

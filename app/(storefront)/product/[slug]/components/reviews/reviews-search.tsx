@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/common/button';
 import { useDebounce } from 'react-use';
 import {
   ChangeEventHandler,
-  startTransition,
   TransitionStartFunction,
   useState,
 } from 'react';
@@ -44,7 +43,6 @@ export default function ReviewsList({
 
   const {
     data: searchProductReviewsData,
-    error,
     fetchMore: fetchMoreReviews,
   } = useSuspenseQuery(SearchProductReviewsQuery, {
     variables: {
@@ -57,6 +55,8 @@ export default function ReviewsList({
       first: 5,
       orderBy: SearchProductReviewsOrderBy.RATING_DESC,
     },
+    //TODO improve this
+    fetchPolicy: "no-cache",
   });
   const productReviews =
     searchProductReviewsData?.searchProductReviews?.data.map((review) =>
@@ -65,8 +65,8 @@ export default function ReviewsList({
   const reviewsPaginatorInfo =
     searchProductReviewsData?.searchProductReviews?.paginatorInfo;
   const handleLoadMoreReviews = () => {
-    startTransition(() => {
-      fetchMoreReviews({
+    startLoadingMoreReviews(async () => {
+      await fetchMoreReviews({
         variables: {
           filters: {
             productSlug: slug,
