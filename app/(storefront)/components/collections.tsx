@@ -27,7 +27,7 @@ const Collections = async () => {
 
   return (
     <div className="flex flex-wrap justify-between">
-      <OutlinedLink href="/collections/promotion" className="rounded-full">
+      <OutlinedLink href="/search?saleOnly=true" className="rounded-full">
         <Image
           src="https://via.placeholder.com/205x205.png/004466?text=featured-promo"
           alt="alt"
@@ -38,7 +38,7 @@ const Collections = async () => {
       </OutlinedLink>
       {rootCollections.map((rootCollection) => (
         <OutlinedLink
-          href={`/collections/${rootCollection.defaultUrl.slug}`}
+          href={`/search/${rootCollection.defaultUrl.slug}`}
           key={rootCollection.id}
         >
           <Image

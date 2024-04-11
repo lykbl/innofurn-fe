@@ -2,7 +2,6 @@ import React from 'react';
 import {
   Card,
   CardContent,
-  CardFooter,
   CardHeader,
 } from '@/components/ui/common/card';
 import { Badge } from '@/components/ui/badge';
@@ -79,25 +78,26 @@ export default function CardItem({
         />
       </CardHeader>
       <CardContent className="flex flex-col justify-end bg-secondary p-2">
-        {/*<RelevantAlternatives*/}
-        {/*  colorOptions={colorOptions}*/}
-        {/*  previewVariantColor={previewVariantColor}*/}
-        {/*/>*/}
-        <Button
-          asChild
-          variant="link"
-          className="text-md h-full justify-start p-0 text-start"
-        >
-          <BaseLink
-            href={`/product/${selectedProductVariant.product.defaultUrl.slug}`}
+        <div>
+          {/*<RelevantAlternatives*/}
+          {/*  colorOptions={colorOptions}*/}
+          {/*  previewVariantColor={previewVariantColor}*/}
+          {/*/>*/}
+          <Button
+            asChild
+            variant="link"
+            size="link"
+            className="text-md justify-start p-0 text-start"
           >
-            <p>{selectedProductVariant.name}</p>
-          </BaseLink>
-        </Button>
-        <FiveStars rating={averageRating} reviewsCount={reviewsCount} />
-        <Price priceData={priceData} discounts={discounts} />
-      </CardContent>
-      <CardFooter className="flex items-stretch bg-secondary p-2">
+            <BaseLink
+              href={`/product/${selectedProductVariant.product.defaultUrl.slug}`}
+            >
+              <p>{selectedProductVariant.name}</p>
+            </BaseLink>
+          </Button>
+          <FiveStars rating={averageRating} reviewsCount={reviewsCount} />
+          <Price priceData={priceData} discounts={discounts} />
+        </div>
         <div className="ml-auto flex justify-end gap-1">
           <Button className="h-7 w-7 p-2">
             <Icons.heart className={cn(isFavorite ? 'fill-white' : '')} />
@@ -106,7 +106,7 @@ export default function CardItem({
             <Icons.cart />
           </Button>
         </div>
-      </CardFooter>
+      </CardContent>
     </Card>
   );
 }
