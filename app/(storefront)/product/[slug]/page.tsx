@@ -17,7 +17,10 @@ export default function Page({
       <Suspense key={`${slug}Details`} fallback={<DetailsSkeleton />}>
         <Details slug={slug} />
       </Suspense>
-      <Suspense key={`${slug}AssocProducts`} fallback={<AssociatedProductsSkeleton />}>
+      <Suspense
+        key={`${slug}AssocProducts`}
+        fallback={<AssociatedProductsSkeleton />}
+      >
         <AssociatedProducts slug={slug} />
       </Suspense>
       <Reviews slug={slug} />

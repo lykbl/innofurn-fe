@@ -13,7 +13,10 @@ export default function Reviews({ slug }: { slug: string }) {
 
   return (
     <section className="flex justify-between gap-2">
-      <Suspense key={`${slug}ReviewsBreakdown`} fallback={<ReviewsBreakdownSkeleton />}>
+      <Suspense
+        key={`${slug}ReviewsBreakdown`}
+        fallback={<ReviewsBreakdownSkeleton />}
+      >
         <ReviewsBreakdownView
           slug={slug}
           ratingFilter={ratingFilter}
@@ -22,7 +25,10 @@ export default function Reviews({ slug }: { slug: string }) {
           isLoadingMoreReviews={isLoadingMoreReviews}
         />
       </Suspense>
-      <Suspense key={`${slug}ReviewsSearch`} fallback={<ReviewsSearchSkeleton />}>
+      <Suspense
+        key={`${slug}ReviewsSearch`}
+        fallback={<ReviewsSearchSkeleton />}
+      >
         <ReviewsList
           slug={slug}
           ratingFilter={ratingFilter}

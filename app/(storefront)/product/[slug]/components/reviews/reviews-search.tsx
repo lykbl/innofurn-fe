@@ -4,11 +4,7 @@ import { cn } from '@/lib/utils';
 import ReviewRow from '@/(storefront)/product/[slug]/components/reviews/review-row';
 import { Button } from '@/components/ui/common/button';
 import { useDebounce } from 'react-use';
-import {
-  ChangeEventHandler,
-  TransitionStartFunction,
-  useState,
-} from 'react';
+import { ChangeEventHandler, TransitionStartFunction, useState } from 'react';
 import { useSuspenseQuery } from '@apollo/client';
 import {
   ProductReviewFragmentFragmentDoc,
@@ -41,23 +37,21 @@ export default function ReviewsList({
     [search],
   );
 
-  const {
-    data: searchProductReviewsData,
-    fetchMore: fetchMoreReviews,
-  } = useSuspenseQuery(SearchProductReviewsQuery, {
-    variables: {
-      filters: {
-        productSlug: slug,
-        search: searchQuery,
-        rating: ratingFilter,
+  const { data: searchProductReviewsData, fetchMore: fetchMoreReviews } =
+    useSuspenseQuery(SearchProductReviewsQuery, {
+      variables: {
+        filters: {
+          productSlug: slug,
+          search: searchQuery,
+          rating: ratingFilter,
+        },
+        page: 1,
+        first: 5,
+        orderBy: SearchProductReviewsOrderBy.RATING_DESC,
       },
-      page: 1,
-      first: 5,
-      orderBy: SearchProductReviewsOrderBy.RATING_DESC,
-    },
-    //TODO improve this
-    fetchPolicy: "no-cache",
-  });
+      //TODO improve this
+      fetchPolicy: 'no-cache',
+    });
   const productReviews =
     searchProductReviewsData?.searchProductReviews?.data.map((review) =>
       useFragment(ProductReviewFragmentFragmentDoc, review),
