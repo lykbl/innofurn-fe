@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/common/button';
 import CartControl from '@/(storefront)/product/[slug]/components/details/cart-control';
 
-import { useFragment } from '@/gql/generated';
+import { gql, useFragment } from '@/gql/generated';
 
 import {
   ProductDetailsFragmentFragmentDoc,
@@ -12,7 +12,7 @@ import {
   ProductDetailsVariantFragmentFragmentDoc,
 } from '@/gql/generated/graphql';
 import ProductOptionsSelector from '@/(storefront)/product/[slug]/components/details/product-options-selector';
-import { useSuspenseQuery } from '@apollo/client';
+import { useMutation, useSuspenseQuery } from '@apollo/client';
 import BrandLink from '@/(storefront)/product/[slug]/components/details/brand-link';
 import Images from '@/(storefront)/product/[slug]/components/details/images';
 import FiveStars from '@/components/ui/common/five-stars';
@@ -72,6 +72,12 @@ const findSelectedVariant = (
   );
 };
 
+const ViewProductMutation = gql(/* GraphQL */ `
+  mutation ViewProduct($slug: String!) {
+    viewProduct(slug: $slug)
+  }
+`);
+
 const Details = ({ slug }: { slug: string }) => {
   const { data: productDetailsQuery, fetchMore: fetchMoreImages } =
     useSuspenseQuery(ProductDetailsQuery, {
@@ -101,6 +107,17 @@ const Details = ({ slug }: { slug: string }) => {
   const handleSelectOption = (handle: string, value: string) => {
     setSelectedOptionValues((prev) => ({ ...prev, [handle]: value }));
   };
+
+  const [viewProduct] = useMutation(ViewProductMutation);
+  const productViewed = useRef(false);
+  useEffect(() => {
+    if (!productViewed.current) {
+      productViewed.current = true;
+      viewProduct({
+        variables: { slug },
+      });
+    }
+  }, []);
 
   return (
     <div className="flex gap-2">

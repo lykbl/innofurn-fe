@@ -96,21 +96,21 @@ export default function ReviewsList({
           />
         </div>
         <div>
-        {/*TODO add customers say / keywords search */}
-        {/*  <div className="flex flex-col">*/}
-        {/*  <h3 className="font-medium">Reviews with images</h3>*/}
-        {/*  <div className="py-2">*/}
-        {/*    /!* TODO add images to reviews*!/*/}
-        {/*    /!*<Carousel items={reviewImages} controlsSize={20} />*!/*/}
-        {/*    <Carousel>*/}
-        {/*      <CarouselContent>*/}
-        {/*        {reviewImages.map((item, index) => (*/}
-        {/*          <CarouselItem key={index}>{item}</CarouselItem>*/}
-        {/*        ))}*/}
-        {/*      </CarouselContent>*/}
-        {/*    </Carousel>*/}
-        {/*  </div>*/}
-        {/*</div>*/}
+          {/*TODO add customers say / keywords search */}
+          {/*  <div className="flex flex-col">*/}
+          {/*  <h3 className="font-medium">Reviews with images</h3>*/}
+          {/*  <div className="py-2">*/}
+          {/*    /!* TODO add images to reviews*!/*/}
+          {/*    /!*<Carousel items={reviewImages} controlsSize={20} />*!/*/}
+          {/*    <Carousel>*/}
+          {/*      <CarouselContent>*/}
+          {/*        {reviewImages.map((item, index) => (*/}
+          {/*          <CarouselItem key={index}>{item}</CarouselItem>*/}
+          {/*        ))}*/}
+          {/*      </CarouselContent>*/}
+          {/*    </Carousel>*/}
+          {/*  </div>*/}
+          {/*</div>*/}
         </div>
       </Card>
       <div
