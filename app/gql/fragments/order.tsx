@@ -38,17 +38,19 @@ const ProductLineFragment = gql(/* GraphQL */ `
     purchasable {
       id
       name
+      sku
       primaryImage {
+        id
         conversions(types: [MEDIUM])
         name
       }
       product {
+        id
         defaultUrl {
           id
           slug
         }
       }
-      sku
     }
     type
     description
