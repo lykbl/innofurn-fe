@@ -186,6 +186,7 @@ const ColorOptionFragment = gql(/* GraphQL */ `
 
 const ProductReviewsBreakdownFragment = gql(/* GraphQL */ `
   fragment ProductReviewsBreakdownFragment on Product {
+    id
     reviewsCount
     reviewsBreakdown
     averageRating

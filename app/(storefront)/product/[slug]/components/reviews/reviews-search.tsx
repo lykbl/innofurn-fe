@@ -18,7 +18,7 @@ import {
 import { useFragment } from '@/gql/generated';
 import { SearchProductReviewsQuery } from '@/gql/queries/product';
 
-export default function ReviewsSearch({
+export default function ReviewsList({
   slug,
   ratingFilter,
   isLoadingMoreReviews,
@@ -95,6 +95,7 @@ export default function ReviewsSearch({
             onChange={handleSearchChange}
           />
         </div>
+        <div>
         {/*TODO add customers say / keywords search */}
         {/*  <div className="flex flex-col">*/}
         {/*  <h3 className="font-medium">Reviews with images</h3>*/}
@@ -110,6 +111,7 @@ export default function ReviewsSearch({
         {/*    </Carousel>*/}
         {/*  </div>*/}
         {/*</div>*/}
+        </div>
       </Card>
       <div
         className={cn(
