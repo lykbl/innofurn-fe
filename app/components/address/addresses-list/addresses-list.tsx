@@ -26,7 +26,7 @@ export default function AddressesList() {
     setSelectedAddress(address ?? defaultAddress);
   };
   const toggleAddressFormView = () => {
-    setEditMode((p) => !p);
+    setEditMode((v) => !v);
   };
 
   const toggleNewAddressForm = () => {
@@ -45,7 +45,7 @@ export default function AddressesList() {
   }
 
   return (
-    <div>
+    <div className="flex flex-col gap-2">
       {addresses.map((address) => (
         <AddressCard
           key={address.id}

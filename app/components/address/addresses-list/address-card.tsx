@@ -52,7 +52,7 @@ export default function AddressCard({
     <Card
       //TODO add button arias
       className={cn(
-        'flex h-full w-full cursor-pointer justify-between rounded border border-input p-4 transition-all ease-in-out',
+        'flex h-max w-full cursor-pointer justify-between rounded border border-input p-4 transition-all ease-in-out',
         isSelected && 'border-primary',
         isPending && 'animate-pulse',
       )}

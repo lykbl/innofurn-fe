@@ -21,23 +21,26 @@ const Header = () => {
   const { theme, toggleTheme } = useContext(ThemeContext);
 
   return (
-    <div className="w-full border-b bg-background">
+    <div className="w-[80%] border border-t-transparent rounded-b-lg drop-shadow-xl bg-background">
       <div className="mx-auto flex max-w-screen-2xl items-center justify-between gap-4 px-2 py-3">
-        <div className="flex w-1/5 items-center">
-          <Button asChild variant="outline">
-            <BaseLink href={ROUTES.HOME} className="text-primary">
-              <Icons.logo fill="white" />
+        <div className="flex w-2/5 items-center gap-2">
+          <Button asChild variant="outline" className="text-primary w-10 h-10 p-0">
+            <BaseLink href={ROUTES.HOME}>
+              {/*<Icons.logo fill="white" />*/}
             </BaseLink>
           </Button>
-        </div>
-        <div className="flex h-min w-3/5 items-center justify-between rounded">
+          <Button
+            onClick={toggleTheme}
+            variant="outline"
+          >
+            {theme === THEMES.DARK ? <Icons.sun /> : <Icons.moon />}
+          </Button>
           <SearchBar />
         </div>
+        {/*<div className="flex h-min w-3/5 items-center justify-between rounded">*/}
+        {/*</div>*/}
         <div className="flex w-1/5 items-center justify-end text-primary">
           <div className="flex items-center gap-3">
-            <Button onClick={toggleTheme} variant="outline">
-              {theme === THEMES.DARK ? <Icons.sun /> : <Icons.moon />}
-            </Button>
             {/*<Suspense fallback={<NotificationsTriggerSkeleton />}>*/}
             {/*  <NotificationsPopover />*/}
             {/*</Suspense>*/}

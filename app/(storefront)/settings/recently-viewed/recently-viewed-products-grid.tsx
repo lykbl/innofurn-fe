@@ -12,7 +12,9 @@ import { RecentlyViewedProductsQuery } from '@/gql/queries/product';
 
 export default function RecentlyViewedProducts() {
   const { data: recentlyViewedProductsQuery } = useSuspenseQuery(
-    RecentlyViewedProductsQuery,
+    RecentlyViewedProductsQuery,{
+      fetchPolicy: "no-cache",
+    }
   );
   const recentlyViewedProducts =
     recentlyViewedProductsQuery.recentlyViewedProducts.map(

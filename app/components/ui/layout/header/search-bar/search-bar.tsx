@@ -63,7 +63,7 @@ export default function SearchBar() {
       <div className="relative">
         <DialogTrigger asChild>
           <Input
-            className="w-60"
+            className="w-80"
             value={search}
             onChange={openSearchDialog}
             placeholder="Search anything..."
